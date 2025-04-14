@@ -2,8 +2,8 @@ import { CONST } from "../constants/constants";
 
 export default function Footer() {
     return (
-      <footer className="bg-gray-800 text-white p-4 mt-auto">
-        <div className="flex justify-between items-center max-w-screen-xl mx-auto">
+      <footer className="bg-gray-800 text-white p-4">
+        <div className="flex justify-between items-center">
           <p className="text-sm">&copy; {new Date().getFullYear()} Matka d.o.o. | All rights reserved</p>
           <nav>
             <ul className="flex space-x-6">
