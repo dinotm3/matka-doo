@@ -1,32 +1,34 @@
 type SiteInfo = Readonly<{
-    NAME: string;
-    TITLE: string;
-    DESCRIPTION: string;
-    ADDRESS: string;
-    ZIP_CODE: string,
-    CITY: string,
-    COUNTRY: string,
-    PAGES: {
-        HOME: string;
-        ABOUT: string;
-        SERVICES: string;
-        LOCATION: string;
+    name: string;
+    title: string;
+    description: string;
+    address: string;
+    zip_code: string,
+    city: string,
+    country: string,
+    pages: {
+        home: string;
+        about: string;
+        services: string;
+        location: string;
+        contact: string;
       };
   }>;
   
-export const CONST: SiteInfo  = {
-    NAME: "Matka d.o.o.",
-    TITLE: "Matka d.o.o. – Knjigovodstvene Usluge Zagreb",
-    DESCRIPTION: "Pouzdane knjigovodstvene usluge za poduzeća svih veličina u Zagrebu. Obratite nam se za profesionalnu podršku.", 
-    ADDRESS: "Ksaverska cesta 47",
-    ZIP_CODE: "10000",
-    CITY: "Zagreb",
-    COUNTRY: "Hrvatska",
-    PAGES: {
-        HOME: "Home",
-        ABOUT: "O nama",
-        SERVICES: "Usluge",
-        LOCATION: "Lokacija",
+export const SITE_INFO: SiteInfo  = {
+    name: "Matka d.o.o.",
+    title: "Matka d.o.o. – Knjigovodstvene Usluge Zagreb",
+    description: "Pouzdane knjigovodstvene usluge za poduzeća svih veličina.", 
+    address: "Ksaverska cesta 47",
+    zip_code: "10000",
+    city: "Zagreb",
+    country: "Hrvatska",
+    pages: {
+        home: "Home",
+        about: "O nama",
+        services: "Usluge",
+        location: "Lokacija",
+        contact: "Kontakt"
     }
 } as const;
 
@@ -40,5 +42,13 @@ export const SERVICES: string[] = [
     "Knjiigovodstveno praćenje deviznog poslovanja; vođenje nadzornih knjiga",
     "Vještačenje u knjigovodstveno-financijskom poslovanju"
 ] as const;
+
+export interface STRINGS {
+    all_rights_reserved: string;
+  }
+
+export const STRINGS = {
+    all_rights_reserved: "Sva prava pridržana",
+ } as const;
 
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!;

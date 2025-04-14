@@ -2,8 +2,8 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center p-8 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] items-center sm:items-start">
+    <div className="flex flex-col justify-center p-8 gap-16 sm:p-20">
+      <main className="flex flex-col gap-[32px]">
         <Image
           className="dark:invert"
           src="/next.svg"
