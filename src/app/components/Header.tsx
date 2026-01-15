@@ -2,7 +2,13 @@ import { SITE_INFO } from "../constants/constants";
 
 export default function Header() {
   return (
-    <header className="w-full bg-gray-800 text-white">
+    <header
+      className="w-full text-white bg-cover bg-center"
+      style={{
+        backgroundImage:
+          "linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('/hero.jpg')",
+      }}
+    >
       <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4 md:gap-0">
         {/* Left: logo */}
         <a
