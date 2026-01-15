@@ -1,30 +1,30 @@
-import Image from "next/image";
+import { SITE_INFO, ABOUT_TEXT, STRINGS } from "./constants/constants";
+import HighlightBadge from "./components/HighlightBadge";
 
 export default function Home() {
   return (
-    <div className="flex flex-col justify-center p-8 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px]">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-      </main>
-    </div>
+    <main className="mx-auto max-w-5xl px-6 py-14 text-gray-900">
+      <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+        <p className="text-sm uppercase tracking-wider text-gray-500">
+          ZAGREB • KNJIGOVODSTVO • RAČUNOVODSTVO
+        </p>
+
+        <h1 className="mt-4 text-4xl font-semibold leading-tight">O nama</h1>
+
+        <div className="mt-8 max-w-3xl space-y-6 text-lg leading-relaxed text-gray-700">
+          {ABOUT_TEXT.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
+        </div>
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <HighlightBadge
+            label={STRINGS.trideset_godina_iskustva}
+            icon="/icon_chart.svg"
+          />
+          <HighlightBadge label={STRINGS.azurno_precizno} icon="✅" />
+          <HighlightBadge label={STRINGS.individualni_pristup} icon="🤝" />
+        </div>
+      </div>
+    </main>
   );
 }
