@@ -1,39 +1,20 @@
 type HighlightBadgeProps = {
   label: string;
-  icon: string;
+  icon: string; // can be emoji OR image path
 };
+
+const isImagePath = (v: string) => v.startsWith("/") || v.startsWith("http");
 
 export default function HighlightBadge({ label, icon }: HighlightBadgeProps) {
   return (
-    <div
-      className="
-          group
-          rounded-xl border border-gray-200 bg-white p-6 text-center
-          transition-all duration-300 ease-out
-          hover:-translate-y-1 hover:shadow-md
-          hover:border-gray-300 hover:bg-gray-200
-          cursor-pointer
-        "
-    >
-      <img
-        src={icon}
-        className="
-            mx-auto mb-4 h-14 w-14
-            transition-transform duration-300
-            group-hover:scale-110
-          "
-        alt=""
-      />
+    <div className="rounded-xl border border-[rgb(var(--brand-50))] bg-[rgb(var(--brand-50))] p-6 text-center transition shadow-sm">
+      {isImagePath(icon) ? (
+        <img src={icon} alt="" className="mx-auto mb-3 h-16 w-16" />
+      ) : (
+        <div className="mx-auto mb-3 text-4xl leading-none">{icon}</div>
+      )}
 
-      <p
-        className="
-    font-semibold tracking-wide text-gray-700
-    transition-colors duration-300
-    group-hover:text-gray-800
-  "
-      >
-        {label}
-      </p>
+      <p className="font-semibold text-white">{label}</p>
     </div>
   );
 }
