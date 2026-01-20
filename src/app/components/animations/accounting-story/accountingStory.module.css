@@ -273,8 +273,8 @@
 .checkIcon {
   display: grid;
   place-items: center;
-  height: 2.25rem; /* 9 */
-  width: 2.25rem; /* 9 */
+  height: 6rem;
+  width: 6rem;
   border-radius: 9999px;
   background: rgb(var(--brand-50));
   color: rgb(var(--brand-600));

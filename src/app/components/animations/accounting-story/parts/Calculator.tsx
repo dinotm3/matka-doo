@@ -7,7 +7,7 @@ export default function Calculator() {
         <div className={styles.calcBody}>
           <div className={styles.calcTopPad}>
             <div className={styles.display}>
-              <span className={styles.typed}>12,345.67</span>
+              <span className={styles.typed}>100x1.25</span>
               <span className={styles.cursor}>▍</span>
             </div>
           </div>
