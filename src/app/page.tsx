@@ -1,6 +1,6 @@
 import { ABOUT_TEXT, STRINGS } from "./constants/constants";
 import FeatureCard from "./components/FeatureCard";
-import AccountingStory from "./components/animations/AccountingStory";
+import AccountingStory from "./components/animations/accounting-story/AccountingStory";
 
 export default function Home() {
   function getFeatureIcon(title: string) {
