@@ -9,12 +9,12 @@ export default function Home() {
         return "/icon_chart.svg";
       case STRINGS.features.precision.title:
         return "/icon_precision.svg";
-      case STRINGS.features.individual.title:
-        return "/icon_handshake.svg";
+      case STRINGS.features.digital.title:
+        return "💬";
       case STRINGS.features.trust.title:
         return "🔒";
-      case STRINGS.features.communication.title:
-        return "💬";
+      case STRINGS.features.individual.title:
+        return "/icon_handshake.svg";
       case STRINGS.features.support.title:
         return "🧾";
       default:
@@ -57,39 +57,12 @@ export default function Home() {
           </h2>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {/* Big about box */}
-            <div className="md:col-span-2 rounded-2xl border border-brand-50 bg-white p-6 shadow-sm">
-              <div className="mt-4 grid gap-3 sm:grid-cols-2 text-sm text-gray-700">
-                <div className="rounded-xl bg-gray-50 px-4 py-3">
-                  <span className="font-semibold text-gray-900">
-                    Praćenje propisa
-                  </span>
-                  <div className="mt-1">
-                    Uvijek usklađeno s važećim zakonima
-                  </div>
-                </div>
-                <div className="rounded-xl bg-gray-50 px-4 py-3">
-                  <span className="font-semibold text-gray-900">
-                    Diskrecija
-                  </span>
-                  <div className="mt-1">Sigurnost i povjerljivost podataka</div>
-                </div>
-                <div className="rounded-xl bg-gray-50 px-4 py-3">
-                  <span className="font-semibold text-gray-900">
-                    Digitalno poslovanje
-                  </span>
-                  <div className="mt-1">
-                    Digitalna obrada dokumentacije i suvremeni alat
-                  </div>
-                </div>
-                <div className="rounded-xl bg-gray-50 px-4 py-3">
-                  <span className="font-semibold text-gray-900">
-                    Stalna podrška
-                  </span>
-                  <div className="mt-1">
-                    Dostupni za savjete i pojašnjenja tijekom suradnje
-                  </div>
-                </div>
-              </div>
+            <div className="md:col-span-2 rounded-2xl border border-brand-50 bg-white text-center p-6 shadow-sm flex flex-col justify-center">
+              <h1 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-brand-200 -translate-y-3">
+                Vi vodite posao
+                <br />
+                Mi pazimo na brojke
+              </h1>
             </div>
 
             {/* Side box */}

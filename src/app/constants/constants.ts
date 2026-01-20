@@ -102,10 +102,9 @@ export const STRINGS = {
       description:
         "Vaši poslovni podaci tretiraju se s maksimalnom povjerljivošću i sigurnošću.",
     },
-    communication: {
-      title: "Jasna komunikacija",
-      description:
-        "Sve objašnjavamo jednostavno i razumljivo, bez nepotrebnog stručnog žargona.",
+    digital: {
+      title: "Digitalno poslovanje",
+      description: "Digitalna obrada dokumentacije i suvremeni alat.",
     },
     support: {
       title: "Stalna podrška",
