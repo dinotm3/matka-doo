@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="bg-gray-800 text-white">
       <div className="mx-auto max-w-6xl px-6 py-6 text-center text-sm text-gray-300">
         © {new Date().getFullYear()} {SITE_INFO.name} |{" "}
-        {STRINGS.all_rights_reserved}
+        {STRINGS.footer.all_rights_reserved}
       </div>
     </footer>
   );

@@ -76,19 +76,55 @@ export const SEO_KEYWORDS: string[] = [
   "Knjigovodstvo za malo poduzeće",
 ] as const;
 
-export interface STRINGS {
-  all_rights_reserved: string;
-}
-
 export const STRINGS = {
-  all_rights_reserved: "Sva prava pridržana",
-  trideset_godina_iskustva: "30+ godina iskustva",
-  azurno_precizno: "Ažurno i precizno",
-  individualni_pristup: "Individualni pristup",
+  footer: {
+    all_rights_reserved: "Sva prava pridržana",
+  },
+
+  features: {
+    experience: {
+      title: "30+ godina iskustva",
+      description:
+        "Knjigovodstvene usluge pružamo od 1994. godine uz dugoročnu suradnju s klijentima.",
+    },
+    precision: {
+      title: "Ažurno i precizno",
+      description:
+        "Rokovi, obračuni i dokumentacija vode se točno, uredno i bez kašnjenja.",
+    },
+    individual: {
+      title: "Individualni pristup",
+      description:
+        "Usluge i cijene prilagođavamo vašoj djelatnosti i stvarnim potrebama poslovanja.",
+    },
+    trust: {
+      title: "Diskrecija i povjerenje",
+      description:
+        "Vaši poslovni podaci tretiraju se s maksimalnom povjerljivošću i sigurnošću.",
+    },
+    communication: {
+      title: "Jasna komunikacija",
+      description:
+        "Sve objašnjavamo jednostavno i razumljivo, bez nepotrebnog stručnog žargona.",
+    },
+    support: {
+      title: "Stalna podrška",
+      description:
+        "Dostupni smo za savjete i pomoć tijekom cijele godine, ne samo u rokovima.",
+    },
+  },
 } as const;
 
-export const ABOUT_TEXT: string[] = [
-  "Knjigovodstvene usluge pružamo od 1994.g. na zadovoljstvo naših klijenata od kojih su neki od samih početaka s nama.",
-  "Svojim dugogodišnjim iskustvom i znanjem pružamo sigurnu podršku ažurnim, preciznim i modernim načinom vođenja poslovnih knjiga.",
-  "Individualnim pristupom svakom društvu nastojimo prilagoditi naše usluge i cijene.",
+export const ABOUT_TEXT = [
+  "Knjigovodstvene usluge pružamo od 1994. godine na zadovoljstvo naših klijenata, od kojih su neki s nama od samih početaka. ",
+
+  "Svojim dugogodišnjim iskustvom i znanjem pružamo sigurnu podršku ažurnim, preciznim i modernim načinom vođenja poslovnih knjiga. ",
+
+  "Individualnim pristupom svakom društvu nastojimo prilagoditi naše usluge i cijene stvarnim potrebama poslovanja. ",
+
+  "Redovito pratimo zakonske propise i promjene kako bi naši klijenti uvijek poslovali u skladu s važećim zakonima. ",
+
+  "Posebnu pažnju posvećujemo diskreciji, točnosti podataka i pravovremenoj komunikaciji s klijentima. ",
+
+  "Naš cilj je dugoročna suradnja temeljena na povjerenju, jasnoći i profesionalnosti. ",
 ] as const;

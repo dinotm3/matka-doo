@@ -1,7 +1,27 @@
 import { ABOUT_TEXT, STRINGS } from "./constants/constants";
-import HighlightBadge from "./components/HighlightBadge";
+import FeatureCard from "./components/FeatureCard";
+import AccountingStory from "./components/animations/AccountingStory";
 
 export default function Home() {
+  function getFeatureIcon(title: string) {
+    switch (title) {
+      case STRINGS.features.experience.title:
+        return "/icon_chart.svg";
+      case STRINGS.features.precision.title:
+        return "/icon_precision.svg";
+      case STRINGS.features.individual.title:
+        return "/icon_handshake.svg";
+      case STRINGS.features.trust.title:
+        return "🔒";
+      case STRINGS.features.communication.title:
+        return "💬";
+      case STRINGS.features.support.title:
+        return "🧾";
+      default:
+        return "•";
+    }
+  }
+
   return (
     // SECTION = background lives here
     <section className="relative w-full overflow-hidden py-20">
@@ -30,30 +50,63 @@ export default function Home() {
       <div className="absolute inset-0 z-[1] bg-white/10" aria-hidden="true" />
 
       {/* CONTENT */}
-      <main className="relative z-10 mx-auto max-w-5xl px-6 text-gray-900">
-        <div className="rounded-2xl border border-[rgb(var(--brand-50))] bg-white p-8 shadow-sm">
-          <p className="text-sm uppercase tracking-wider text-gray-500">
-            ZAGREB • KNJIGOVODSTVO • RAČUNOVODSTVO
-          </p>
-          <div className="mt-8 max-w-3xl space-y-6 text-lg leading-relaxed text-gray-700">
-            {ABOUT_TEXT.map((p) => (
-              <p key={p}>{p}</p>
-            ))}
+      <main className="relative z-10 mx-auto max-w-7xl px-8 text-gray-900">
+        <div className="inline-block rounded-xl bg-white/80 px-6 py-4">
+          <h2 className="mt-1 text-4xl font-bold tracking-tight text-brand-200 text-center">
+            Knjigovodstvene usluge - osnovani 1994. godine
+          </h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {/* Big about box */}
+            <div className="md:col-span-2 rounded-2xl border border-brand-50 bg-white p-6 shadow-sm">
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 text-sm text-gray-700">
+                <div className="rounded-xl bg-gray-50 px-4 py-3">
+                  <span className="font-semibold text-gray-900">
+                    Praćenje propisa
+                  </span>
+                  <div className="mt-1">
+                    Uvijek usklađeno s važećim zakonima
+                  </div>
+                </div>
+                <div className="rounded-xl bg-gray-50 px-4 py-3">
+                  <span className="font-semibold text-gray-900">
+                    Diskrecija
+                  </span>
+                  <div className="mt-1">Sigurnost i povjerljivost podataka</div>
+                </div>
+                <div className="rounded-xl bg-gray-50 px-4 py-3">
+                  <span className="font-semibold text-gray-900">
+                    Digitalno poslovanje
+                  </span>
+                  <div className="mt-1">
+                    Digitalna obrada dokumentacije i suvremeni alat
+                  </div>
+                </div>
+                <div className="rounded-xl bg-gray-50 px-4 py-3">
+                  <span className="font-semibold text-gray-900">
+                    Stalna podrška
+                  </span>
+                  <div className="mt-1">
+                    Dostupni za savjete i pojašnjenja tijekom suradnje
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Side box */}
+            <div className="rounded-2xl border border-brand-50 bg-white p-6 shadow-sm">
+              <AccountingStory />
+            </div>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            <HighlightBadge
-              label={STRINGS.trideset_godina_iskustva}
-              icon="/icon_chart.svg"
-            />
-            <HighlightBadge
-              label={STRINGS.azurno_precizno}
-              icon="/icon_precision.svg"
-            />
-            <HighlightBadge
-              label={STRINGS.individualni_pristup}
-              icon="/icon_handshake.svg"
-            />
+          <div className="mt-12 grid gap-x-4 gap-y-8 md:grid-cols-3">
+            {Object.values(STRINGS.features).map((feature) => (
+              <FeatureCard
+                key={feature.title}
+                title={feature.title}
+                description={feature.description}
+                icon={getFeatureIcon(feature.title)}
+              />
+            ))}
           </div>
         </div>
       </main>

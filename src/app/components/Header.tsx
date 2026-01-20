@@ -2,13 +2,7 @@ import { SITE_INFO } from "../constants/constants";
 
 export default function Header() {
   return (
-    <header
-      className="w-full text-white bg-cover bg-center"
-      style={{
-        backgroundImage:
-          "linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('/hero.jpg')",
-      }}
-    >
+    <header className="w-full text-brand-50 bg-brand-300 bg-cover bg-center">
       <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4 md:gap-0">
         {/* Left: logo */}
         <a
@@ -18,12 +12,12 @@ export default function Header() {
           <img
             src="/logo_transparent.svg"
             alt={SITE_INFO.name}
-            className="h-20 md:h-60 w-auto"
+            className="h-24 md:h-32 w-auto md:scale-300 origin-left"
           />
         </a>
 
         {/* Center: nav */}
-        <nav className="justify-self-center flex flex-wrap justify-center items-center gap-x-6 gap-y-3 text-lg pb-4 md:pb-0">
+        <nav className="justify-self-center flex flex-wrap justify-center items-center gap-x-6 gap-y-3 text-xl pb-4 md:pb-0">
           <a href="#about" className="hover:text-gray-300">
             {SITE_INFO.pages.about}
           </a>
