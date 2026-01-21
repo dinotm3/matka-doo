@@ -20,11 +20,11 @@ const config: Config = {
       },
       transitionTimingFunction: {
         bounce: "cubic-bezier(.34,1.56,.64,1)",
-        nobounce: "cubic-bezier(.22,1,.36,1)",
+        nobounce: "var(--motion-ease)",
       },
       transitionDuration: {
         smooth: "400ms",
-        slow: "900ms",
+        slow: "var(--motion-slow)",
       },
     },
   },
