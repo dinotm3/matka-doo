@@ -3,6 +3,7 @@ import "./globals.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { metadata } from "./constants/metadata";
+import PageTransition from "./components/transitions/PageTransition";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,7 @@ export default function RootLayout({
       <body>
         <div className="flex min-h-screen flex-col">
           <Header />
-          <main className="flex-1">{children}</main>
+          <PageTransition>{children}</PageTransition>
           <Footer />
         </div>
       </body>

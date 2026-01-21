@@ -52,7 +52,7 @@ export default function Header() {
             {/* Moving square */}
             <span
               aria-hidden
-              className="absolute rounded-md bg-white/20 transition-all duration-700 ease-[cubic-bezier(.34,1.56,.64,1)]"
+              className="absolute rounded-md bg-white/20 transition-all duration-slow ease-bounce"
               style={{
                 left: indicator.left,
                 width: indicator.width,

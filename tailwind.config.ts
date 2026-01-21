@@ -18,6 +18,14 @@ const config: Config = {
           600: "rgb(var(--brand-600) / <alpha-value>)",
         },
       },
+      transitionTimingFunction: {
+        bounce: "cubic-bezier(.34,1.56,.64,1)",
+        nobounce: "cubic-bezier(.22,1,.36,1)",
+      },
+      transitionDuration: {
+        smooth: "400ms",
+        slow: "900ms",
+      },
     },
   },
   plugins: [],
