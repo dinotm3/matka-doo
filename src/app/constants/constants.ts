@@ -139,7 +139,7 @@ export const LOKACIJA = {
   adresa: "Ksaverska cesta 47, 10000 Zagreb",
   strings: {
     adresa: "Adresa:",
-    radno_vrijeme_title: "Radno_vrijeme",
+    radno_vrijeme_title: "Radno_vrijeme:",
     radno_vrijeme: "Pon–Pet, 8:00–16:00",
     email: "Email:",
     telefon: "Telefon:",

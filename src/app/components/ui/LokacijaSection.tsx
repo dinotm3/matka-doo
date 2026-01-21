@@ -144,7 +144,7 @@ export default function LokacijaSection() {
               <div className="mt-10 space-y-4 text-base md:text-lg text-gray-800">
                 <div className="flex gap-3">
                   <span className="font-semibold">
-                    {LOKACIJA.strings.adresa}:
+                    {LOKACIJA.strings.adresa}
                   </span>
                   <span>{LOKACIJA.adresa}</span>
                 </div>
