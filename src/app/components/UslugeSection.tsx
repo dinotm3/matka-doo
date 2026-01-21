@@ -13,8 +13,8 @@ export default function UslugeSection() {
   ];
 
   return (
-    <section className="mt-20 w-full bg-brand-300 text-brand-50">
-      <div className="mx-auto w-full px-6 py-16">
+    <section className="w-full bg-brand-300 text-brand-50">
+      <div className="mx-auto w-full px-6 pt-4 py-16">
         <div className="flex flex-col gap-10">
           {/* Title */}
           <div className="flex flex-col items-center text-center gap-3">

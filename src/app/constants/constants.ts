@@ -26,7 +26,7 @@ export const SITE_INFO: SiteInfo = {
   city: "Zagreb",
   country: "Hrvatska",
   pages: {
-    home: "Home",
+    home: "Naslovna",
     about: "O nama",
     services: "Usluge",
     location: "Lokacija",

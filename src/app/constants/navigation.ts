@@ -9,7 +9,7 @@ export type NavItem = {
 export const NAV_ITEMS: NavItem[] = [
   {
     id: "home",
-    label: SITE_INFO.pages.home ?? "Početna",
+    label: SITE_INFO.pages.home ?? "Naslovna",
     href: "/",
   },
   {

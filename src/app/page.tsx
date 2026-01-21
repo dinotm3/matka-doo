@@ -2,7 +2,7 @@ import { ABOUT_TEXT, STRINGS } from "./constants/constants";
 import FeatureCard from "./components/FeatureCard";
 import AccountingStory from "./components/animations/accounting-story/AccountingStory";
 import UslugeSection from "./components/UslugeSection";
-
+import LokacijaSection from "./components/LokacijaSection";
 export default function Home() {
   function getFeatureIcon(title: string) {
     switch (title) {
@@ -86,7 +86,7 @@ export default function Home() {
       {/* FULL-WIDTH BAND (not capped) */}
       <div className="relative z-10">
         <UslugeSection />
-        {/* Later: <LocationSection /> <ContactSection /> etc */}
+        <LokacijaSection />
       </div>
     </section>
   );
