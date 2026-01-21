@@ -8,9 +8,7 @@ import { NAV_ITEMS } from "../constants/navigation";
 
 export default function Header() {
   const pathname = usePathname();
-
   const [active, setActive] = useState<string>("home");
-
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [indicator, setIndicator] = useState<{ left: number; width: number }>({
     left: 0,

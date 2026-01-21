@@ -14,7 +14,7 @@ export default function UslugeSection() {
 
   return (
     <section className="w-full bg-brand-300 text-brand-50">
-      <div className="mx-auto w-full px-6 pt-4 py-16">
+      <div className="mx-auto w-full px-6 pt-4 py-8">
         <div className="flex flex-col gap-10">
           {/* Title */}
           <div className="flex flex-col items-center text-center gap-3">

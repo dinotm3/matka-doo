@@ -8,6 +8,8 @@ type SiteInfo = Readonly<{
   zip_code: string;
   city: string;
   country: string;
+  email: string;
+  phone: string;
   pages: {
     home: string;
     about: string;
@@ -25,6 +27,8 @@ export const SITE_INFO: SiteInfo = {
   zip_code: "10000",
   city: "Zagreb",
   country: "Hrvatska",
+  email: "matka@knjigovodstvo-matka.hr",
+  phone: "+38514673751",
   pages: {
     home: "Naslovna",
     about: "O nama",
@@ -92,19 +96,19 @@ export const STRINGS = {
       description:
         "Rokovi, obračuni i dokumentacija vode se točno, uredno i bez kašnjenja.",
     },
-    individual: {
-      title: "Individualni pristup",
-      description:
-        "Usluge i cijene prilagođavamo vašoj djelatnosti i stvarnim potrebama poslovanja.",
+    digital: {
+      title: "Digitalno poslovanje",
+      description: "Digitalna obrada dokumentacije i suvremeni alat.",
     },
     trust: {
       title: "Diskrecija i povjerenje",
       description:
         "Vaši poslovni podaci tretiraju se s maksimalnom povjerljivošću i sigurnošću.",
     },
-    digital: {
-      title: "Digitalno poslovanje",
-      description: "Digitalna obrada dokumentacije i suvremeni alat.",
+    individual: {
+      title: "Individualni pristup",
+      description:
+        "Usluge i cijene prilagođavamo vašoj djelatnosti i stvarnim potrebama poslovanja.",
     },
     support: {
       title: "Stalna podrška",
@@ -127,3 +131,21 @@ export const ABOUT_TEXT = [
 
   "Naš cilj je dugoročna suradnja temeljena na povjerenju, jasnoći i profesionalnosti. ",
 ] as const;
+
+export const LOKACIJA = {
+  title: "Lokacija ureda",
+  description:
+    "Nalazimo se u Zagrebu. Dostupni smo za osobni dolazak uz prethodnu najavu, ali i potpuno digitalnu suradnju.",
+  adresa: "Ksaverska cesta 47, 10000 Zagreb",
+  strings: {
+    adresa: "Adresa:",
+    radno_vrijeme_title: "Radno_vrijeme",
+    radno_vrijeme: "Pon–Pet, 8:00–16:00",
+    email: "Email:",
+    telefon: "Telefon:",
+    sastanak_part_1: "Dogovorite sastanak ",
+    sastanak_part_2: "ili postavite pitanje",
+    interakcija_karta: "Kliknite za interakciju s kartom",
+    zatvori_mapu: "Zatvori mapu",
+  },
+};
