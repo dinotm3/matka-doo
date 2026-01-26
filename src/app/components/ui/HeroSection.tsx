@@ -1,5 +1,5 @@
 import AccountingStory from "../animations/accounting-story/AccountingStory";
-import { STRINGS } from "../../constants/constants";
+import { STRINGS, HERO } from "../../constants/constants";
 import FeatureCard from "./FeatureCard";
 import { JSX } from "react";
 import {
@@ -10,6 +10,8 @@ import {
   Users,
   Headset,
 } from "lucide-react";
+import HeroBanner from "./HeroBanner";
+import AutoImageCarousel from "./AutoImageCarousel";
 export default function () {
   const FEATURE_ICONS: Record<string, JSX.Element> = {
     [STRINGS.features.experience.title]: (
@@ -29,24 +31,28 @@ export default function () {
       <Headset className="h-8 w-8 text-brand-300" />
     ),
   };
+  const STORY_IMAGES = [
+    { src: "/images/accounting/1.jpg", alt: "Knjigovodstvo – dokumenti" },
+    { src: "/images/accounting/2.jpg", alt: "Knjigovodstvo – obračun" },
+    { src: "/images/accounting/3.jpg", alt: "Knjigovodstvo – sastanak" },
+    { src: "/images/accounting/4.jpg", alt: "Knjigovodstvo – ured" },
+  ];
   return (
     <main className="relative z-10 mx-auto max-w-7xl px-8 text-gray-900 pb-16">
       <div className="inline-block rounded-xl bg-white/80 px-6 py-4">
         <h2 className="mt-1 text-4xl font-bold tracking-tight text-brand-200 text-center">
-          Knjigovodstvene usluge - osnovani 1994. godine
+          {HERO.title}
         </h2>
 
         <div className="mt-8 grid gap-6 md:grid-cols-3">
-          <div className="md:col-span-2 rounded-2xl border border-brand-50 bg-white text-center p-6 shadow-sm flex flex-col justify-center">
-            <h1 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight text-brand-200 -translate-y-3">
-              Vi vodite posao
-              <br />
-              Mi pazimo na brojke
-            </h1>
-          </div>
+          <HeroBanner />
 
           <div className="rounded-2xl border border-brand-50 bg-white p-6 shadow-sm">
-            <AccountingStory />
+            <AutoImageCarousel
+              images={STORY_IMAGES}
+              height={280}
+              interval={3200}
+            />
           </div>
         </div>
 

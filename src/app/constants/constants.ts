@@ -148,4 +148,12 @@ export const LOKACIJA = {
     interakcija_karta: "Kliknite za interakciju s kartom",
     zatvori_mapu: "Zatvori mapu",
   },
+  embedURL:
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2779.947340492939!2d15.975098876723617!3d45.832336508800175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4765d7136b54af43%3A0xcd2ebb0482af9f48!2sKnjigovodstvo%20Matka!5e0!3m2!1shr!2shr!4v1769009498430!5m2!1shr!2shr",
+};
+
+export const HERO = {
+  title: "Knjigovodstvene usluge - osnovani 1994. godine",
+  bannerFirstRowText: "Vi vodite posao",
+  bannerSecondRowText: "Mi pazimo na brojke",
 };
