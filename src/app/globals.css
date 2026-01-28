@@ -5,8 +5,9 @@
   --background: #ffffff;
   --foreground: #171717;
 
-  --brand-800: 30 41 57;
-  --brand-600: 900: 30 41 57;
+  --brand-900: 12 120 63;
+  --brand-800: 136 169 108;
+  --brand-600: 30 41 57;
   --brand-300: 72 80 112;
   --brand-200: 92 100 128;
   --brand-100: 140 146 168;
@@ -17,8 +18,7 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: white !important;
 }
 
 @keyframes pageEnter {

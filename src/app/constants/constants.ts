@@ -50,6 +50,19 @@ export const SERVICES: string[] = [
   "Uvođenjem digitaliziranih procesa u vođenju poslovnih knjiga olakšavamo poslovanje našim korisnicima",
 ] as const;
 
+export const USLUGE = [
+  { title: "Obrti", desc: "Knjigovodstvo, PDV i izvještaji." },
+  {
+    title: "d.o.o. / j.d.o.o.",
+    desc: "Cjelovito računovodstvo i usklađenja.",
+  },
+  { title: "Plaće i JOPPD", desc: "Obračuni, prijave i evidencije." },
+  { title: "PDV", desc: "Evidencije, prijave i kontrola rokova." },
+  { title: "URA / IRA", desc: "Uredna dokumentacija i priprema." },
+  { title: "Savjetovanje", desc: "Jasni odgovori i podrška kroz godinu." },
+  { title: "Digitalno poslovanje", desc: "e-račun." },
+];
+
 export const SEO_KEYWORDS: string[] = [
   "e-račun",
   "e-racun",

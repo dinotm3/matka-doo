@@ -17,7 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="hr">
-      <body>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <div className="flex min-h-screen flex-col">
           <Header />
           <PageTransition>{children}</PageTransition>

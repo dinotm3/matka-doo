@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SITE_INFO } from "../constants/constants";
 import { NAV_ITEMS } from "../constants/navigation";
+import Image from "next/image";
 
 export default function Header() {
   const pathname = usePathname();
@@ -65,8 +66,21 @@ export default function Header() {
   }, [active]);
 
   return (
-    <header className="w-full text-brand-50 bg-brand-300">
-      <div className="h-[2px] w-full bg-white/50" />
+    <header className="relative w-full text-brand-50 bg-brand-900/10">
+      {/* Background image layer */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/header_green.png"
+          alt=""
+          fill
+          priority
+          className="object-cover"
+        />
+        {/* Overlay to keep text readable */}
+        <div className="absolute inset-0 bg-brand-900/70" />
+      </div>
+
+      <div className="h-[2px] w-full bg-white/30" />
       <div className="border-b border-white/20">
         <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4 md:gap-0">
           {/* Left: logo */}
@@ -86,12 +100,14 @@ export default function Header() {
             {/* indicator */}
             <span
               aria-hidden="true"
-              className="absolute rounded-md bg-white/20 transition-all duration-slow ease-nobounce"
+              className="
+              absolute bottom-0 h-[2px]
+              bg-white/55
+              transition-all duration-slow ease-nobounce
+              "
               style={{
                 left: indicator.left,
                 width: indicator.width,
-                top: 0,
-                bottom: 0,
               }}
             />
 
@@ -102,8 +118,8 @@ export default function Header() {
                 ref={(el) => {
                   linkRefs.current[item.id] = el;
                 }}
-                className="relative z-10 rounded-md px-3 py-2 hover:text-black transition-colors"
-                onClick={() => setActive(item.id)} // instant feedback
+                className="relative z-10 rounded-md px-3 py-2 hover:text-white/60 transition-colors"
+                onClick={() => setActive(item.id)}
               >
                 {item.label}
               </Link>

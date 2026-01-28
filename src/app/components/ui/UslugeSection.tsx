@@ -1,19 +1,8 @@
-export default function UslugeSection() {
-  const usluge = [
-    { title: "Obrti", desc: "Knjigovodstvo, PDV i izvještaji." },
-    {
-      title: "d.o.o. / j.d.o.o.",
-      desc: "Cjelovito računovodstvo i usklađenja.",
-    },
-    { title: "Plaće i JOPPD", desc: "Obračuni, prijave i evidencije." },
-    { title: "PDV", desc: "Evidencije, prijave i kontrola rokova." },
-    { title: "URA / IRA", desc: "Uredna dokumentacija i priprema." },
-    { title: "Savjetovanje", desc: "Jasni odgovori i podrška kroz godinu." },
-    { title: "Digitalno poslovanje", desc: "e-račun." },
-  ];
+import { USLUGE, STRINGS } from "@/app/constants/constants";
 
+export default function UslugeSection() {
   return (
-    <section className="w-full bg-brand-300 text-brand-50">
+    <section className="w-full bg-brand-900 text-brand-50">
       <div className="mx-auto w-full px-6 pt-4 py-8">
         <div className="flex flex-col gap-10">
           {/* Title */}
@@ -25,7 +14,7 @@ export default function UslugeSection() {
 
           {/* Grid */}
           <div className="grid gap-4 md:grid-cols-4">
-            {usluge.map((s) => (
+            {USLUGE.map((s) => (
               <div
                 key={s.title}
                 className="rounded-xl border border-white/15 bg-white/10 p-5 shadow-sm backdrop-blur"

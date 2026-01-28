@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useMapInteractionLock } from "../hooks/useMapInteractionLock";
 
 type MapSize = "sm" | "md" | "lg" | "fill";
@@ -9,20 +9,14 @@ type Props = {
   src: string;
   className?: string;
 
-  /** Use preset sizing… */
   size?: MapSize;
-
-  /** …or override min height directly (e.g. 520, "70vh") */
   minHeight?: number | string;
 
-  /** Show subtle edge fade like you had */
   fadeEdge?: boolean;
 
-  /** i18n strings */
   enableLabel: string;
   closeLabel: string;
 
-  /** Optional: if you want to disable the global event dispatch in some pages */
   dispatchActiveEvent?: boolean;
 };
 
@@ -39,12 +33,8 @@ export default function InteractiveMap({
   const { wrapRef, mapActive, setMapActive, setIsOverMap } =
     useMapInteractionLock<HTMLDivElement>();
 
-  // If you want to control whether the hook dispatches the event,
-  // simplest is: keep hook as-is and just ignore it where not needed.
-  // If you truly need it conditional, we can refactor the hook to accept a flag.
-
   const heightClass = useMemo(() => {
-    if (minHeight != null) return ""; // style will handle it
+    if (minHeight != null) return "";
 
     switch (size) {
       case "sm":
@@ -62,53 +52,66 @@ export default function InteractiveMap({
 
   const style = useMemo<React.CSSProperties>(() => {
     if (minHeight == null) return {};
-
     return {
       minHeight: typeof minHeight === "number" ? `${minHeight}px` : minHeight,
     };
   }, [minHeight]);
 
+  // 🔑 Deactivate map when user scrolls ABOVE it
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+
+    const onScroll = () => {
+      const rect = el.getBoundingClientRect();
+
+      // if the map is fully above the viewport, deactivate
+      if (rect.bottom < 0) {
+        setMapActive(false);
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [setMapActive, wrapRef]);
+
   return (
     <div
       ref={wrapRef}
-      onMouseEnter={() => setIsOverMap(true)}
-      onMouseLeave={() => setIsOverMap(false)}
+      onMouseEnter={() => {
+        setIsOverMap(true);
+        setMapActive(true);
+      }}
+      onMouseLeave={() => {
+        setIsOverMap(false);
+        // IMPORTANT: do NOT deactivate here
+      }}
       className={`relative ${heightClass} ${className}`}
       style={style}
     >
+      {/* MAP */}
       <iframe
         src={src}
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
         className={[
-          "absolute inset-0 h-full w-full",
+          "absolute inset-0 h-full w-full transition-transform duration-300",
           mapActive ? "pointer-events-auto" : "pointer-events-none",
         ].join(" ")}
       />
 
-      {!mapActive && (
-        <button
-          type="button"
-          onClick={() => setMapActive(true)}
-          className="absolute inset-0 z-10 grid place-items-center"
-          aria-label={enableLabel}
-        >
-          <span className="rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-gray-800 shadow">
-            {enableLabel}
-          </span>
-        </button>
-      )}
+      {/* DARK OVERLAY WHEN INACTIVE */}
+      <div
+        aria-hidden="true"
+        className={`
+          pointer-events-none absolute inset-0 z-10
+          bg-gradient-to-t from-black/55 via-black/30 to-black/15
+          transition-opacity duration-300
+          ${mapActive ? "opacity-0" : "opacity-100"}
+        `}
+      />
 
-      {mapActive && (
-        <button
-          type="button"
-          onClick={() => setMapActive(false)}
-          className="absolute top-3 right-3 z-20 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-gray-800 shadow"
-        >
-          {closeLabel}
-        </button>
-      )}
-
+      {/* OPTIONAL EDGE FADE (unchanged) */}
       {fadeEdge && (
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-l from-white/0 to-white/10" />
       )}

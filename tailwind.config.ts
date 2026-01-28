@@ -17,6 +17,7 @@ const config: Config = {
           300: "rgb(var(--brand-300) / <alpha-value>)",
           600: "rgb(var(--brand-600) / <alpha-value>)",
           800: "rgb(var(--brand-800) / <alpha-value>)",
+          900: "rgb(var(--brand-900) / <alpha-value>)",
         },
       },
       transitionTimingFunction: {
