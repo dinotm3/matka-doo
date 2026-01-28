@@ -7,7 +7,7 @@ export default function Kontakt() {
     <Link
       href="/contact"
       className={[
-        "inline-flex items-center justify-center rounded-full bg-brand-300",
+        "inline-flex items-center justify-center rounded-full bg-brand-900",
         "px-6 py-4 text-lg font-semibold text-white shadow-xl",
         "hover:bg-brand-200 transition",
         btnHighlight,

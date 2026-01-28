@@ -3,7 +3,7 @@ import LokacijaSection from "./ui/LokacijaSection";
 
 export default function HomeSection() {
   return (
-    <section className="relative z-10">
+    <section className="relative z-12">
       <div id="snap-usluge" className="scroll-mt-20">
         <UslugeSection />
       </div>

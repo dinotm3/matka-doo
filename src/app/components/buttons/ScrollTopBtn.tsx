@@ -26,7 +26,7 @@ export default function ScrollTopBtn({
       className={[
         className, // ✅ position controlled by parent
         "h-16 w-16 rounded-full",
-        "bg-brand-300 text-white shadow-lg",
+        "bg-brand-900 text-white shadow-lg",
         "grid place-items-center",
         "text-3xl font-bold",
         "cursor-pointer",
