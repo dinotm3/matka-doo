@@ -13,7 +13,7 @@ export default function LokacijaSection() {
   const textLightGray = "text-gray-600";
   return (
     <section className="w-full bg-white">
-      <div className="grid w-full lg:grid-cols-2 lg:min-h-[80vh] items-stretch">
+      <div className="grid w-full lg:grid-cols-2 lg:min-h-[80vh] items-stretch py-2 overflow-x-clip">
         {/* LEFT CONTENT */}
         <div className="relative h-full flex items-center justify-center px-6 py-16 lg:px-16">
           <ScrollReveal
@@ -21,8 +21,8 @@ export default function LokacijaSection() {
             distance={90}
             fade
             fadeOutMode="only-up"
-            amount={0.5}
-            enterDuration={3.14}
+            amount={0.1}
+            enterDuration={1.2}
             exitDuration={0.6}
             className="w-full"
           >
@@ -93,8 +93,8 @@ export default function LokacijaSection() {
             distance={90}
             fade
             fadeOutMode="only-up"
-            amount={0.5}
-            enterDuration={3.14}
+            amount={0.1}
+            enterDuration={1.2}
             exitDuration={0.6}
             className="h-full"
           >

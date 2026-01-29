@@ -1,5 +1,6 @@
 import { USLUGE } from "@/app/constants/constants";
 import ScrollReveal from "../animations/ui/ScrollReveal";
+import Image from "next/image";
 
 export default function UslugeSection() {
   return (
@@ -9,12 +10,23 @@ export default function UslugeSection() {
         distance={45}
         fade
         fadeOutMode="only-up"
-        amount={0.35}
-        enterDuration={3.14}
+        amount={0.1}
+        enterDuration={0.6}
         exitDuration={0.6}
         className="w-full"
       >
-        <div className="mx-auto w-full  px-6 py-14 bg-brand-900">
+        <div className="relative mx-auto w-full px-6 py-14 overflow-hidden">
+          <div className="absolute inset-0 -z-10 blur-[0.5px]">
+            <Image
+              src="/header_green.png"
+              alt=""
+              fill
+              priority
+              className="object-cover contrast-70 brightness-75"
+            />
+            {/* Overlay to keep text readable */}
+            <div className="absolute inset-0 bg-brand-900/70" />
+          </div>
           <div className="flex flex-col gap-10 items-center justify-center ">
             {/* Title */}
             <div className="flex flex-col items-center text-center gap-3">

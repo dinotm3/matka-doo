@@ -67,7 +67,6 @@ export default function Header() {
 
   return (
     <header className="relative w-full text-brand-50 bg-brand-900/10">
-      {/* Background image layer */}
       <div className="absolute inset-0 -z-10">
         <Image
           src="/header_green.png"

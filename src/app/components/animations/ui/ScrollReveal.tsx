@@ -73,7 +73,7 @@ export default function ScrollReveal({
   enterDelay = 0,
   exitDelay = 0,
 
-  enterEase = [0.16, 1, 0.3, 1],
+  enterEase = [0.4, 0, 1, 1],
   exitEase = [0.4, 0, 1, 1],
 }: Props) {
   const controls = useAnimationControls();
