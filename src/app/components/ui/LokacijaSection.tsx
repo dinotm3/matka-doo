@@ -6,6 +6,11 @@ import { LOKACIJA, SITE_INFO } from "../../constants/constants";
 import InteractiveMap from "../maps/InteractiveMap";
 
 export default function LokacijaSection() {
+  const fontSemiBold = "font-semibold";
+  const fontBold = "font-bold";
+  const textGreen = "text-brand-900/80";
+  const textBlack = "text-black";
+  const textLightGray = "text-gray-600";
   return (
     <section className="w-full bg-white">
       <div className="grid w-full lg:grid-cols-2 lg:min-h-[80vh] items-stretch">
@@ -15,33 +20,54 @@ export default function LokacijaSection() {
             direction="left"
             distance={90}
             fade
-            fadeOut
+            fadeOutMode="only-up"
             amount={0.5}
             enterDuration={3.14}
             exitDuration={0.6}
             className="w-full"
           >
             <div className="max-w-xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-brand-200 antialiased">
+              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight antialiased text-black">
                 {LOKACIJA.title}
               </h2>
 
-              <p className="mt-5 text-lg md:text-xl leading-relaxed text-gray-700">
+              <p
+                className={
+                  "mt-5 text-lg md:text-xl leading-relaxed " + textLightGray
+                }
+              >
                 {LOKACIJA.description}
               </p>
 
-              <div className="mt-8 space-y-4 text-base md:text-lg text-gray-800">
-                <Row label={LOKACIJA.strings.adresa} value={LOKACIJA.adresa} />
+              <div className="mt-8 space-y-4 text-base md:text-lg text-gray-600">
                 <Row
+                  textColor={textBlack}
+                  font={fontSemiBold}
+                  label={LOKACIJA.strings.adresa}
+                  value={LOKACIJA.adresa}
+                />
+                <Row
+                  textColor={textBlack}
+                  font={fontSemiBold}
                   label={LOKACIJA.strings.radno_vrijeme_title}
                   value={LOKACIJA.strings.radno_vrijeme}
                 />
-                <Row label={LOKACIJA.strings.email} value={SITE_INFO.email} />
-                <Row label={LOKACIJA.strings.telefon} value={SITE_INFO.phone} />
+                <Row
+                  textColor={textBlack}
+                  font={fontSemiBold}
+                  label={LOKACIJA.strings.email}
+                  value={SITE_INFO.email}
+                />
+                <Row
+                  textColor={textBlack}
+                  font={fontSemiBold}
+                  label={LOKACIJA.strings.telefon}
+                  value={SITE_INFO.phone}
+                />
               </div>
 
               <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
-                <div className="text-gray-700 text-base md:text-lg">
+                <div className="text-gray-600 text-base md:text-lg">
                   <span className="font-semibold text-gray-900">
                     {LOKACIJA.strings.sastanak_part_1}
                   </span>{" "}
@@ -66,7 +92,7 @@ export default function LokacijaSection() {
             direction="right"
             distance={90}
             fade
-            fadeOut
+            fadeOutMode="only-up"
             amount={0.5}
             enterDuration={3.14}
             exitDuration={0.6}
@@ -86,10 +112,20 @@ export default function LokacijaSection() {
   );
 }
 
-function Row({ label, value }: { label: string; value: React.ReactNode }) {
+function Row({
+  label,
+  value,
+  textColor,
+  font,
+}: {
+  label: string;
+  value: React.ReactNode;
+  textColor: string;
+  font: string;
+}) {
   return (
     <div className="flex gap-3">
-      <span className="font-semibold">{label}</span>
+      <span className={font + " " + textColor}>{label}</span>
       <span>{value}</span>
     </div>
   );

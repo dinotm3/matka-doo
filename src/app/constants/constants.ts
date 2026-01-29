@@ -38,7 +38,7 @@ export const SITE_INFO: SiteInfo = {
   },
 } as const;
 
-export const SERVICES: string[] = [
+export const USLUGE_KOMPLETNO: string[] = [
   "Ustroj i vođenje poslovnih knjiga za male i srednje poduzetnike te neprofitne organizacije",
   "Knjiženje svih potrebnih dokumenata za sastavljanje temeljnih financijskih izvještaja – bilanca, račun dobitka i gubitka, bilješke uz financijske izvještaje",
   "Sastavljanje statističkih izvještaja (kvartalno i godišnje)",
@@ -51,17 +51,39 @@ export const SERVICES: string[] = [
 ] as const;
 
 export const USLUGE = [
-  { title: "Obrti", desc: "Knjigovodstvo, PDV i izvještaji." },
+  {
+    title: "Obrti",
+    desc: "KPI/KPR, obračun poreza, PDV (po potrebi) i godišnje prijave.",
+  },
   {
     title: "d.o.o. / j.d.o.o.",
-    desc: "Cjelovito računovodstvo i usklađenja.",
+    desc: "Glavna knjiga, usklađenja, završni račun i financijski izvještaji.",
   },
-  { title: "Plaće i JOPPD", desc: "Obračuni, prijave i evidencije." },
-  { title: "PDV", desc: "Evidencije, prijave i kontrola rokova." },
-  { title: "URA / IRA", desc: "Uredna dokumentacija i priprema." },
-  { title: "Savjetovanje", desc: "Jasni odgovori i podrška kroz godinu." },
-  { title: "Digitalno poslovanje", desc: "e-račun." },
-];
+  {
+    title: "Plaće i JOPPD",
+    desc: "Obračun plaća, isplatne liste, JOPPD i evidencije radnika.",
+  },
+  {
+    title: "PDV",
+    desc: "Knjige URA/IRA, PDV prijave, EU isporuke i kontrola rokova.",
+  },
+  {
+    title: "URA / IRA",
+    desc: "Knjiženje ulaznih i izlaznih računa, priprema dokumentacije i arhiva.",
+  },
+  {
+    title: "Završni račun",
+    desc: "Bilanca, RDG i bilješke uz izvještaje – predaja na vrijeme i bez stresa.",
+  },
+  {
+    title: "Savjetovanje",
+    desc: "Porezni i poslovni savjeti, optimizacija troškova i podrška kroz godinu.",
+  },
+  {
+    title: "Digitalno poslovanje",
+    desc: "e-računi, digitalna razmjena dokumenata i jednostavniji procesi.",
+  },
+] as const;
 
 export const SEO_KEYWORDS: string[] = [
   "e-račun",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useMapInteractionLock } from "../hooks/useMapInteractionLock";
 
 type MapSize = "sm" | "md" | "lg" | "fill";
@@ -57,24 +57,6 @@ export default function InteractiveMap({
     };
   }, [minHeight]);
 
-  // 🔑 Deactivate map when user scrolls ABOVE it
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-
-    const onScroll = () => {
-      const rect = el.getBoundingClientRect();
-
-      // if the map is fully above the viewport, deactivate
-      if (rect.bottom < 0) {
-        setMapActive(false);
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [setMapActive, wrapRef]);
-
   return (
     <div
       ref={wrapRef}
@@ -84,7 +66,7 @@ export default function InteractiveMap({
       }}
       onMouseLeave={() => {
         setIsOverMap(false);
-        // IMPORTANT: do NOT deactivate here
+        setMapActive(false);
       }}
       className={`relative ${heightClass} ${className}`}
       style={style}
@@ -101,15 +83,15 @@ export default function InteractiveMap({
       />
 
       {/* DARK OVERLAY WHEN INACTIVE */}
-      <div
-        aria-hidden="true"
-        className={`
-          pointer-events-none absolute inset-0 z-10
-          bg-gradient-to-t from-black/55 via-black/30 to-black/15
-          transition-opacity duration-300
-          ${mapActive ? "opacity-0" : "opacity-100"}
-        `}
-      />
+      {!mapActive && (
+        <div
+          aria-hidden="true"
+          className="
+            pointer-events-none absolute inset-0 z-10
+            bg-gradient-to-t from-brand-900/15 via-black/15 via-black/5 via-black/15 to-brand-900/15
+          "
+        />
+      )}
 
       {/* OPTIONAL EDGE FADE (unchanged) */}
       {fadeEdge && (

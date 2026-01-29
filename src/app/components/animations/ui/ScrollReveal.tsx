@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 
 export type RevealDirection = "left" | "right" | "up" | "down" | "none";
+export type FadeOutMode = "always" | "never" | "only-up" | "only-down";
 
 type Props = {
   children: React.ReactNode;
@@ -13,19 +14,18 @@ type Props = {
   distance?: number;
 
   fade?: boolean;
-  fadeOut?: boolean;
 
-  /** When it triggers */
-  amount?: number; // 0..1
-  margin?: string; // IntersectionObserver rootMargin
+  /** NEW: control when fade-out happens */
+  fadeOutMode?: FadeOutMode;
 
-  /** Timing */
+  amount?: number;
+  margin?: string;
+
   enterDuration?: number;
   exitDuration?: number;
   enterDelay?: number;
   exitDelay?: number;
 
-  /** Easing */
   enterEase?: any;
   exitEase?: any;
 };
@@ -63,7 +63,7 @@ export default function ScrollReveal({
   distance = 80,
 
   fade = true,
-  fadeOut = true,
+  fadeOutMode = "always",
 
   amount = 0.25,
   margin = "0px 0px -10% 0px",
@@ -82,8 +82,32 @@ export default function ScrollReveal({
     () => hiddenState(direction, distance, fade),
     [direction, distance, fade],
   );
-
   const viewport = useMemo(() => ({ amount, margin }), [amount, margin]);
+
+  // Track scroll direction
+  const lastYRef = useRef(0);
+  const scrollDirRef = useRef<"up" | "down">("down");
+
+  useEffect(() => {
+    lastYRef.current = window.scrollY;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      scrollDirRef.current = y < lastYRef.current ? "up" : "down";
+      lastYRef.current = y;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const shouldFadeOut = () => {
+    if (fadeOutMode === "never") return false;
+    if (fadeOutMode === "always") return true;
+    if (fadeOutMode === "only-up") return scrollDirRef.current === "up";
+    if (fadeOutMode === "only-down") return scrollDirRef.current === "down";
+    return true;
+  };
 
   return (
     <motion.div
@@ -99,7 +123,8 @@ export default function ScrollReveal({
         });
       }}
       onViewportLeave={() => {
-        if (!fadeOut) return;
+        if (!shouldFadeOut()) return;
+
         controls.start(hiddenState(direction, distance, fade), {
           duration: exitDuration,
           ease: exitEase,
