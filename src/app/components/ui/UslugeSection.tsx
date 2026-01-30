@@ -1,6 +1,7 @@
 import { USLUGE } from "@/app/constants/constants";
 import ScrollReveal from "../animations/ui/ScrollReveal";
 import Image from "next/image";
+import SveUslugeBtn from "../buttons/SveUslugeBtn";
 
 export default function UslugeSection() {
   return (
@@ -22,7 +23,7 @@ export default function UslugeSection() {
               alt=""
               fill
               priority
-              className="object-cover contrast-70 brightness-75"
+              className="object-cover contrast-70 brightness-80"
             />
             {/* Overlay to keep text readable */}
             <div className="absolute inset-0 bg-brand-900/70" />
@@ -52,15 +53,7 @@ export default function UslugeSection() {
               ))}
             </div>
 
-            {/* CTA */}
-            <div className="flex justify-center">
-              <a
-                href="/usluge"
-                className="inline-flex items-center justify-center rounded-full bg-white/15 px-6 py-3 text-brand-50 hover:bg-white/25 transition font-semibold"
-              >
-                Pogledajte sve usluge
-              </a>
-            </div>
+            <SveUslugeBtn />
           </div>
         </div>
       </ScrollReveal>

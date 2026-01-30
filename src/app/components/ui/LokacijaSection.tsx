@@ -6,25 +6,31 @@ import { LOKACIJA, SITE_INFO } from "../../constants/constants";
 import InteractiveMap from "../maps/InteractiveMap";
 
 export default function LokacijaSection() {
-  const fontSemiBold = "font-semibold";
-  const fontBold = "font-bold";
-  const textGreen = "text-brand-900/80";
-  const textBlack = "text-black";
   const textLightGray = "text-gray-600";
+  const lokacijaSectionDistance = 450;
+  const lokacijaSectionAmount = 0.1;
+  const lokacijaSectionExitDuration = 0.6;
+  const lokacijaSectionEnterDuration = 1.2;
+  const right = "right";
+  const left = "left";
+  const lokacijaFadeOutMode = "only-up";
+  const widthFull = "w-full";
+  const heightFull = "h-full";
+
   return (
     <section className="w-full bg-white">
       <div className="grid w-full lg:grid-cols-2 lg:min-h-[80vh] items-stretch py-2 overflow-x-clip">
         {/* LEFT CONTENT */}
         <div className="relative h-full flex items-center justify-center px-6 py-16 lg:px-16">
           <ScrollReveal
-            direction="left"
-            distance={90}
+            direction={left}
+            distance={lokacijaSectionDistance}
             fade
-            fadeOutMode="only-up"
-            amount={0.1}
-            enterDuration={1.2}
-            exitDuration={0.6}
-            className="w-full"
+            fadeOutMode={lokacijaFadeOutMode}
+            amount={lokacijaSectionAmount}
+            enterDuration={lokacijaSectionEnterDuration}
+            exitDuration={lokacijaSectionExitDuration}
+            className={widthFull}
           >
             <div className="max-w-xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-semibold tracking-tight antialiased text-black">
@@ -40,30 +46,13 @@ export default function LokacijaSection() {
               </p>
 
               <div className="mt-8 space-y-4 text-base md:text-lg text-gray-600">
+                <Row label={LOKACIJA.strings.adresa} value={LOKACIJA.adresa} />
                 <Row
-                  textColor={textBlack}
-                  font={fontSemiBold}
-                  label={LOKACIJA.strings.adresa}
-                  value={LOKACIJA.adresa}
-                />
-                <Row
-                  textColor={textBlack}
-                  font={fontSemiBold}
                   label={LOKACIJA.strings.radno_vrijeme_title}
                   value={LOKACIJA.strings.radno_vrijeme}
                 />
-                <Row
-                  textColor={textBlack}
-                  font={fontSemiBold}
-                  label={LOKACIJA.strings.email}
-                  value={SITE_INFO.email}
-                />
-                <Row
-                  textColor={textBlack}
-                  font={fontSemiBold}
-                  label={LOKACIJA.strings.telefon}
-                  value={SITE_INFO.phone}
-                />
+                <Row label={LOKACIJA.strings.email} value={SITE_INFO.email} />
+                <Row label={LOKACIJA.strings.telefon} value={SITE_INFO.phone} />
               </div>
 
               <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -81,22 +70,20 @@ export default function LokacijaSection() {
               </div>
             </div>
           </ScrollReveal>
-
-          {/* Scroll-to-top button stays layout-only (no animation wrapper) */}
           <ScrollTopBtn className="absolute bottom-6 right-6 z-[100]" />
         </div>
 
         {/* RIGHT MAP */}
         <div className="relative h-full">
           <ScrollReveal
-            direction="right"
-            distance={90}
+            direction={right}
+            distance={lokacijaSectionDistance}
             fade
-            fadeOutMode="only-up"
-            amount={0.1}
-            enterDuration={1.2}
-            exitDuration={0.6}
-            className="h-full"
+            fadeOutMode={lokacijaFadeOutMode}
+            amount={lokacijaSectionAmount}
+            enterDuration={lokacijaSectionEnterDuration}
+            exitDuration={lokacijaSectionExitDuration}
+            className={heightFull}
           >
             <InteractiveMap
               className="w-full h-full"
@@ -112,20 +99,10 @@ export default function LokacijaSection() {
   );
 }
 
-function Row({
-  label,
-  value,
-  textColor,
-  font,
-}: {
-  label: string;
-  value: React.ReactNode;
-  textColor: string;
-  font: string;
-}) {
+function Row({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex gap-3">
-      <span className={font + " " + textColor}>{label}</span>
+      <span className="font-semibold text-black">{label}</span>
       <span>{value}</span>
     </div>
   );

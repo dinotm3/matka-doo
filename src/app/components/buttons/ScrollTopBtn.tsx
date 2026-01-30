@@ -31,7 +31,7 @@ export default function ScrollTopBtn({
         "text-3xl font-bold",
         "cursor-pointer",
         "transition-all duration-200 ease-out",
-        "hover:bg-brand-200 hover:scale-110 hover:-translate-y-1",
+        "hover:bg-brand-900/70 hover:scale-110 hover:-translate-y-1",
         "active:scale-95 active:translate-y-0",
         showUp ? "opacity-100" : "opacity-0 pointer-events-none",
       ].join(" ")}

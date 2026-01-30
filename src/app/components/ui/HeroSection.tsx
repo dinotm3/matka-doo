@@ -1,4 +1,4 @@
-import { STRINGS, HERO } from "../../constants/constants";
+import { STRINGS } from "../../constants/constants";
 import FeatureCard from "./FeatureCard";
 import { JSX } from "react";
 import {
@@ -15,21 +15,27 @@ import Image from "next/image";
 function SideHeroImage({ src, alt = "" }: { src: string; alt?: string }) {
   return (
     <div className="relative mx-auto h-[120px] w-[320px] md:mx-0">
-      <div className="relative h-full w-full overflow-hidden rounded-2xl border border-black/5 bg-white/40 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+      {/* offset highlight */}
+      <div className="absolute inset-0 translate-x-[15px] translate-y-[15px] rounded-2xl bg-black" />
+
+      {/* image frame */}
+      <div className="relative h-full w-full overflow-hidden rounded-2xl border border-black/10 bg-white/40]">
         <Image
           src={src}
           alt={alt}
           fill
-          sizes="(min-width: 768px) 320px, 80vw"
           className="object-cover"
           priority
+          quality={90}
         />
-        {/* subtle tint so photos match the palette */}
+
+        {/* subtle palette unifier */}
         <div className="absolute inset-0 bg-slate-900/5" />
       </div>
     </div>
   );
 }
+
 export default function () {
   const iconProps = "h-8 w-8 text-brand-900";
   const FEATURE_ICONS: Record<string, JSX.Element> = {
@@ -55,7 +61,7 @@ export default function () {
 
         {/* RIGHT IMAGE (same sizing + order) */}
         <div className="order-3 md:justify-self-start">
-          <SideHeroImage src="/registratori.png" alt="" />
+          <SideHeroImage src="/registratori_green.png" alt="" />
         </div>
       </div>
 
