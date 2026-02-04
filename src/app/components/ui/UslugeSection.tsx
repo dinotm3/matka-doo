@@ -5,7 +5,7 @@ import SveUslugeBtn from "../buttons/SveUslugeBtn";
 
 export default function UslugeSection() {
   return (
-    <section className="w-full text-brand-50">
+    <section className="w-full text-brand-50 pt-16">
       <ScrollReveal
         direction="down"
         distance={45}
@@ -23,12 +23,11 @@ export default function UslugeSection() {
               alt=""
               fill
               priority
-              className="object-cover contrast-70 brightness-80"
+              className="object-cover contrast-70 brightness-75"
             />
-            {/* Overlay to keep text readable */}
-            <div className="absolute inset-0 bg-brand-900/70" />
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-900/80 via-brand-900/70 to-[rgba(40,42,46,0.82)]" />
           </div>
-          <div className="flex flex-col gap-10 items-center justify-center ">
+          <div className="flex flex-col gap-10 items-center justify-center">
             {/* Title */}
             <div className="flex flex-col items-center text-center gap-3">
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
@@ -41,7 +40,7 @@ export default function UslugeSection() {
               {USLUGE.map((s) => (
                 <div
                   key={s.title}
-                  className="rounded-2xl border border-white/15 bg-white/10 p-6 shadow-sm backdrop-blur"
+                  className="rounded-2xl border border-white/20 bg-white/10 p-6 shadow-sm backdrop-blur hover:bg-white/15 hover:border-white/30 transition-all duration-200"
                 >
                   <div className="text-lg font-semibold text-white">
                     {s.title}

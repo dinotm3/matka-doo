@@ -36,7 +36,7 @@ function SideHeroImage({ src, alt = "" }: { src: string; alt?: string }) {
   );
 }
 
-export default function () {
+export default function HeroSection() {
   const iconProps = "h-8 w-8 text-brand-900";
   const FEATURE_ICONS: Record<string, JSX.Element> = {
     [STRINGS.features.experience.title]: <BarChart4 className={iconProps} />,
@@ -48,7 +48,7 @@ export default function () {
   };
 
   return (
-    <main className="relative z-10 mx-auto px-4 pb-16">
+    <main className="relative">
       <div className="grid items-center gap-6 md:grid-cols-[1fr_auto_1fr]">
         {/* LEFT IMAGE (same sizing + order) */}
         <div className="order-2 md:order-1 md:justify-self-end">
@@ -65,8 +65,7 @@ export default function () {
         </div>
       </div>
 
-      {/* Feature grid (UNCHANGED spacing) */}
-      <div className="mt-12 grid gap-x-4 gap-y-8 md:grid-cols-3">
+      <div className="mt-16 grid gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-3">
         {Object.values(STRINGS.features).map((feature) => (
           <FeatureCard
             key={feature.title}

@@ -15,7 +15,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     id: "usluge",
     label: SITE_INFO.pages.services,
-    href: "/usluge",
+    href: "/#usluge",
   },
   {
     id: "location",

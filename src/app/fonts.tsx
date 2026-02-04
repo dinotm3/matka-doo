@@ -49,6 +49,7 @@ export const dm_sans = DM_Sans({
 });
 
 export const lato = Lato({
+  subsets: ["latin"],
   weight: ["300"],
   variable: "--font-sans",
   display: "swap",

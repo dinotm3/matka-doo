@@ -1,11 +1,10 @@
-import { SITE_INFO, STRINGS } from "@/app/constants/constants";
+import { SITE_INFO } from "@/app/constants/constants";
 import { btnHighlight } from "@/app/constants/uiClasses";
-import Link from "next/link";
 
 export default function Kontakt() {
   return (
-    <Link
-      href="/contact"
+    <a
+      href="#contact"
       className={[
         "inline-flex items-center justify-center rounded-full bg-brand-900",
         "px-6 py-4 text-lg font-semibold text-white shadow-xl",
@@ -13,6 +12,6 @@ export default function Kontakt() {
       ].join(" ")}
     >
       {SITE_INFO.pages.contact}
-    </Link>
+    </a>
   );
 }

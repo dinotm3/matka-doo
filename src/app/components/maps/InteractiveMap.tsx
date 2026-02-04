@@ -71,7 +71,6 @@ export default function InteractiveMap({
       className={`relative ${heightClass} ${className}`}
       style={style}
     >
-      {/* MAP */}
       <iframe
         src={src}
         loading="lazy"
@@ -82,18 +81,6 @@ export default function InteractiveMap({
         ].join(" ")}
       />
 
-      {/* DARK OVERLAY WHEN INACTIVE */}
-      {/*       {!mapActive && (
-        <div
-          aria-hidden="true"
-          className="
-            pointer-events-none absolute inset-0 z-10
-            bg-gradient-to-t from-brand-900/25 via-black/15 via-black/5 via-black/15 to-brand-900/25
-          "
-        />
-      )} */}
-
-      {/* OPTIONAL EDGE FADE (unchanged) */}
       {fadeEdge && (
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-l from-white/0 to-white/10" />
       )}

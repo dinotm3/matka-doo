@@ -6,42 +6,27 @@ import { LOKACIJA, SITE_INFO } from "../../constants/constants";
 import InteractiveMap from "../maps/InteractiveMap";
 
 export default function LokacijaSection() {
-  const textLightGray = "text-gray-600";
-  const lokacijaSectionDistance = 450;
-  const lokacijaSectionAmount = 0.1;
-  const lokacijaSectionExitDuration = 0.6;
-  const lokacijaSectionEnterDuration = 1.2;
-  const right = "right";
-  const left = "left";
-  const lokacijaFadeOutMode = "only-up";
-  const widthFull = "w-full";
-  const heightFull = "h-full";
-
   return (
     <section className="w-full bg-white">
       <div className="grid w-full lg:grid-cols-2 lg:min-h-[80vh] items-stretch py-2 overflow-x-clip">
         {/* LEFT CONTENT */}
         <div className="relative h-full flex items-center justify-center px-6 py-16 lg:px-16">
           <ScrollReveal
-            direction={left}
-            distance={lokacijaSectionDistance}
+            direction="left"
+            distance={450}
             fade
-            fadeOutMode={lokacijaFadeOutMode}
-            amount={lokacijaSectionAmount}
-            enterDuration={lokacijaSectionEnterDuration}
-            exitDuration={lokacijaSectionExitDuration}
-            className={widthFull}
+            fadeOutMode="only-up"
+            amount={0.1}
+            enterDuration={1.2}
+            exitDuration={0.6}
+            className="w-full"
           >
             <div className="max-w-xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-semibold tracking-tight antialiased text-black">
                 {LOKACIJA.title}
               </h2>
 
-              <p
-                className={
-                  "mt-5 text-lg md:text-xl leading-relaxed " + textLightGray
-                }
-              >
+              <p className="mt-5 text-lg md:text-xl leading-relaxed text-gray-600">
                 {LOKACIJA.description}
               </p>
 
@@ -76,14 +61,14 @@ export default function LokacijaSection() {
         {/* RIGHT MAP */}
         <div className="relative h-full">
           <ScrollReveal
-            direction={right}
-            distance={lokacijaSectionDistance}
+            direction="right"
+            distance={450}
             fade
-            fadeOutMode={lokacijaFadeOutMode}
-            amount={lokacijaSectionAmount}
-            enterDuration={lokacijaSectionEnterDuration}
-            exitDuration={lokacijaSectionExitDuration}
-            className={heightFull}
+            fadeOutMode="only-up"
+            amount={0.1}
+            enterDuration={1.2}
+            exitDuration={0.6}
+            className="h-full"
           >
             <InteractiveMap
               className="w-full h-full"

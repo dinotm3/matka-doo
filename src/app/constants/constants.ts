@@ -192,3 +192,28 @@ export const HERO = {
   bannerFirstRowText: "Vi vodite posao",
   bannerSecondRowText: "Mi pazimo na brojke",
 };
+
+export const KONTAKT = {
+  title: "Kontakt",
+  subtitle: "Postavite pitanje ili dogovorite sastanak",
+  description:
+    "Ispunite obrazac i mi ćemo vas kontaktirati u najkraćem vremenu. Možete također pozvati ili pisati direktno.",
+  strings: {
+    email: "Email:",
+    telefon: "Telefon:",
+    adresa: "Adresa:",
+    radno_vrijeme: "Radno vrijeme:",
+    radno_vrijeme_value: "Pon–Pet, 8:00–16:00",
+    field_ime: "Ime i prezime",
+    field_email: "E-mail",
+    field_telefon: "Telefon",
+    field_poruka: "Poruka",
+    placeholder_ime: "npr. Ivana Horvatić",
+    placeholder_email: "vaš@email.com",
+    placeholder_telefon: "+385 1 234 5678",
+    placeholder_poruka: "Napišite vaše pitanje ili zahtjev…",
+    submit: "Pošalji poruku",
+    success_title: "Poruka primljena!",
+    success_body: "Mi ćemo vas kontaktirati u najkraćem vremenu.",
+  },
+} as const;
