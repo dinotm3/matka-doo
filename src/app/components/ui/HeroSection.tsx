@@ -77,7 +77,11 @@ export default function HeroSection() {
 
         {/* RIGHT IMAGE - Binders */}
         <div className="order-3 md:justify-self-start">
-          <SideHeroImage src="/registratori_green.png" alt="Binders" tilt="right" />
+          <SideHeroImage
+            src="/registratori_side_image.jpg"
+            alt="Binders"
+            tilt="right"
+          />
         </div>
       </div>
 

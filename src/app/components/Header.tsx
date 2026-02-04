@@ -15,6 +15,19 @@ export default function Header() {
     width: 0,
   });
 
+  // Premium header state: apply glass styling whenever NOT at the top anymore
+  useEffect(() => {
+    const THRESHOLD = 12;
+
+    const onScroll = () => {
+      setScrolled(window.scrollY > THRESHOLD);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   // Sync active tab from URL hash on initial load
   useEffect(() => {
     const hash = window.location.hash.replace("#", "");
@@ -22,14 +35,6 @@ export default function Header() {
       setActive(hash);
     }
   }, [setActive]);
-
-  // Shadow appears once scrolled past the hero
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   // Ensure home is active when at top of page
   useEffect(() => {
@@ -81,9 +86,16 @@ export default function Header() {
   return (
     <header
       className={[
-        "sticky top-0 z-50 w-full bg-white border-b border-gray-100 overflow-hidden relative",
-        "transition-shadow duration-300",
-        scrolled ? "shadow-xl" : "shadow-none",
+        "sticky top-0 z-50 w-full overflow-hidden relative",
+        "transition-all duration-300",
+        // Top vs scrolled styling
+        scrolled
+          ? [
+              "bg-white/70 backdrop-blur-md",
+              "border-b border-black/10",
+              "shadow-[0_10px_30px_rgba(0,0,0,0.10)]",
+            ].join(" ")
+          : "bg-white border-b border-gray-100 shadow-none",
       ].join(" ")}
     >
       <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4 md:gap-0">
