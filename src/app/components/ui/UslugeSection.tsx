@@ -7,7 +7,7 @@ import ScrollReveal from "../animations/ui/ScrollReveal";
 import { ChevronDown } from "lucide-react";
 import { btnHighlight } from "@/app/constants/uiClasses";
 import { useNav } from "@/app/context/NavContext";
-import type Lenis from "lenis";
+import Lenis from "lenis";
 
 export default function UslugeSection() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -16,15 +16,37 @@ export default function UslugeSection() {
   const expandedContentRef = useRef<HTMLDivElement>(null);
 
   // Get Lenis instance for smooth scrolling
-  const getLenis = () =>
-    (window as unknown as { lenis?: Lenis }).lenis;
+  const getLenis = () => (window as unknown as { lenis?: Lenis }).lenis;
 
   const handleExpand = () => {
-    if (!isExpanded) {
-      // Save scroll position before expanding
-      savedScrollPosition.current = window.scrollY;
-    }
+    savedScrollPosition.current = window.scrollY;
     setIsExpanded(true);
+
+    // Wait for React + framer-motion to mount the expanded content
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = expandedContentRef.current;
+        if (!el) return;
+
+        const rect = el.getBoundingClientRect();
+
+        // Current absolute scroll position + element's top in viewport
+        const elementTopAbsolute = window.scrollY + rect.top;
+
+        // Center the element in the viewport
+        const target =
+          elementTopAbsolute - (window.innerHeight / 2 - rect.height / 2);
+
+        const lenis = getLenis();
+        const clamped = Math.max(0, target);
+
+        if (lenis) {
+          lenis.scrollTo(clamped, { duration: 1.1 });
+        } else {
+          window.scrollTo({ top: clamped, behavior: "smooth" });
+        }
+      });
+    });
   };
 
   const handleClose = () => {
@@ -194,7 +216,10 @@ export default function UslugeSection() {
                     className="pt-4 scroll-mt-4"
                   >
                     {/* Section Title */}
-                    <h3 className="text-xl font-semibold text-white text-center mb-6">
+                    <h3
+                      id="kompletna"
+                      className="text-xl font-semibold text-white text-center mb-6"
+                    >
                       Kompletna ponuda usluga
                     </h3>
 

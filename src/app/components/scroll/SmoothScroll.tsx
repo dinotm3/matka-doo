@@ -8,32 +8,47 @@ export default function SmoothScroll({
 }: {
   children: React.ReactNode;
 }) {
-  const lenisRef = useRef<Lenis | null>(null);
+  const rafId = useRef<number | null>(null);
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.6,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      touchMultiplier: 1.2,
+      touchMultiplier: 0.7,
     });
 
-    lenisRef.current = lenis;
+    (window as any).lenis = lenis;
 
-    function raf(time: number) {
+    const raf = (time: number) => {
       lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+      rafId.current = requestAnimationFrame(raf);
+    };
+    rafId.current = requestAnimationFrame(raf);
 
-    requestAnimationFrame(raf);
+    // Keep Lenis in sync with layout changes (expands, fonts, images, transitions)
+    const ro = new ResizeObserver(() => {
+      requestAnimationFrame(() => lenis.resize());
+    });
+    ro.observe(document.body);
 
-    // Expose lenis to window for scrollTo calls
-    (window as unknown as { lenis: Lenis }).lenis = lenis;
+    const onResize = () => lenis.resize();
+    window.addEventListener("resize", onResize);
+    window.addEventListener("load", onResize);
 
     return () => {
+      if (rafId.current) cancelAnimationFrame(rafId.current);
+      rafId.current = null;
+
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("load", onResize);
+
+      ro.disconnect();
       lenis.destroy();
+
+      if ((window as any).lenis === lenis) (window as any).lenis = undefined;
     };
   }, []);
 

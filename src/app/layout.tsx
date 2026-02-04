@@ -1,12 +1,4 @@
-import {
-  inter,
-  ibm_sans,
-  public_sans,
-  work_sans,
-  dm_sans,
-  lato,
-  manrope,
-} from "../app/fonts";
+import { manrope } from "../app/fonts";
 
 import "./globals.css";
 import Footer from "./components/Footer";
