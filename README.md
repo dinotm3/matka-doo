@@ -1,46 +1,35 @@
-Overview
+<h2>matka-doo – Web Application</h2>
 
-This repository contains the source code for the Matka d.o.o. web application, built with Next.js (App Router).
+<h3>Overview</h3>
+<p>
+  This repository contains the source code for the <strong>Matka d.o.o.</strong> web application,
+  built with <strong>Next.js (App Router)</strong>.
+</p>
+<p>
+  The project is structured as a production-ready frontend with modern tooling, optimized builds,
+  and a clean component architecture.
+</p>
 
-The project is structured as a production-ready frontend with modern tooling, optimized builds, and a clean component architecture.
+<h3>Tech Stack</h3>
+<ul>
+  <li><strong>Next.js</strong> (App Router)</li>
+  <li><strong>React</strong></li>
+  <li><strong>TypeScript</strong></li>
+  <li><strong>Tailwind CSS</strong></li>
+  <li><strong>Vercel</strong> (deployment)</li>
+</ul>
 
-Tech Stack
+<h3>Getting Started</h3>
 
-Next.js (App Router)
+<h4>Prerequisites</h4>
+<ul>
+  <li>Node.js &ge; 18</li>
+  <li>npm</li>
+</ul>
 
-React
+<h4>Install dependencies</h4>
+<pre><code>npm install</code></pre>
 
-TypeScript
+<h4>Run development server</h4>
+<pre><code>npm run dev</code></pre>
 
-Tailwind CSS
-
-Vercel (deployment)
-
-Getting Started
-Prerequisites
-
-Node.js ≥ 18
-
-npm / yarn / pnpm / bun
-
-Install dependencies
-npm install
-# or
-yarn
-# or
-pnpm install
-# or
-bun install
-
-Run development server
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-
-
-Open http://localhost:3000
- in your browser.
