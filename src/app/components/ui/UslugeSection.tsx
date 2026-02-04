@@ -1,9 +1,59 @@
-import { USLUGE } from "@/app/constants/constants";
+"use client";
+
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { USLUGE, USLUGE_KOMPLETNO } from "@/app/constants/constants";
 import ScrollReveal from "../animations/ui/ScrollReveal";
-import Image from "next/image";
-import SveUslugeBtn from "../buttons/SveUslugeBtn";
+import { ChevronDown } from "lucide-react";
+import { btnHighlight } from "@/app/constants/uiClasses";
+import { useNav } from "@/app/context/NavContext";
+import type Lenis from "lenis";
 
 export default function UslugeSection() {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { setActiveNav } = useNav();
+  const savedScrollPosition = useRef<number | null>(null);
+  const expandedContentRef = useRef<HTMLDivElement>(null);
+
+  // Get Lenis instance for smooth scrolling
+  const getLenis = () =>
+    (window as unknown as { lenis?: Lenis }).lenis;
+
+  const handleExpand = () => {
+    if (!isExpanded) {
+      // Save scroll position before expanding
+      savedScrollPosition.current = window.scrollY;
+    }
+    setIsExpanded(true);
+  };
+
+  const handleClose = () => {
+    const savedPos = savedScrollPosition.current;
+    setIsExpanded(false);
+    // Restore scroll position after a brief delay for animation
+    if (savedPos !== null) {
+      setTimeout(() => {
+        const lenis = getLenis();
+        if (lenis) {
+          lenis.scrollTo(savedPos, { duration: 1.4 });
+        } else {
+          window.scrollTo({ top: savedPos, behavior: "smooth" });
+        }
+        savedScrollPosition.current = null;
+      }, 150);
+    }
+  };
+
+  const scrollToContact = () => {
+    const lenis = getLenis();
+    const contactEl = document.getElementById("contact");
+    if (lenis && contactEl) {
+      lenis.scrollTo(contactEl, { duration: 1.2 });
+    } else {
+      contactEl?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section className="w-full text-brand-50 pt-16">
       <ScrollReveal
@@ -15,17 +65,67 @@ export default function UslugeSection() {
         enterDuration={0.6}
         exitDuration={0.6}
         className="w-full"
+        onEnter={() => setActiveNav("usluge")}
+        onLeave={() => setActiveNav("home")}
       >
         <div className="relative mx-auto w-full px-6 py-14 overflow-hidden">
-          <div className="absolute inset-0 -z-10 blur-[0.5px]">
-            <Image
-              src="/header_green.png"
-              alt=""
-              fill
-              priority
-              className="object-cover contrast-70 brightness-75"
+          {/* Animated background with emerald gradient and light streaks */}
+          <div className="absolute inset-0 -z-10 overflow-hidden">
+            {/* Base gradient */}
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: isExpanded
+                  ? "linear-gradient(to bottom right, rgb(20,70,48), rgb(25,90,58), rgb(18,55,40))"
+                  : "linear-gradient(to bottom right, rgb(25,85,55), rgb(30,100,65), rgb(20,60,45))",
+              }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-900/80 via-brand-900/70 to-[rgba(40,42,46,0.82)]" />
+
+            {/* Animated radial glow - expands and intensifies when open */}
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: isExpanded
+                  ? "radial-gradient(ellipse 120% 80% at 50% 30%, rgba(120,200,150,0.2), transparent)"
+                  : "radial-gradient(ellipse 80% 50% at 20% 40%, rgba(100,180,130,0.15), transparent)",
+              }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+            />
+
+            {/* Light streak effect - shifts when expanded */}
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: isExpanded
+                  ? "linear-gradient(145deg, transparent 35%, rgba(255,255,255,0.04) 42%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 58%, transparent 65%)"
+                  : "linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.03) 45%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 55%, transparent 60%)",
+              }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            />
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: isExpanded
+                  ? "linear-gradient(115deg, transparent 25%, rgba(255,255,255,0.03) 32%, rgba(255,255,255,0.05) 38%, rgba(255,255,255,0.03) 44%, transparent 50%)"
+                  : "linear-gradient(125deg, transparent 30%, rgba(255,255,255,0.02) 35%, rgba(255,255,255,0.04) 40%, rgba(255,255,255,0.02) 45%, transparent 50%)",
+              }}
+              transition={{ duration: 0.9, ease: "easeOut", delay: 0.1 }}
+            />
+
+            {/* Subtle vignette that intensifies when expanded */}
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: isExpanded
+                  ? "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.3) 100%)"
+                  : "radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.2) 100%)",
+              }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            />
+
+            {/* Subtle texture overlay */}
+            <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]" />
           </div>
           <div className="flex flex-col gap-10 items-center justify-center">
             {/* Title */}
@@ -52,7 +152,105 @@ export default function UslugeSection() {
               ))}
             </div>
 
-            <SveUslugeBtn />
+            {/* Expand Button */}
+            <motion.button
+              onClick={isExpanded ? handleClose : handleExpand}
+              className={[
+                "inline-flex items-center gap-2 justify-center rounded-full bg-brand-900/70",
+                "px-6 py-4 text-lg font-semibold text-white shadow-xl",
+                "hover:bg-black transition-colors",
+                btnHighlight,
+              ].join(" ")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              {isExpanded ? "Zatvori" : "Pogledajte sve usluge"}
+              <motion.span
+                animate={{ rotate: isExpanded ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ChevronDown className="h-5 w-5" />
+              </motion.span>
+            </motion.button>
+
+            {/* Expanded Content */}
+            <AnimatePresence>
+              {isExpanded && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{
+                    height: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
+                    opacity: { duration: 0.3 },
+                  }}
+                  className="w-full max-w-4xl overflow-hidden"
+                >
+                  <motion.div
+                    ref={expandedContentRef}
+                    initial={{ y: -20 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
+                    className="pt-4 scroll-mt-4"
+                  >
+                    {/* Section Title */}
+                    <h3 className="text-xl font-semibold text-white text-center mb-6">
+                      Kompletna ponuda usluga
+                    </h3>
+
+                    {/* Services List */}
+                    <div className="space-y-3">
+                      {USLUGE_KOMPLETNO.map((usluga, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{
+                            delay: 0.15 + index * 0.05,
+                            duration: 0.3,
+                          }}
+                          className="group rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur transition-all duration-200 hover:bg-white/15 hover:border-white/30"
+                        >
+                          <div className="flex items-start gap-4">
+                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/20 text-xs font-bold text-white">
+                              {index + 1}
+                            </span>
+                            <p className="text-sm leading-relaxed text-white/90 md:text-base">
+                              {usluga}
+                            </p>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    {/* Bottom Actions */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6, duration: 0.4 }}
+                      className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4"
+                    >
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={scrollToContact}
+                        className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-900 shadow-lg transition-all hover:shadow-xl"
+                      >
+                        Kontaktirajte nas
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={handleClose}
+                        className="rounded-full border-2 border-white/30 bg-transparent px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/10"
+                      >
+                        Zatvori
+                      </motion.button>
+                    </motion.div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </ScrollReveal>

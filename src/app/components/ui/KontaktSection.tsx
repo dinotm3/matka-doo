@@ -2,7 +2,8 @@
 
 import { ChangeEvent, FormEvent, useState } from "react";
 import ScrollReveal from "../animations/ui/ScrollReveal";
-import { KONTAKT, SITE_INFO } from "../../constants/constants";
+import ScrollTopBtn from "../buttons/ScrollTopBtn";
+import { KONTAKT } from "../../constants/constants";
 import { btnHighlight } from "../../constants/uiClasses";
 
 export default function KontaktSection() {
@@ -28,7 +29,7 @@ export default function KontaktSection() {
   };
 
   return (
-    <section className="w-full bg-gray-50">
+    <section className="relative w-full bg-gray-50">
       <ScrollReveal
         direction="down"
         distance={45}
@@ -48,31 +49,7 @@ export default function KontaktSection() {
             <p className="mt-3 text-lg text-gray-600">{KONTAKT.subtitle}</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-16 items-start">
-            {/* Contact info */}
-            <div className="space-y-8">
-              <p className="text-gray-600 text-base leading-relaxed">
-                {KONTAKT.description}
-              </p>
-
-              <div className="space-y-4">
-                <Row label={KONTAKT.strings.email} value={SITE_INFO.email} />
-                <Row
-                  label={KONTAKT.strings.telefon}
-                  value={SITE_INFO.phone}
-                />
-                <Row
-                  label={KONTAKT.strings.adresa}
-                  value={`${SITE_INFO.address}, ${SITE_INFO.zip_code} ${SITE_INFO.city}`}
-                />
-                <Row
-                  label={KONTAKT.strings.radno_vrijeme}
-                  value={KONTAKT.strings.radno_vrijeme_value}
-                />
-              </div>
-            </div>
-
-            {/* Form */}
+          <div className="max-w-lg mx-auto">
             {submitted ? (
               <div className="rounded-2xl bg-brand-900/10 border border-brand-900/20 px-8 py-12 text-center">
                 <p className="text-brand-900 font-semibold text-xl">
@@ -130,16 +107,9 @@ export default function KontaktSection() {
           </div>
         </div>
       </ScrollReveal>
-    </section>
-  );
-}
 
-function Row({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex gap-3">
-      <span className="font-semibold text-black">{label}</span>
-      <span className="text-gray-600">{value}</span>
-    </div>
+      <ScrollTopBtn className="absolute bottom-6 right-6 z-[100]" />
+    </section>
   );
 }
 

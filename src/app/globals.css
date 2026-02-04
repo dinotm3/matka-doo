@@ -5,8 +5,8 @@
   --background: #ffffff;
   --foreground: #171717;
 
-  --brand-900: 12 120 63;
-  --brand-800: 136 169 108;
+  --brand-900: 39 125 76;
+  --brand-800: 55 145 90;
   --brand-600: 30 41 57;
   --brand-300: 72 80 112;
   --brand-200: 92 100 128;
@@ -17,8 +17,24 @@
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-html {
-  scroll-behavior: smooth;
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
 
 body {

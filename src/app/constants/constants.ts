@@ -52,20 +52,28 @@ export const USLUGE_KOMPLETNO: string[] = [
 
 export const USLUGE = [
   {
-    title: "Obrti",
-    desc: "KPI/KPR, obračun poreza, PDV (po potrebi) i godišnje prijave.",
+    title: "Digitalno poslovanje",
+    desc: "e-računi, digitalna razmjena dokumenata i jednostavniji procesi.",
   },
   {
     title: "d.o.o. / j.d.o.o.",
     desc: "Glavna knjiga, usklađenja, završni račun i financijski izvještaji.",
   },
   {
-    title: "Plaće i JOPPD",
-    desc: "Obračun plaća, isplatne liste, JOPPD i evidencije radnika.",
+    title: "Obrti",
+    desc: "KPI/KPR, obračun poreza, PDV (po potrebi) i godišnje prijave.",
   },
   {
     title: "PDV",
     desc: "Knjige URA/IRA, PDV prijave, EU isporuke i kontrola rokova.",
+  },
+  {
+    title: "Plaće i JOPPD",
+    desc: "Obračun plaća, isplatne liste, JOPPD i evidencije radnika.",
+  },
+  {
+    title: "Savjetovanje",
+    desc: "Porezni i poslovni savjeti, optimizacija troškova i podrška kroz godinu.",
   },
   {
     title: "URA / IRA",
@@ -74,14 +82,6 @@ export const USLUGE = [
   {
     title: "Završni račun",
     desc: "Bilanca, RDG i bilješke uz izvještaje – predaja na vrijeme i bez stresa.",
-  },
-  {
-    title: "Savjetovanje",
-    desc: "Porezni i poslovni savjeti, optimizacija troškova i podrška kroz godinu.",
-  },
-  {
-    title: "Digitalno poslovanje",
-    desc: "e-računi, digitalna razmjena dokumenata i jednostavniji procesi.",
   },
 ] as const;
 

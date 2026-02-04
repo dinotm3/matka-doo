@@ -28,6 +28,11 @@ type Props = {
 
   enterEase?: any;
   exitEase?: any;
+
+  /** Callback when element enters viewport */
+  onEnter?: () => void;
+  /** Callback when element leaves viewport */
+  onLeave?: () => void;
 };
 
 function hiddenState(
@@ -63,7 +68,7 @@ export default function ScrollReveal({
   distance = 80,
 
   fade = true,
-  fadeOutMode = "always",
+  fadeOutMode = "never",
 
   amount = 0.25,
   margin = "0px 0px -10% 0px",
@@ -75,6 +80,9 @@ export default function ScrollReveal({
 
   enterEase = [0.4, 0, 1, 1],
   exitEase = [0.4, 0, 1, 1],
+
+  onEnter,
+  onLeave,
 }: Props) {
   const controls = useAnimationControls();
 
@@ -121,6 +129,7 @@ export default function ScrollReveal({
           ease: enterEase,
           delay: enterDelay,
         });
+        onEnter?.();
       }}
       onViewportLeave={() => {
         if (!shouldFadeOut()) return;
@@ -130,6 +139,7 @@ export default function ScrollReveal({
           ease: exitEase,
           delay: exitDelay,
         });
+        onLeave?.();
       }}
     >
       {children}

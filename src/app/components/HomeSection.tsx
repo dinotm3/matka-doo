@@ -1,6 +1,5 @@
 import UslugeSection from "./ui/UslugeSection";
-import LokacijaSection from "./ui/LokacijaSection";
-import KontaktSection from "./ui/KontaktSection";
+import KontaktLokacijaSection from "./ui/KontaktLokacijaSection";
 
 export default function HomeSection() {
   return (
@@ -8,11 +7,9 @@ export default function HomeSection() {
       <div id="usluge" className="scroll-mt-20">
         <UslugeSection />
       </div>
-      <div id="location" className="scroll-mt-20">
-        <LokacijaSection />
-      </div>
-      <div id="contact" className="scroll-mt-20">
-        <KontaktSection />
+      <div>
+        {/* Combined Location & Contact section - IDs handled internally */}
+        <KontaktLokacijaSection />
       </div>
     </section>
   );

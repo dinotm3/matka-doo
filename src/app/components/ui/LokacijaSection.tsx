@@ -1,18 +1,17 @@
 import React from "react";
 import ScrollReveal from "../animations/ui/ScrollReveal";
-import Kontakt from "../buttons/Kontakt";
-import ScrollTopBtn from "../buttons/ScrollTopBtn";
 import { LOKACIJA, SITE_INFO } from "../../constants/constants";
 import InteractiveMap from "../maps/InteractiveMap";
+import { MapPin, Clock, Mail, Phone } from "lucide-react";
 
 export default function LokacijaSection() {
   return (
-    <section className="w-full bg-white">
-      <div className="grid w-full lg:grid-cols-2 lg:min-h-[80vh] items-stretch py-2 overflow-x-clip">
+    <section className="w-full bg-gradient-to-b from-white to-gray-50">
+      <div className="grid w-full lg:grid-cols-2 lg:min-h-[70vh] items-stretch overflow-x-clip">
         {/* LEFT CONTENT */}
         <div className="relative h-full flex items-center justify-center px-6 py-16 lg:px-16">
           <ScrollReveal
-            direction="left"
+            direction="down"
             distance={450}
             fade
             fadeOutMode="only-up"
@@ -22,40 +21,38 @@ export default function LokacijaSection() {
             className="w-full"
           >
             <div className="max-w-xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight antialiased text-black">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">
                 {LOKACIJA.title}
               </h2>
 
-              <p className="mt-5 text-lg md:text-xl leading-relaxed text-gray-600">
+              <p className="mt-4 text-lg leading-relaxed text-gray-600">
                 {LOKACIJA.description}
               </p>
 
-              <div className="mt-8 space-y-4 text-base md:text-lg text-gray-600">
-                <Row label={LOKACIJA.strings.adresa} value={LOKACIJA.adresa} />
-                <Row
+              <div className="mt-8 space-y-4">
+                <InfoRow
+                  icon={<MapPin className="h-5 w-5" />}
+                  label={LOKACIJA.strings.adresa}
+                  value={LOKACIJA.adresa}
+                />
+                <InfoRow
+                  icon={<Clock className="h-5 w-5" />}
                   label={LOKACIJA.strings.radno_vrijeme_title}
                   value={LOKACIJA.strings.radno_vrijeme}
                 />
-                <Row label={LOKACIJA.strings.email} value={SITE_INFO.email} />
-                <Row label={LOKACIJA.strings.telefon} value={SITE_INFO.phone} />
-              </div>
-
-              <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
-                <div className="text-gray-600 text-base md:text-lg">
-                  <span className="font-semibold text-gray-900">
-                    {LOKACIJA.strings.sastanak_part_1}
-                  </span>{" "}
-                  {LOKACIJA.strings.sastanak_part_2}{" "}
-                  <span className="inline-block align-middle text-brand-200 text-2xl md:text-3xl font-bold">
-                    →
-                  </span>
-                </div>
-
-                <Kontakt />
+                <InfoRow
+                  icon={<Mail className="h-5 w-5" />}
+                  label={LOKACIJA.strings.email}
+                  value={SITE_INFO.email}
+                />
+                <InfoRow
+                  icon={<Phone className="h-5 w-5" />}
+                  label={LOKACIJA.strings.telefon}
+                  value={SITE_INFO.phone}
+                />
               </div>
             </div>
           </ScrollReveal>
-          <ScrollTopBtn className="absolute bottom-6 right-6 z-[100]" />
         </div>
 
         {/* RIGHT MAP */}
@@ -84,11 +81,26 @@ export default function LokacijaSection() {
   );
 }
 
-function Row({ label, value }: { label: string; value: React.ReactNode }) {
+function InfoRow({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: React.ReactNode;
+}) {
   return (
-    <div className="flex gap-3">
-      <span className="font-semibold text-black">{label}</span>
-      <span>{value}</span>
+    <div className="flex items-start gap-4 p-4 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-brand-900/10 flex items-center justify-center text-brand-900">
+        {icon}
+      </div>
+      <div>
+        <span className="block text-sm font-medium text-gray-500">{label}</span>
+        <span className="block text-base font-semibold text-gray-900 mt-0.5">
+          {value}
+        </span>
+      </div>
     </div>
   );
 }

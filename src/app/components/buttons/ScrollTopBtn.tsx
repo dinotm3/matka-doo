@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type Lenis from "lenis";
 
 export default function ScrollTopBtn({
   className = "fixed bottom-6 right-6 z-[9999]",
@@ -16,7 +17,14 @@ export default function ScrollTopBtn({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  const scrollTop = () => {
+    const lenis = (window as unknown as { lenis?: Lenis }).lenis;
+    if (lenis) {
+      lenis.scrollTo(0, { duration: 1.2 });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   return (
     <button

@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { NAV_ITEMS } from "../constants/navigation";
+import { useNav } from "../context/NavContext";
 import Image from "next/image";
+import type Lenis from "lenis";
 
 export default function Header() {
-  const [active, setActive] = useState<string>("home");
+  const { activeNav: active, setActiveNav: setActive } = useNav();
   const [scrolled, setScrolled] = useState(false);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [indicator, setIndicator] = useState<{ left: number; width: number }>({
@@ -19,7 +21,7 @@ export default function Header() {
     if (hash && NAV_ITEMS.some((item) => item.id === hash)) {
       setActive(hash);
     }
-  }, []);
+  }, [setActive]);
 
   // Shadow appears once scrolled past the hero
   useEffect(() => {
@@ -29,28 +31,16 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // IntersectionObserver – highlights the nav item for the section currently in view
+  // Ensure home is active when at top of page
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort(
-            (a, b) => (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0),
-          )[0];
-
-        if (visible?.target?.id) setActive(visible.target.id);
-      },
-      { rootMargin: "-40% 0px -55% 0px", threshold: [0.1, 0.2, 0.3, 0.4, 0.5] },
-    );
-
-    NAV_ITEMS.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
+    const handleTopCheck = () => {
+      if (window.scrollY < 100) {
+        setActive("home");
+      }
+    };
+    window.addEventListener("scroll", handleTopCheck, { passive: true });
+    return () => window.removeEventListener("scroll", handleTopCheck);
+  }, [setActive]);
 
   // Animate the indicator bar to follow the active link
   useEffect(() => {
@@ -66,11 +56,26 @@ export default function Header() {
   }, [active]);
 
   const scrollTo = (id: string) => {
+    const lenis = (window as unknown as { lenis?: Lenis }).lenis;
+    const headerOffset = 80; // Account for sticky header
+
     if (id === "home") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (lenis) {
+        lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
       return;
     }
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+    const element = document.getElementById(id);
+    if (element) {
+      if (lenis) {
+        lenis.scrollTo(element, { duration: 1.2, offset: -headerOffset });
+      } else {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   };
 
   return (
