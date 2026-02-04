@@ -8,7 +8,6 @@ export default function HomeSection() {
         <UslugeSection />
       </div>
       <div>
-        {/* Combined Location & Contact section - IDs handled internally */}
         <KontaktLokacijaSection />
       </div>
     </section>
