@@ -1,8 +1,8 @@
 import { manrope } from "../app/fonts";
 
 import "./globals.css";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
+import Footer from "./components/ui/Footer";
+import Header from "./components/ui/Header";
 import PageTransition from "./components/transitions/PageTransition";
 import { NavProvider } from "./context/NavContext";
 import SmoothScroll from "./components/scroll/SmoothScroll";

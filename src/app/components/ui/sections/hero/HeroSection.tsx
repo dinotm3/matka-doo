@@ -1,5 +1,5 @@
-import { STRINGS } from "../../constants/constants";
-import FeatureCard from "./FeatureCard";
+import { STRINGS } from "../../../../constants/constants";
+import FeatureCard from "../../FeatureCard";
 import { JSX } from "react";
 import {
   Award,

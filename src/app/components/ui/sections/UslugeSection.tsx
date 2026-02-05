@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { USLUGE, USLUGE_KOMPLETNO } from "@/app/constants/constants";
-import ScrollReveal from "../animations/ui/ScrollReveal";
+import ScrollReveal from "../../animations/ui/ScrollReveal";
 import { ChevronDown } from "lucide-react";
 import { btnHighlight } from "@/app/constants/uiClasses";
 import { useNav } from "@/app/context/NavContext";

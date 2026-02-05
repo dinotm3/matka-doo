@@ -1,4 +1,4 @@
-import { SITE_INFO, STRINGS } from "../constants/constants";
+import { SITE_INFO, STRINGS } from "../../constants/constants";
 
 export default function Footer() {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useMapInteractionLock } from "../hooks/useMapInteractionLock";
+import { useMapInteractionLock } from "../../hooks/useMapInteractionLock";
 
 type MapSize = "sm" | "md" | "lg" | "fill";
 

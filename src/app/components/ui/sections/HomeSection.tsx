@@ -1,5 +1,5 @@
-import UslugeSection from "./ui/UslugeSection";
-import KontaktLokacijaSection from "./ui/KontaktLokacijaSection";
+import UslugeSection from "./UslugeSection";
+import KontaktLokacijaSection from "./KontaktLokacijaSection";
 
 export default function HomeSection() {
   return (

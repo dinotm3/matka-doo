@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { NAV_ITEMS } from "../constants/navigation";
-import { useNav } from "../context/NavContext";
+import { NAV_ITEMS } from "../../constants/navigation";
+import { useNav } from "../../context/NavContext";
 import Image from "next/image";
 import type Lenis from "lenis";
 

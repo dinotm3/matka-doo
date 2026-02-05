@@ -1,13 +1,13 @@
 "use client";
 
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import ScrollReveal from "../animations/ui/ScrollReveal";
-import ScrollTopBtn from "../buttons/ScrollTopBtn";
-import { LOKACIJA, SITE_INFO, KONTAKT } from "../../constants/constants";
-import InteractiveMap from "../maps/InteractiveMap";
+import ScrollReveal from "../../animations/ui/ScrollReveal";
+import ScrollTopBtn from "../../buttons/ScrollTopBtn";
+import { LOKACIJA, SITE_INFO, KONTAKT } from "../../../constants/constants";
+import InteractiveMap from "../../maps/InteractiveMap";
 import { MapPin, Clock, Mail, Phone } from "lucide-react";
-import { btnHighlight } from "../../constants/uiClasses";
-import { useNav } from "../../context/NavContext";
+import { btnHighlight } from "../../../constants/uiClasses";
+import { useNav } from "../../../context/NavContext";
 
 export default function KontaktLokacijaSection() {
   const { setActiveNav } = useNav();
