@@ -68,7 +68,7 @@ export default function HeroSection() {
       <div className="grid items-center gap-6 md:grid-cols-[1fr_auto_1fr]">
         {/* LEFT IMAGE - Calculator */}
         <div className="order-2 md:order-1 md:justify-self-end">
-          <SideHeroImage src="/hero.jpg" alt="Calculator" tilt="left" />
+          <SideHeroImage src="/kalkulator.jpg" alt="Calculator" tilt="left" />
         </div>
 
         <div className="order-1 text-center md:order-2">
