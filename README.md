@@ -2,7 +2,7 @@
 
 <h3>Overview</h3>
 <p>
-  This repository contains the source code for the <strong>Matka d.o.o.</strong> web application,
+  This repository contains the source code for the accounting business <strong>Matka d.o.o.</strong> web application,
   built with <strong>Next.js (App Router)</strong>.
 </p>
 <p>
