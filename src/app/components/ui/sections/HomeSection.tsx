@@ -7,7 +7,7 @@ export default function HomeSection() {
       <div id="usluge" className="scroll-mt-20">
         <UslugeSection />
       </div>
-      <div>
+      <div id="location" className="scroll-mt-20">
         <KontaktLokacijaSection />
       </div>
     </section>

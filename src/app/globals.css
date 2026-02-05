@@ -58,24 +58,54 @@ body {
   will-change: opacity, transform;
 }
 
-@keyframes euro-wiggle {
-  0% {
-    transform: rotate(0deg);
+/* Premium € animations - synced at 50% (peak scale = shine) */
+@keyframes euro-premium {
+  0%, 100% {
+    transform: perspective(500px) scale(1) rotateY(0deg) rotateX(0deg);
+    filter: brightness(1);
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.06);
   }
   25% {
-    transform: rotate(-2deg);
+    transform: perspective(500px) scale(1.03) rotateY(-2deg) rotateX(1deg);
   }
   50% {
-    transform: rotate(2deg);
+    transform: perspective(500px) scale(1.08) rotateY(0deg) rotateX(-1deg);
+    filter: brightness(1.12);
+    text-shadow: 2px 3px 0 rgba(0,0,0,0.1);
   }
   75% {
-    transform: rotate(-1deg);
-  }
-  100% {
-    transform: rotate(0deg);
+    transform: perspective(500px) scale(1.03) rotateY(2deg) rotateX(1deg);
   }
 }
 
-.animate-euro-wiggle {
-  animation: euro-wiggle 3s ease-in-out infinite;
+@keyframes euro-glow {
+  0%, 35%, 65%, 100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes euro-shimmer {
+  0%, 42% {
+    background-position: 200% 0;
+  }
+  58%, 100% {
+    background-position: -200% 0;
+  }
+}
+
+.animate-euro-premium {
+  animation: euro-premium 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-euro-glow {
+  animation: euro-glow 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-euro-shimmer {
+  animation: euro-shimmer 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }

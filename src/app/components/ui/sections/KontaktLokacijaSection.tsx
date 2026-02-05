@@ -37,7 +37,7 @@ export default function KontaktLokacijaSection() {
       {/* Full Width Map */}
       <ScrollReveal
         direction="down"
-        distance={100}
+        distance={45}
         fade
         fadeOutMode="only-up"
         amount={0.1}
@@ -64,12 +64,12 @@ export default function KontaktLokacijaSection() {
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left - Location Info */}
             <ScrollReveal
-              direction="left"
-              distance={450}
+              direction="down"
+              distance={45}
               fade
               fadeOutMode="only-up"
               amount={0.1}
-              enterDuration={1}
+              enterDuration={0.6}
               exitDuration={0.6}
             >
               <div>
@@ -108,12 +108,12 @@ export default function KontaktLokacijaSection() {
 
             {/* Right - Contact Form */}
             <ScrollReveal
-              direction="right"
-              distance={450}
+              direction="down"
+              distance={45}
               fade
               fadeOutMode="only-up"
               amount={0.1}
-              enterDuration={1}
+              enterDuration={0.6}
               exitDuration={0.6}
               onEnter={() => setActiveNav("contact")}
               onLeave={() => setActiveNav("location")}
@@ -170,7 +170,7 @@ export default function KontaktLokacijaSection() {
                       <button
                         type="submit"
                         className={[
-                          "w-full rounded-full bg-brand-900",
+                          "w-full rounded-full bg-brand-900 cursor-pointer",
                           "px-6 py-4 text-lg font-semibold text-white shadow-xl",
                           btnHighlight,
                         ].join(" ")}
@@ -253,6 +253,7 @@ function Field({
           onChange={onChange}
           placeholder={placeholder}
           required
+          aria-required="true"
           rows={4}
           className={`${inputClass} resize-none`}
         />
@@ -265,6 +266,7 @@ function Field({
           onChange={onChange}
           placeholder={placeholder}
           required
+          aria-required="true"
           className={inputClass}
         />
       )}

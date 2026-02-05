@@ -64,11 +64,11 @@ export default function HeroSection() {
   };
 
   return (
-    <main className="relative">
+    <div className="relative">
       <div className="grid items-center gap-6 md:grid-cols-[1fr_auto_1fr]">
         {/* LEFT IMAGE - Calculator */}
         <div className="order-2 md:order-1 md:justify-self-end">
-          <SideHeroImage src="/kalkulator.jpg" alt="Calculator" tilt="left" />
+          <SideHeroImage src="/kalkulator.jpg" alt="Kalkulator i financijski dokumenti" tilt="left" />
         </div>
 
         <div className="order-1 text-center md:order-2">
@@ -79,22 +79,25 @@ export default function HeroSection() {
         <div className="order-3 md:justify-self-start">
           <SideHeroImage
             src="/registratori_side_image.jpg"
-            alt="Binders"
+            alt="Registratori s poslovnom dokumentacijom"
             tilt="right"
           />
         </div>
       </div>
 
-      <div className="mt-16 grid gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-3">
-        {Object.values(STRINGS.features).map((feature) => (
-          <FeatureCard
-            key={feature.title}
-            title={feature.title}
-            description={feature.description}
-            icon={FEATURE_ICONS[feature.title]}
-          />
-        ))}
-      </div>
-    </main>
+      <section aria-labelledby="features-heading" className="mt-16">
+        <h2 id="features-heading" className="sr-only">Zašto odabrati nas</h2>
+        <div className="grid gap-x-4 gap-y-6 sm:grid-cols-2 md:grid-cols-3">
+          {Object.values(STRINGS.features).map((feature) => (
+            <FeatureCard
+              key={feature.title}
+              title={feature.title}
+              description={feature.description}
+              icon={FEATURE_ICONS[feature.title]}
+            />
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

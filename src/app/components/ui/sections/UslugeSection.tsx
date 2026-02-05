@@ -91,15 +91,26 @@ export default function UslugeSection() {
         onLeave={() => setActiveNav("home")}
       >
         <div className="relative mx-auto w-full px-6 py-14 overflow-hidden">
-          {/* Animated background with emerald gradient and light streaks */}
+          {/* Animated background with emerald overlay */}
           <div className="absolute inset-0 -z-10 overflow-hidden">
-            {/* Base gradient */}
+            {/* Color overlay */}
+            <motion.div
+              className="absolute inset-0 mix-blend-multiply"
+              animate={{
+                background: isExpanded
+                  ? "linear-gradient(to bottom right, rgb(25,85,55), rgb(30,95,62), rgb(22,70,48))"
+                  : "linear-gradient(to bottom right, rgb(32,95,62), rgb(38,110,72), rgb(28,80,55))",
+              }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            />
+
+            {/* Secondary overlay for depth */}
             <motion.div
               className="absolute inset-0"
               animate={{
                 background: isExpanded
-                  ? "linear-gradient(to bottom right, rgb(20,70,48), rgb(25,90,58), rgb(18,55,40))"
-                  : "linear-gradient(to bottom right, rgb(25,85,55), rgb(30,100,65), rgb(20,60,45))",
+                  ? "linear-gradient(to bottom right, rgba(20,70,48,0.85), rgba(25,90,58,0.8), rgba(18,55,40,0.9))"
+                  : "linear-gradient(to bottom right, rgba(25,85,55,0.8), rgba(30,100,65,0.75), rgba(20,60,45,0.85))",
               }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
             />
@@ -109,8 +120,8 @@ export default function UslugeSection() {
               className="absolute inset-0"
               animate={{
                 background: isExpanded
-                  ? "radial-gradient(ellipse 120% 80% at 50% 30%, rgba(120,200,150,0.2), transparent)"
-                  : "radial-gradient(ellipse 80% 50% at 20% 40%, rgba(100,180,130,0.15), transparent)",
+                  ? "radial-gradient(ellipse 120% 80% at 50% 30%, rgba(120,200,150,0.15), transparent)"
+                  : "radial-gradient(ellipse 80% 50% at 20% 40%, rgba(100,180,130,0.1), transparent)",
               }}
               transition={{ duration: 1, ease: "easeInOut" }}
             />
@@ -125,29 +136,17 @@ export default function UslugeSection() {
               }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             />
-            <motion.div
-              className="absolute inset-0"
-              animate={{
-                background: isExpanded
-                  ? "linear-gradient(115deg, transparent 25%, rgba(255,255,255,0.03) 32%, rgba(255,255,255,0.05) 38%, rgba(255,255,255,0.03) 44%, transparent 50%)"
-                  : "linear-gradient(125deg, transparent 30%, rgba(255,255,255,0.02) 35%, rgba(255,255,255,0.04) 40%, rgba(255,255,255,0.02) 45%, transparent 50%)",
-              }}
-              transition={{ duration: 0.9, ease: "easeOut", delay: 0.1 }}
-            />
 
             {/* Subtle vignette that intensifies when expanded */}
             <motion.div
               className="absolute inset-0"
               animate={{
                 background: isExpanded
-                  ? "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.3) 100%)"
-                  : "radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.2) 100%)",
+                  ? "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.4) 100%)"
+                  : "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.25) 100%)",
               }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
             />
-
-            {/* Subtle texture overlay */}
-            <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmZmYiLz48L3N2Zz4=')]" />
           </div>
           <div className="flex flex-col gap-10 items-center justify-center">
             {/* Title */}
@@ -177,6 +176,8 @@ export default function UslugeSection() {
             {/* Expand Button */}
             <motion.button
               onClick={isExpanded ? handleClose : handleExpand}
+              aria-expanded={isExpanded}
+              aria-controls="usluge-expanded-content"
               className={[
                 "inline-flex items-center gap-2 justify-center rounded-full bg-brand-900/70",
                 "px-6 py-4 text-lg font-semibold text-white shadow-xl",
@@ -188,6 +189,7 @@ export default function UslugeSection() {
             >
               {isExpanded ? "Zatvori" : "Pogledajte sve usluge"}
               <motion.span
+                aria-hidden="true"
                 animate={{ rotate: isExpanded ? 180 : 0 }}
                 transition={{ duration: 0.3 }}
               >
@@ -199,6 +201,7 @@ export default function UslugeSection() {
             <AnimatePresence>
               {isExpanded && (
                 <motion.div
+                  id="usluge-expanded-content"
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
@@ -206,7 +209,7 @@ export default function UslugeSection() {
                     height: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
                     opacity: { duration: 0.3 },
                   }}
-                  className="w-full max-w-4xl overflow-hidden"
+                  className="w-full max-w-5xl overflow-hidden"
                 >
                   <motion.div
                     ref={expandedContentRef}
@@ -234,10 +237,10 @@ export default function UslugeSection() {
                             delay: 0.15 + index * 0.05,
                             duration: 0.3,
                           }}
-                          className="group rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur transition-all duration-200 hover:bg-white/15 hover:border-white/30"
+                          className="group rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur transition-all duration-300 hover:bg-white/15 hover:border-white/30 hover:scale-x-[1.03] hover:rounded-none origin-center"
                         >
                           <div className="flex items-start gap-4">
-                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/20 text-xs font-bold text-white">
+                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-white/30 to-white/10 text-xs font-bold text-white shadow-sm ring-1 ring-white/20">
                               {index + 1}
                             </span>
                             <p className="text-sm leading-relaxed text-white/90 md:text-base">
@@ -259,7 +262,7 @@ export default function UslugeSection() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={scrollToContact}
-                        className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-900 shadow-lg transition-all hover:shadow-xl"
+                        className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-900 shadow-lg transition-all hover:shadow-xl cursor-pointer"
                       >
                         Kontaktirajte nas
                       </motion.button>
@@ -267,7 +270,7 @@ export default function UslugeSection() {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={handleClose}
-                        className="rounded-full border-2 border-white/30 bg-transparent px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/10"
+                        className="rounded-full border-2 border-white/30 bg-transparent px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/10 cursor-pointer"
                       >
                         Zatvori
                       </motion.button>

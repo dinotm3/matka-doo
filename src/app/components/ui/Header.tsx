@@ -7,7 +7,7 @@ import Image from "next/image";
 import type Lenis from "lenis";
 
 export default function Header() {
-  const { activeNav: active, setActiveNav: setActive } = useNav();
+  const { activeNav: active, setActiveNav: setActive, navigateTo } = useNav();
   const [scrolled, setScrolled] = useState(false);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [indicator, setIndicator] = useState<{ left: number; width: number }>({
@@ -101,9 +101,11 @@ export default function Header() {
       <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4 md:gap-0">
         <a
           href="/"
+          aria-label="Matka - Naslovna stranica"
           className="mt-2 justify-self-center md:justify-self-start flex items-center px-6 h-16"
           onClick={(e) => {
             e.preventDefault();
+            navigateTo("home");
             scrollTo("home");
           }}
         >
@@ -118,7 +120,7 @@ export default function Header() {
         </a>
 
         {/* Nav */}
-        <nav className="relative justify-self-center flex flex-wrap justify-center items-center gap-x-6 gap-y-3 text-l pb-4 md:pb-0">
+        <nav aria-label="Glavna navigacija" className="relative justify-self-center flex flex-wrap justify-center items-center gap-x-6 gap-y-3 text-l pb-4 md:pb-0">
           <span
             aria-hidden="true"
             className="absolute bottom-0 h-[2px] bg-brand-900 transition-all duration-slow ease-bounce"
@@ -135,7 +137,7 @@ export default function Header() {
               className="relative z-10 rounded-md px-3 py-2 text-brand-900 hover:text-brand-800 font-bold transition-colors cursor-pointer"
               onClick={(e) => {
                 e.preventDefault();
-                setActive(item.id);
+                navigateTo(item.id);
                 scrollTo(item.id);
               }}
             >

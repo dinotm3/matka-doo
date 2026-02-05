@@ -1,28 +1,36 @@
 "use client";
 
 import { HERO, SITE_INFO } from "@/app/constants/constants";
-import { btnHighlight } from "@/app/constants/uiClasses";
-import { useState, useEffect } from "react";
 
 function Euro() {
-  const [pulse, setPulse] = useState(false);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPulse(true);
-      setTimeout(() => setPulse(false), 2000);
-    }, 6000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const sharpStyle = {
+    WebkitFontSmoothing: "antialiased",
+    MozOsxFontSmoothing: "grayscale",
+    textRendering: "geometricPrecision",
+  } as React.CSSProperties;
 
   return (
     <span
-      className={`text-brand-900 inline-block transition-transform duration-[1800ms] ease-in-out ${
-        pulse ? "scale-130" : "scale-100"
-      }`}
+      className="relative inline-block text-brand-900 animate-euro-premium"
+      style={sharpStyle}
     >
-      €
+      {/* Glow layer */}
+      <span
+        className="absolute inset-0 text-brand-900 animate-euro-glow"
+        aria-hidden="true"
+      >
+        €
+      </span>
+      {/* Shimmer layer */}
+      <span
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent bg-[length:200%_100%] animate-euro-shimmer bg-clip-text"
+        aria-hidden="true"
+        style={{ WebkitBackgroundClip: "text", ...sharpStyle }}
+      >
+        €
+      </span>
+      {/* Main € */}
+      <span className="relative" style={sharpStyle}>€</span>
     </span>
   );
 }
