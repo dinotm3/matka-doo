@@ -7,7 +7,7 @@
 
   --brand-900: 39 125 76;
   --brand-800: 55 145 90;
-  --brand-600: 30 41 57;
+  --brand-600: 239 233 226;
   --brand-300: 72 80 112;
   --brand-200: 92 100 128;
   --brand-100: 140 146 168;
@@ -17,7 +17,8 @@
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-html.lenis, html.lenis body {
+html.lenis,
+html.lenis body {
   height: auto;
 }
 
@@ -55,4 +56,26 @@ body {
 .page-enter {
   animation: pageEnter 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
   will-change: opacity, transform;
+}
+
+@keyframes euro-wiggle {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+  75% {
+    transform: rotate(-1deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-euro-wiggle {
+  animation: euro-wiggle 3s ease-in-out infinite;
 }

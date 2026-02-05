@@ -174,7 +174,7 @@ export const LOKACIJA = {
   adresa: "Ksaverska cesta 47, 10000 Zagreb",
   strings: {
     adresa: "Adresa:",
-    radno_vrijeme_title: "Radno_vrijeme:",
+    radno_vrijeme_title: "Radno vrijeme:",
     radno_vrijeme: "Pon–Pet, 8:00–16:00",
     email: "Email:",
     telefon: "Telefon:",
@@ -190,7 +190,7 @@ export const LOKACIJA = {
 export const HERO = {
   title: "Knjigovodstvene usluge - osnovani 1994. godine",
   bannerFirstRowText: "Vi vodite posao",
-  bannerSecondRowText: "Mi pazimo na brojke",
+  bannerSecondRowText: "Mi pazimo na brojk",
 };
 
 export const KONTAKT = {
