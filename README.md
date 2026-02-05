@@ -16,7 +16,6 @@
   <li><strong>React</strong></li>
   <li><strong>TypeScript</strong></li>
   <li><strong>Tailwind CSS</strong></li>
-  <li><strong>Vercel</strong> (deployment)</li>
 </ul>
 
 <h3>Getting Started</h3>
