@@ -10,9 +10,9 @@ export default function FeatureCard({
   icon,
 }: FeatureCardProps) {
   return (
-    <article className="rounded-2xl p-8 text-center bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200 min-h-[220px]">
+    <article className="rounded-2xl p-8 text-center bg-white border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 min-h-[220px] group">
       <div className="mb-4 flex justify-center">
-        <div className="h-14 w-14 rounded-2xl bg-brand-900/10 flex items-center justify-center" aria-hidden="true">
+        <div className="h-14 w-14 rounded-2xl bg-brand-900/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110" aria-hidden="true">
           {icon}
         </div>
       </div>

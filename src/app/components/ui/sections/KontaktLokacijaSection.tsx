@@ -8,6 +8,7 @@ import InteractiveMap from "../../maps/InteractiveMap";
 import { MapPin, Clock, Mail, Phone } from "lucide-react";
 import { btnHighlight } from "../../../constants/uiClasses";
 import { useNav } from "../../../context/NavContext";
+import Image from "next/image";
 
 export default function KontaktLokacijaSection() {
   const { setActiveNav } = useNav();
@@ -59,7 +60,18 @@ export default function KontaktLokacijaSection() {
       </ScrollReveal>
 
       {/* Content Section */}
-      <div className="bg-gradient-to-b from-gray-50 to-white overflow-x-clip">
+      <div className="relative overflow-x-clip">
+        {/* Subtle texture background */}
+        <div className="absolute inset-0 -z-10">
+          <Image
+            src="/white_bg.jpg"
+            alt=""
+            aria-hidden="true"
+            fill
+            className="object-cover opacity-40"
+          />
+        </div>
+
         <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             {/* Left - Location Info */}
@@ -201,8 +213,8 @@ function InfoRow({
   value: React.ReactNode;
 }) {
   return (
-    <div className="flex items-start gap-4 p-4 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-brand-900/10 flex items-center justify-center text-brand-900">
+    <div className="flex items-start gap-4 p-4 rounded-xl bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group">
+      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-brand-900/10 flex items-center justify-center text-brand-900 transition-transform duration-300 group-hover:scale-110">
         {icon}
       </div>
       <div>
@@ -216,10 +228,11 @@ function InfoRow({
 }
 
 const inputClass = [
-  "w-full rounded-xl border border-gray-200 bg-white px-4 py-3",
+  "w-full rounded-xl border-2 border-gray-200 bg-white px-4 py-3",
   "text-base text-gray-900 placeholder-gray-400",
-  "focus:border-brand-900 focus:outline-none focus:ring-2 focus:ring-brand-900/20",
-  "transition-colors",
+  "focus:border-brand-900 focus:outline-none focus:ring-4 focus:ring-brand-900/10",
+  "focus:shadow-lg focus:-translate-y-0.5",
+  "transition-all duration-300",
 ].join(" ");
 
 function Field({

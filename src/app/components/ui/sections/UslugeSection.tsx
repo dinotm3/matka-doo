@@ -79,86 +79,88 @@ export default function UslugeSection() {
 
   return (
     <section className="w-full text-brand-50 pt-16">
-      <ScrollReveal
-        direction="down"
-        distance={45}
-        fade
-        fadeOutMode="only-up"
-        amount={0.1}
-        enterDuration={0.6}
-        exitDuration={0.6}
-        className="w-full"
-        onEnter={() => setActiveNav("usluge")}
-        onLeave={() => setActiveNav("home")}
-      >
-        <div className="relative mx-auto w-full px-6 py-14 overflow-hidden">
-          {/* Animated background with emerald overlay */}
-          <div className="absolute inset-0 -z-10 overflow-hidden">
-            {/* Background image */}
-            <Image
-              src="/ruler.jpg"
-              alt=""
-              aria-hidden="true"
-              fill
-              className="object-cover"
-              priority
-            />
+      <div className="relative mx-auto w-full px-6 py-14 overflow-hidden">
+        {/* Background - always visible, not affected by ScrollReveal */}
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          {/* Background image */}
+          <Image
+            src="/ruler.jpg"
+            alt=""
+            aria-hidden="true"
+            fill
+            className="object-cover"
+            priority
+          />
 
-            {/* Color overlay - tints the image green */}
-            <motion.div
-              className="absolute inset-0 mix-blend-multiply"
-              animate={{
-                background: isExpanded
-                  ? "linear-gradient(to bottom right, rgb(30,100,65), rgb(35,110,72), rgb(25,85,55))"
-                  : "linear-gradient(to bottom right, rgb(38,115,75), rgb(45,125,82), rgb(32,100,65))",
-              }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-            />
+          {/* Color overlay - tints the image green */}
+          <motion.div
+            className="absolute inset-0 mix-blend-multiply"
+            animate={{
+              background: isExpanded
+                ? "linear-gradient(to bottom right, rgb(30,100,65), rgb(35,110,72), rgb(25,85,55))"
+                : "linear-gradient(to bottom right, rgb(38,115,75), rgb(45,125,82), rgb(32,100,65))",
+            }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+          />
 
-            {/* Secondary overlay for depth and readability */}
-            <motion.div
-              className="absolute inset-0"
-              animate={{
-                background: isExpanded
-                  ? "linear-gradient(to bottom right, rgba(20,70,48,0.65), rgba(25,90,58,0.6), rgba(18,55,40,0.7))"
-                  : "linear-gradient(to bottom right, rgba(25,85,55,0.55), rgba(30,100,65,0.5), rgba(20,60,45,0.6))",
-              }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-            />
+          {/* Secondary overlay for depth and readability */}
+          <motion.div
+            className="absolute inset-0"
+            animate={{
+              background: isExpanded
+                ? "linear-gradient(to bottom right, rgba(20,70,48,0.65), rgba(25,90,58,0.6), rgba(18,55,40,0.7))"
+                : "linear-gradient(to bottom right, rgba(25,85,55,0.55), rgba(30,100,65,0.5), rgba(20,60,45,0.6))",
+            }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+          />
 
-            {/* Animated radial glow - expands and intensifies when open */}
-            <motion.div
-              className="absolute inset-0"
-              animate={{
-                background: isExpanded
-                  ? "radial-gradient(ellipse 120% 80% at 50% 30%, rgba(120,200,150,0.15), transparent)"
-                  : "radial-gradient(ellipse 80% 50% at 20% 40%, rgba(100,180,130,0.1), transparent)",
-              }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-            />
+          {/* Animated radial glow - expands and intensifies when open */}
+          <motion.div
+            className="absolute inset-0"
+            animate={{
+              background: isExpanded
+                ? "radial-gradient(ellipse 120% 80% at 50% 30%, rgba(120,200,150,0.15), transparent)"
+                : "radial-gradient(ellipse 80% 50% at 20% 40%, rgba(100,180,130,0.1), transparent)",
+            }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+          />
 
-            {/* Light streak effect - shifts when expanded */}
-            <motion.div
-              className="absolute inset-0"
-              animate={{
-                background: isExpanded
-                  ? "linear-gradient(145deg, transparent 35%, rgba(255,255,255,0.04) 42%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 58%, transparent 65%)"
-                  : "linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.03) 45%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 55%, transparent 60%)",
-              }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            />
+          {/* Light streak effect - shifts when expanded */}
+          <motion.div
+            className="absolute inset-0"
+            animate={{
+              background: isExpanded
+                ? "linear-gradient(145deg, transparent 35%, rgba(255,255,255,0.04) 42%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 58%, transparent 65%)"
+                : "linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.03) 45%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 55%, transparent 60%)",
+            }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          />
 
-            {/* Subtle vignette that intensifies when expanded */}
-            <motion.div
-              className="absolute inset-0"
-              animate={{
-                background: isExpanded
-                  ? "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.4) 100%)"
-                  : "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.25) 100%)",
-              }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-            />
-          </div>
+          {/* Subtle vignette that intensifies when expanded */}
+          <motion.div
+            className="absolute inset-0"
+            animate={{
+              background: isExpanded
+                ? "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.4) 100%)"
+                : "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.25) 100%)",
+            }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+          />
+        </div>
+
+        {/* Content - fades in with ScrollReveal */}
+        <ScrollReveal
+          direction="down"
+          distance={45}
+          fade
+          fadeOutMode="only-up"
+          amount={0.1}
+          enterDuration={0.6}
+          exitDuration={0.6}
+          className="w-full"
+          onEnter={() => setActiveNav("usluge")}
+          onLeave={() => setActiveNav("home")}
+        >
           <div className="flex flex-col gap-10 items-center justify-center">
             {/* Title */}
             <div className="flex flex-col items-center text-center gap-3">
@@ -291,8 +293,8 @@ export default function UslugeSection() {
               )}
             </AnimatePresence>
           </div>
-        </div>
-      </ScrollReveal>
+        </ScrollReveal>
+      </div>
 
       <div className="h-px w-full bg-white/10" />
     </section>
