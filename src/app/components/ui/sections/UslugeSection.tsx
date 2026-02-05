@@ -8,6 +8,7 @@ import { ChevronDown } from "lucide-react";
 import { btnHighlight } from "@/app/constants/uiClasses";
 import { useNav } from "@/app/context/NavContext";
 import Lenis from "lenis";
+import Image from "next/image";
 
 export default function UslugeSection() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -93,24 +94,34 @@ export default function UslugeSection() {
         <div className="relative mx-auto w-full px-6 py-14 overflow-hidden">
           {/* Animated background with emerald overlay */}
           <div className="absolute inset-0 -z-10 overflow-hidden">
-            {/* Color overlay */}
+            {/* Background image */}
+            <Image
+              src="/ruler.jpg"
+              alt=""
+              aria-hidden="true"
+              fill
+              className="object-cover"
+              priority
+            />
+
+            {/* Color overlay - tints the image green */}
             <motion.div
               className="absolute inset-0 mix-blend-multiply"
               animate={{
                 background: isExpanded
-                  ? "linear-gradient(to bottom right, rgb(25,85,55), rgb(30,95,62), rgb(22,70,48))"
-                  : "linear-gradient(to bottom right, rgb(32,95,62), rgb(38,110,72), rgb(28,80,55))",
+                  ? "linear-gradient(to bottom right, rgb(30,100,65), rgb(35,110,72), rgb(25,85,55))"
+                  : "linear-gradient(to bottom right, rgb(38,115,75), rgb(45,125,82), rgb(32,100,65))",
               }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
             />
 
-            {/* Secondary overlay for depth */}
+            {/* Secondary overlay for depth and readability */}
             <motion.div
               className="absolute inset-0"
               animate={{
                 background: isExpanded
-                  ? "linear-gradient(to bottom right, rgba(20,70,48,0.85), rgba(25,90,58,0.8), rgba(18,55,40,0.9))"
-                  : "linear-gradient(to bottom right, rgba(25,85,55,0.8), rgba(30,100,65,0.75), rgba(20,60,45,0.85))",
+                  ? "linear-gradient(to bottom right, rgba(20,70,48,0.65), rgba(25,90,58,0.6), rgba(18,55,40,0.7))"
+                  : "linear-gradient(to bottom right, rgba(25,85,55,0.55), rgba(30,100,65,0.5), rgba(20,60,45,0.6))",
               }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
             />
