@@ -40,7 +40,7 @@ const jsonLd = {
     closes: "16:00",
   },
   priceRange: "$$",
-  image: `${BASE_URL}/og-image.jpg`,
+  image: `${BASE_URL}/opengraph-image`,
   sameAs: [],
 };
 

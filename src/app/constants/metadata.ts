@@ -40,10 +40,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    apple: [{ url: "/icon.svg" }],
   },
   manifest: "/manifest.json",
   openGraph: {
@@ -51,14 +50,6 @@ export const metadata: Metadata = {
     description: SITE_INFO.description,
     url: BASE_URL,
     siteName: SITE_INFO.name,
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: `${SITE_INFO.name} - Knjigovodstvene usluge Zagreb`,
-      },
-    ],
     locale: "hr_HR",
     type: "website",
   },
@@ -66,7 +57,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_INFO.title,
     description: SITE_INFO.description,
-    images: ["/og-image.jpg"],
   },
   alternates: {
     canonical: BASE_URL,

@@ -3,9 +3,9 @@ import Image from "next/image";
 
 export default function HeroLayout() {
   return (
-    <section id="home" className="relative w-full pt-12 overflow-hidden">
-      {/* Full-width background images - left half */}
-      <div className="hidden md:block absolute left-0 top-0 w-1/2 h-[420px] -z-10">
+    <section id="home" className="relative w-full pt-6 lg:pt-12 overflow-hidden">
+      {/* Background images - left half */}
+      <div className="absolute left-0 top-0 w-1/2 h-[280px] sm:h-[320px] lg:h-[420px] -z-10">
         <Image
           src="/calculator.jpg"
           alt=""
@@ -19,8 +19,8 @@ export default function HeroLayout() {
         <div className="absolute inset-0 bg-gradient-to-l from-white via-white/60 to-transparent" />
       </div>
 
-      {/* Full-width background images - right half */}
-      <div className="hidden md:block absolute right-0 top-0 w-1/2 h-[420px] -z-10">
+      {/* Background images - right half */}
+      <div className="absolute right-0 top-0 w-1/2 h-[280px] sm:h-[320px] lg:h-[420px] -z-10">
         <Image
           src="/registratori_side_image.jpg"
           alt=""

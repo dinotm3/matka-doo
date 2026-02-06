@@ -2,7 +2,7 @@
 
 import { JSX, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { STRINGS, USLUGE, USLUGE_KOMPLETNO } from "@/app/constants/constants";
+import { STRINGS, SERVICES_LIST } from "@/app/constants/constants";
 import ScrollReveal from "../../animations/ui/ScrollReveal";
 import { useNav } from "@/app/context/NavContext";
 import Lenis from "lenis";
@@ -19,12 +19,6 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-// Combine USLUGE cards with USLUGE_KOMPLETNO, Digitalno Poslovanje first
-const COMBINED_SERVICES = [
-  { title: USLUGE[0].title, desc: USLUGE[0].desc },
-  ...USLUGE.slice(1).map((u) => ({ title: u.title, desc: u.desc })),
-  ...USLUGE_KOMPLETNO.map((text) => ({ title: "", desc: text })),
-];
 
 export default function UslugeSection() {
   const { setActiveNav } = useNav();
@@ -221,8 +215,8 @@ export default function UslugeSection() {
             <div className="h-px w-full max-w-4xl mx-auto bg-white/20 my-8" />
 
             {/* Services List - each item fades in individually */}
-            <div className="max-w-5xl mx-auto space-y-3">
-              {COMBINED_SERVICES.map((service, index) => (
+            <div className="max-w-5xl mx-auto space-y-5">
+              {SERVICES_LIST.map((service, index) => (
                 <ScrollReveal
                   key={index}
                   direction="left"
@@ -233,21 +227,14 @@ export default function UslugeSection() {
                   enterDuration={0.4}
                   exitDuration={0.3}
                 >
-                  <div className="group rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur transition-all duration-300 hover:bg-white/15 hover:border-white/30 hover:scale-[1.02] origin-center">
-                    <div className="flex items-start gap-4">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-white/30 to-white/10 text-xs font-bold text-white shadow-sm ring-1 ring-white/20">
+                  <div className="group rounded-xl border border-white/20 bg-white/10 px-6 py-7 md:px-8 md:py-9 backdrop-blur transition-all duration-300 hover:bg-white/15 hover:border-white/30 hover:scale-[1.02] origin-center">
+                    <div className="flex items-start gap-5">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-white/30 to-white/10 text-base font-bold text-white shadow-sm ring-1 ring-white/20">
                         {index + 1}
                       </span>
-                      <div className="flex flex-col">
-                        {service.title && (
-                          <span className="font-semibold text-white">
-                            {service.title}
-                          </span>
-                        )}
-                        <p className="text-sm leading-relaxed text-white/90 md:text-base">
-                          {service.desc}
-                        </p>
-                      </div>
+                      <p className="text-lg leading-relaxed text-white/90 md:text-xl">
+                        {service}
+                      </p>
                     </div>
                   </div>
                 </ScrollReveal>

@@ -36,51 +36,18 @@ export const SITE_INFO: SiteInfo = {
   },
 } as const;
 
-export const USLUGE_KOMPLETNO: string[] = [
-  "Ustroj i vođenje poslovnih knjiga za male i srednje poduzetnike te neprofitne organizacije",
-  "Knjiženje svih potrebnih dokumenata za sastavljanje temeljnih financijskih izvještaja – bilanca, račun dobitka i gubitka, bilješke uz financijske izvještaje",
-  "Sastavljanje statističkih izvještaja (kvartalno i godišnje)",
-  "Usluge vođenja poreznih evidencija i poreznih prijava te poreznog savjetovanja",
-  "Vođenje knjiga ulaznih i izlaznih računa (IRA i URA) te obračun PDV-a",
-  "Usluge obračuna plaće; izrada isplatnih lista, virmana, JOPPD obrasca, vođenje evidencija vezanih uz obradu plaća",
+// Consolidated services list (10 items, digital first)
+export const SERVICES_LIST: string[] = [
+  "E-računi, digitalna razmjena dokumenata i jednostavnije vođenje poslovnih knjiga",
+  "Ustroj i vođenje poslovnih knjiga za d.o.o., j.d.o.o., male i srednje poduzetnike te neprofitne organizacije",
+  "Sastavljanje financijskih izvještaja – bilanca, račun dobitka i gubitka, bilješke uz izvještaje te statistički izvještaji (kvartalno i godišnje)",
+  "Vođenje knjiga ulaznih i izlaznih računa (URA/IRA), obračun PDV-a, PDV prijave, EU isporuke i kontrola rokova",
+  "Vođenje Knjige primitaka i izdataka (KPI/KPR) za obrtnike, obračun poreza i izrada godišnje prijave poreza na dohodak",
+  "Obračun plaća – isplatne liste, virmani, JOPPD obrasci i vođenje evidencija vezanih uz obradu plaća",
   "Obračun autorskih honorara",
-  "Vođenje Knjige primitaka i izdataka za obrtnike te izrada godišnje prijave poreza na dohodak",
-  "Uvođenjem digitaliziranih procesa u vođenju poslovnih knjiga olakšavamo poslovanje našim korisnicima",
-] as const;
-
-export const USLUGE = [
-  {
-    title: "Digitalno poslovanje",
-    desc: "e-računi, digitalna razmjena dokumenata i jednostavniji procesi.",
-  },
-  {
-    title: "d.o.o. / j.d.o.o.",
-    desc: "Glavna knjiga, usklađenja, završni račun i financijski izvještaji.",
-  },
-  {
-    title: "Obrti",
-    desc: "KPI/KPR, obračun poreza, PDV (po potrebi) i godišnje prijave.",
-  },
-  {
-    title: "PDV",
-    desc: "Knjige URA/IRA, PDV prijave, EU isporuke i kontrola rokova.",
-  },
-  {
-    title: "Plaće i JOPPD",
-    desc: "Obračun plaća, isplatne liste, JOPPD i evidencije radnika.",
-  },
-  {
-    title: "Savjetovanje",
-    desc: "Porezni i poslovni savjeti, optimizacija troškova i podrška kroz godinu.",
-  },
-  {
-    title: "URA / IRA",
-    desc: "Knjiženje ulaznih i izlaznih računa, priprema dokumentacije i arhiva.",
-  },
-  {
-    title: "Završni račun",
-    desc: "Bilanca, RDG i bilješke uz izvještaje – predaja na vrijeme i bez stresa.",
-  },
+  "Porezno savjetovanje – vođenje poreznih evidencija, izrada poreznih prijava i poslovna podrška kroz cijelu godinu",
+  "Praćenje zakonskih propisa i pravovremeno usklađivanje poslovanja s promjenama u poreznim i računovodstvenim pravilima",
+  "Redovita komunikacija i dostupnost za sva pitanja i konzultacije tijekom cijele poslovne godine",
 ] as const;
 
 export const SEO_KEYWORDS: string[] = [

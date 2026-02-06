@@ -100,11 +100,11 @@ export default function Header() {
           : "bg-white border-b border-gray-100 shadow-none",
       ].join(" ")}
     >
-      <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4 md:gap-0">
+      <div className="grid grid-cols-1 lg:grid-cols-3 items-center gap-4 lg:gap-0">
         <a
           href="/"
           aria-label="Matka - Naslovna stranica"
-          className="mt-2 justify-self-center md:justify-self-start flex items-center px-6 h-16"
+          className="mt-2 justify-self-center lg:justify-self-start flex items-center px-6 h-16"
           onClick={(e) => {
             e.preventDefault();
             navigateTo("home");
@@ -122,7 +122,7 @@ export default function Header() {
         </a>
 
         {/* Nav */}
-        <nav aria-label="Glavna navigacija" className="relative justify-self-center flex flex-wrap justify-center items-center gap-x-6 gap-y-3 text-l pb-4 md:pb-0">
+        <nav aria-label="Glavna navigacija" className="relative justify-self-center flex justify-center items-center gap-x-4 sm:gap-x-6 text-l pb-4 lg:pb-0">
           <span
             aria-hidden="true"
             className="absolute bottom-0 h-[2px] bg-brand-900 transition-all duration-slow ease-bounce"
@@ -148,7 +148,7 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="hidden md:block" />
+        <div className="hidden lg:block" />
       </div>
 
       {/* Green bottom line */}
