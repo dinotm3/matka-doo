@@ -61,7 +61,7 @@ export default function RootLayout({
       <body className={`${font.variable} antialiased`}>
         <SmoothScroll>
           <NavProvider>
-            <div className="flex min-h-screen flex-col">
+            <div className="flex min-h-dvh flex-col">
               <Header />
               <PageTransition>{children}</PageTransition>
               <Footer />
