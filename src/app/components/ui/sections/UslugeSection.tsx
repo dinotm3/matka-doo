@@ -152,7 +152,7 @@ export default function UslugeSection() {
                     description={
                       feature.title === STRINGS.features.individual.title ? (
                         <>
-                          Usluge i <span className="text-black font-semibold">cijene</span> prilagođavamo vašoj djelatnosti i stvarnim potrebama poslovanja.
+                          Usluge i <span className="text-white font-semibold">cijene</span> prilagođavamo vašoj djelatnosti i stvarnim potrebama poslovanja.
                         </>
                       ) : (
                         feature.description

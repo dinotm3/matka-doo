@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { isValidEmail, isValidPhone } from "@/app/utils/validation";
 
 // Verify reCAPTCHA token
@@ -95,31 +95,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Check email configuration
-    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      console.error("Email configuration missing: EMAIL_USER or EMAIL_PASS not set");
+    if (!process.env.RESEND_API_KEY) {
+      console.error("Email configuration missing: RESEND_API_KEY not set");
       return NextResponse.json(
         { error: "Slanje emaila trenutno nije dostupno. Molimo kontaktirajte nas direktno." },
         { status: 500 }
       );
     }
 
-    // Configure email transporter (Outlook/Microsoft 365)
-    const transporter = nodemailer.createTransport({
-      host: "smtp.office365.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      tls: {
-        ciphers: "SSLv3",
-      },
-    });
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
-    // Email content
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
+    // Send email
+    const { error: sendError } = await resend.emails.send({
+      from: process.env.EMAIL_FROM || "matka@knjigovodstvo-matka.hr",
       to: process.env.EMAIL_TO || "dtretinjakmesaric@gmail.com",
       replyTo: email,
       subject: `Nova poruka s web stranice - ${ime}`,
@@ -157,19 +145,12 @@ export async function POST(request: NextRequest) {
           </p>
         </div>
       `,
-      text: `
-Nova poruka s kontakt obrasca
+    });
 
-Ime i prezime: ${ime}
-Email: ${email}
-${telefon ? `Telefon: ${telefon}` : ""}
-Poruka:
-${poruka}
-      `,
-    };
-
-    // Send email
-    await transporter.sendMail(mailOptions);
+    if (sendError) {
+      console.error("Resend error:", sendError);
+      throw new Error(sendError.message);
+    }
 
     return NextResponse.json(
       { message: "Poruka je uspješno poslana!" },
@@ -178,15 +159,8 @@ ${poruka}
   } catch (error) {
     console.error("Contact form error:", error);
 
-    // Provide more specific error messages
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
-
-    if (errorMessage.includes("Invalid login") || errorMessage.includes("auth")) {
-      return NextResponse.json(
-        { error: "Problem s konfiguracijom emaila. Molimo kontaktirajte nas direktno." },
-        { status: 500 }
-      );
-    }
+    console.error("Send error details:", errorMessage);
 
     return NextResponse.json(
       { error: "Došlo je do greške pri slanju. Molimo pokušajte ponovno ili nas kontaktirajte direktno." },

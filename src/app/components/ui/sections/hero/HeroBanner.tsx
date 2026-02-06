@@ -54,8 +54,7 @@ export default function HeroBanner() {
           </span>{" "}
           {HERO.bannerFirstRowText.split(" ").slice(1).join(" ")}
           <br />
-          {HERO.bannerSecondRowText}
-          <Euro />
+          {HERO.bannerSecondRowText}<span className="whitespace-nowrap">&#8288;<Euro /></span>
         </span>
       </h1>
 
