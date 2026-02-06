@@ -218,8 +218,8 @@ export default function UslugeSection() {
                   enterDuration={0.4}
                   exitDuration={0.3}
                 >
-                  <div className="group rounded-xl border border-white/20 bg-white/10 px-6 py-7 md:px-8 md:py-9 backdrop-blur transition-all duration-300 hover:bg-white/15 hover:border-white/30 hover:scale-[1.02] origin-center">
-                    <div className="flex items-start gap-4">
+                  <div className="group rounded-xl border border-white/20 bg-white/10 px-6 py-5 md:px-8 md:py-6 backdrop-blur transition-all duration-300 hover:bg-white/15 hover:border-white/30 hover:scale-[1.02] origin-center min-h-[100px] md:min-h-[110px] flex items-center">
+                    <div className="flex items-center gap-4">
                       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 ring-1 ring-white/30">
                         <Check className="h-5 w-5 text-white stroke-[2.5]" />
                       </span>
