@@ -10,9 +10,10 @@ export default function Header() {
   const { activeNav: active, setActiveNav: setActive, navigateTo } = useNav();
   const [scrolled, setScrolled] = useState(false);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
-  const [indicator, setIndicator] = useState<{ left: number; width: number }>({
+  const [indicator, setIndicator] = useState<{ left: number; width: number; ready: boolean }>({
     left: 0,
     width: 0,
+    ready: false,
   });
 
   // Premium header state: apply glass styling whenever NOT at the top anymore
@@ -52,7 +53,7 @@ export default function Header() {
     const update = () => {
       const el = linkRefs.current[active];
       if (!el) return;
-      setIndicator({ left: el.offsetLeft, width: el.offsetWidth });
+      setIndicator({ left: el.offsetLeft, width: el.offsetWidth, ready: true });
     };
 
     update();
@@ -125,7 +126,7 @@ export default function Header() {
         <nav aria-label="Glavna navigacija" className="relative justify-self-center flex justify-center items-center gap-x-4 sm:gap-x-6 text-l pb-4 lg:pb-0">
           <span
             aria-hidden="true"
-            className="absolute bottom-0 h-[2px] bg-brand-900 transition-all duration-slow ease-bounce"
+            className={`absolute bottom-0 h-[2px] bg-brand-900 transition-all duration-slow ease-bounce ${indicator.ready ? 'opacity-100' : 'opacity-0'}`}
             style={{ left: indicator.left, width: indicator.width }}
           />
 
