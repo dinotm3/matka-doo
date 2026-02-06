@@ -6,12 +6,15 @@ type NavContextType = {
   activeNav: string;
   setActiveNav: (id: string) => void;
   navigateTo: (id: string) => void;
+  forceExpanded: boolean;
+  setForceExpanded: (v: boolean) => void;
 };
 
 const NavContext = createContext<NavContextType | null>(null);
 
 export function NavProvider({ children }: { children: ReactNode }) {
   const [activeNav, setActiveNavState] = useState("home");
+  const [forceExpanded, setForceExpanded] = useState(false);
   const lockedRef = useRef(false);
 
   // setActiveNav that respects the lock
@@ -32,7 +35,7 @@ export function NavProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <NavContext.Provider value={{ activeNav, setActiveNav, navigateTo }}>
+    <NavContext.Provider value={{ activeNav, setActiveNav, navigateTo, forceExpanded, setForceExpanded }}>
       {children}
     </NavContext.Provider>
   );

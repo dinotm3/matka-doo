@@ -22,7 +22,7 @@ import {
 
 
 export default function UslugeSection() {
-  const { setActiveNav } = useNav();
+  const { setActiveNav, forceExpanded } = useNav();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   // Scroll progress for expanding effect - starts as soon as section enters viewport
@@ -72,7 +72,7 @@ export default function UslugeSection() {
     const lenis = getLenis();
     const contactEl = document.getElementById("contact");
     if (lenis && contactEl) {
-      lenis.scrollTo(contactEl, { duration: 1.2 });
+      lenis.scrollTo(contactEl, { duration: 1.2, offset: -80 });
     } else {
       contactEl?.scrollIntoView({ behavior: "smooth" });
     }
@@ -182,9 +182,10 @@ export default function UslugeSection() {
 
           {/* Expandable content - height animates based on scroll */}
           <motion.div
+            id="usluge-expandable"
             style={{
-              maxHeight: expandHeight,
-              opacity: expandOpacity,
+              maxHeight: forceExpanded ? "none" : expandHeight,
+              opacity: forceExpanded ? 1 : expandOpacity,
             }}
             className="overflow-hidden"
           >

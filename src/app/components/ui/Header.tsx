@@ -7,7 +7,7 @@ import Image from "next/image";
 import type Lenis from "lenis";
 
 export default function Header() {
-  const { activeNav: active, setActiveNav: setActive, navigateTo } = useNav();
+  const { activeNav: active, setActiveNav: setActive, navigateTo, setForceExpanded } = useNav();
   const [scrolled, setScrolled] = useState(false);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [indicator, setIndicator] = useState<{ left: number; width: number; ready: boolean }>({
@@ -77,13 +77,35 @@ export default function Header() {
     // For usluge, scroll to the title instead of the section top
     const targetId = id === "usluge" ? "usluge-title" : id;
     const element = document.getElementById(targetId);
-    if (element) {
-      if (lenis) {
-        lenis.scrollTo(element, { duration: 1.2, offset: -headerOffset });
-      } else {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+    if (!element) return;
+
+    // Force-expand the usluge expandable content via React state so that
+    // Framer Motion stops controlling maxHeight/opacity and Lenis can
+    // calculate the correct target position for sections below it.
+    const needsExpand = id === "location" || id === "contact" || id === "usluge";
+    if (needsExpand) {
+      setForceExpanded(true);
     }
+
+    // Wait two frames for React to re-render and browser to reflow
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (lenis) {
+          lenis.resize(); // recalculate after layout change
+          lenis.scrollTo(element, {
+            duration: 1.2,
+            offset: -headerOffset,
+            onComplete: () => {
+              // Remove override — by now scroll progress will keep it expanded
+              if (needsExpand) setForceExpanded(false);
+            },
+          });
+        } else {
+          element.scrollIntoView({ behavior: "smooth" });
+          if (needsExpand) setForceExpanded(false);
+        }
+      });
+    });
   };
 
   return (

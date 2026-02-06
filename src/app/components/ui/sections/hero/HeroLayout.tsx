@@ -13,7 +13,7 @@ export default function HeroLayout() {
           fill
           className="object-cover object-right"
           priority
-          quality={90}
+          quality={75}
         />
         {/* Gradient fade towards center */}
         <div className="absolute inset-0 bg-gradient-to-l from-white via-white/60 to-transparent" />
@@ -28,7 +28,7 @@ export default function HeroLayout() {
           fill
           className="object-cover object-left"
           priority
-          quality={90}
+          quality={75}
         />
         {/* Gradient fade towards center */}
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent" />
