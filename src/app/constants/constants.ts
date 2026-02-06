@@ -29,7 +29,7 @@ export const SITE_INFO: SiteInfo = {
   email: "matka@knjigovodstvo-matka.hr",
   phone: "+38514673751",
   pages: {
-    home: "Naslovna",
+    home: "O nama",
     services: "Usluge",
     location: "Lokacija",
     contact: "Kontakt",
