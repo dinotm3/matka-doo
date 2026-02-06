@@ -17,6 +17,7 @@ import {
   Headphones,
   ArrowRight,
   ChevronDown,
+  Check,
 } from "lucide-react";
 
 
@@ -228,9 +229,9 @@ export default function UslugeSection() {
                   exitDuration={0.3}
                 >
                   <div className="group rounded-xl border border-white/20 bg-white/10 px-6 py-7 md:px-8 md:py-9 backdrop-blur transition-all duration-300 hover:bg-white/15 hover:border-white/30 hover:scale-[1.02] origin-center">
-                    <div className="flex items-start gap-5">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-white/30 to-white/10 text-base font-bold text-white shadow-sm ring-1 ring-white/20">
-                        {index + 1}
+                    <div className="flex items-start gap-4">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 ring-1 ring-white/30">
+                        <Check className="h-5 w-5 text-white stroke-[2.5]" />
                       </span>
                       <p className="text-lg leading-relaxed text-white/90 md:text-xl">
                         {service}
