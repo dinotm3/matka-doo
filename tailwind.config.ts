@@ -28,6 +28,15 @@ const config: Config = {
         smooth: "400ms",
         slow: "var(--motion-slow)",
       },
+      keyframes: {
+        "pulse-subtle": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.6" },
+        },
+      },
+      animation: {
+        "pulse-subtle": "pulse-subtle 4s ease-in-out infinite",
+      },
     },
   },
   plugins: [],

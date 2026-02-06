@@ -12,7 +12,6 @@ type SiteInfo = Readonly<{
   phone: string;
   pages: {
     home: string;
-    about: string;
     services: string;
     location: string;
     contact: string;
@@ -31,7 +30,6 @@ export const SITE_INFO: SiteInfo = {
   phone: "+38514673751",
   pages: {
     home: "Naslovna",
-    about: "O nama",
     services: "Usluge",
     location: "Lokacija",
     contact: "Kontakt",
@@ -121,6 +119,10 @@ export const STRINGS = {
   },
 
   features: {
+    digital: {
+      title: "Digitalno poslovanje",
+      description: "Digitalna obrada dokumentacije i suvremeni alat.",
+    },
     experience: {
       title: "30+ godina iskustva",
       description:
@@ -130,10 +132,6 @@ export const STRINGS = {
       title: "Ažurno i precizno",
       description:
         "Rokovi, obračuni i dokumentacija vode se točno, uredno i bez kašnjenja.",
-    },
-    digital: {
-      title: "Digitalno poslovanje",
-      description: "Digitalna obrada dokumentacije i suvremeni alat.",
     },
     trust: {
       title: "Diskrecija i povjerenje",
@@ -152,20 +150,6 @@ export const STRINGS = {
     },
   },
 } as const;
-
-export const ABOUT_TEXT = [
-  "Knjigovodstvene usluge pružamo od 1994. godine na zadovoljstvo naših klijenata, od kojih su neki s nama od samih početaka. ",
-
-  "Svojim dugogodišnjim iskustvom i znanjem pružamo sigurnu podršku ažurnim, preciznim i modernim načinom vođenja poslovnih knjiga. ",
-
-  "Individualnim pristupom svakom društvu nastojimo prilagoditi naše usluge i cijene stvarnim potrebama poslovanja. ",
-
-  "Redovito pratimo zakonske propise i promjene kako bi naši klijenti uvijek poslovali u skladu s važećim zakonima. ",
-
-  "Posebnu pažnju posvećujemo diskreciji, točnosti podataka i pravovremenoj komunikaciji s klijentima. ",
-
-  "Naš cilj je dugoročna suradnja temeljena na povjerenju, jasnoći i profesionalnosti. ",
-] as const;
 
 export const LOKACIJA = {
   title: "Lokacija ureda",

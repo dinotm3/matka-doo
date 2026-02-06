@@ -1,71 +1,77 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { USLUGE, USLUGE_KOMPLETNO } from "@/app/constants/constants";
+import { JSX, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { STRINGS, USLUGE, USLUGE_KOMPLETNO } from "@/app/constants/constants";
 import ScrollReveal from "../../animations/ui/ScrollReveal";
-import { ChevronDown } from "lucide-react";
-import { btnHighlight } from "@/app/constants/uiClasses";
 import { useNav } from "@/app/context/NavContext";
 import Lenis from "lenis";
 import Image from "next/image";
+import FeatureCard from "../FeatureCard";
+import {
+  Award,
+  BadgeCheck,
+  Laptop2,
+  ShieldCheck,
+  Sparkles,
+  Headphones,
+  ArrowRight,
+  ChevronDown,
+} from "lucide-react";
+
+// Combine USLUGE cards with USLUGE_KOMPLETNO, Digitalno Poslovanje first
+const COMBINED_SERVICES = [
+  { title: USLUGE[0].title, desc: USLUGE[0].desc },
+  ...USLUGE.slice(1).map((u) => ({ title: u.title, desc: u.desc })),
+  ...USLUGE_KOMPLETNO.map((text) => ({ title: "", desc: text })),
+];
 
 export default function UslugeSection() {
-  const [isExpanded, setIsExpanded] = useState(false);
   const { setActiveNav } = useNav();
-  const savedScrollPosition = useRef<number | null>(null);
-  const expandedContentRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Get Lenis instance for smooth scrolling
-  const getLenis = () => (window as unknown as { lenis?: Lenis }).lenis;
+  // Scroll progress for expanding effect - starts as soon as section enters viewport
+  // To adjust speed: change the second offset value. More negative = slower expansion
+  // Examples: "start -1" (slower), "start -2" (even slower), "start -3" (very slow)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "start -1.5"],
+  });
 
-  const handleExpand = () => {
-    savedScrollPosition.current = window.scrollY;
-    setIsExpanded(true);
+  // Expandable content max-height: 0 -> full over longer scroll distance for smoothness
+  const expandHeight = useTransform(
+    scrollYProgress,
+    [0.1, 0.9],
+    ["0px", "3000px"],
+  );
+  const expandOpacity = useTransform(scrollYProgress, [0.25, 0.35], [0, 1]);
 
-    // Wait for React + framer-motion to mount the expanded content
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const el = expandedContentRef.current;
-        if (!el) return;
+  // Scroll indicator: inverse of title - visible when title hidden, fades out as title fades in
+  const indicatorOpacity = useTransform(scrollYProgress, [0.25, 0.35], [1, 0]);
 
-        const rect = el.getBoundingClientRect();
-
-        // Current absolute scroll position + element's top in viewport
-        const elementTopAbsolute = window.scrollY + rect.top;
-
-        // Center the element in the viewport
-        const target =
-          elementTopAbsolute - (window.innerHeight / 2 - rect.height / 2);
-
-        const lenis = getLenis();
-        const clamped = Math.max(0, target);
-
-        if (lenis) {
-          lenis.scrollTo(clamped, { duration: 1.1 });
-        } else {
-          window.scrollTo({ top: clamped, behavior: "smooth" });
-        }
-      });
+  // Set nav to "usluge" when scrolling through section (based on scroll progress)
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      // When content is expanding/visible (scroll progress between 0.25 and 0.95)
+      if (latest > 0.25 && latest < 0.95) {
+        setActiveNav("usluge");
+      }
     });
+    return unsubscribe;
+  }, [scrollYProgress, setActiveNav]);
+
+  // Feature icons for compact cards
+  const iconProps = "h-5 w-5 text-white stroke-[1.5]";
+  const FEATURE_ICONS: Record<string, JSX.Element> = {
+    [STRINGS.features.digital.title]: <Laptop2 className={iconProps} />,
+    [STRINGS.features.experience.title]: <Award className={iconProps} />,
+    [STRINGS.features.precision.title]: <BadgeCheck className={iconProps} />,
+    [STRINGS.features.trust.title]: <ShieldCheck className={iconProps} />,
+    [STRINGS.features.individual.title]: <Sparkles className={iconProps} />,
+    [STRINGS.features.support.title]: <Headphones className={iconProps} />,
   };
 
-  const handleClose = () => {
-    const savedPos = savedScrollPosition.current;
-    setIsExpanded(false);
-    // Restore scroll position after a brief delay for animation
-    if (savedPos !== null) {
-      setTimeout(() => {
-        const lenis = getLenis();
-        if (lenis) {
-          lenis.scrollTo(savedPos, { duration: 1.4 });
-        } else {
-          window.scrollTo({ top: savedPos, behavior: "smooth" });
-        }
-        savedScrollPosition.current = null;
-      }, 150);
-    }
-  };
+  const getLenis = () => (window as unknown as { lenis?: Lenis }).lenis;
 
   const scrollToContact = () => {
     const lenis = getLenis();
@@ -78,225 +84,215 @@ export default function UslugeSection() {
   };
 
   return (
-    <section className="w-full text-brand-50 pt-16">
-      <div className="relative mx-auto w-full px-6 py-14 overflow-hidden">
-        {/* Background - always visible, not affected by ScrollReveal */}
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          {/* Background image */}
-          <Image
-            src="/ruler.jpg"
-            alt=""
-            aria-hidden="true"
-            fill
-            className="object-cover"
-            priority
-          />
+    <div ref={sectionRef}>
+      <section className="w-full text-brand-50">
+        <div className="relative mx-auto w-full px-6 py-14 overflow-hidden">
+          {/* Background - static */}
+          <div className="absolute inset-0 -z-10 overflow-hidden">
+            {/* Background image */}
+            <Image
+              src="/ruler.jpg"
+              alt=""
+              aria-hidden="true"
+              fill
+              className="object-cover object-[center_30%]"
+              priority
+            />
 
-          {/* Color overlay - tints the image green */}
-          <motion.div
-            className="absolute inset-0 mix-blend-multiply"
-            animate={{
-              background: isExpanded
-                ? "linear-gradient(to bottom right, rgb(30,100,65), rgb(35,110,72), rgb(25,85,55))"
-                : "linear-gradient(to bottom right, rgb(38,115,75), rgb(45,125,82), rgb(32,100,65))",
-            }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-          />
+            {/* Color overlay */}
+            <div
+              className="absolute inset-0 mix-blend-multiply"
+              style={{
+                background:
+                  "linear-gradient(to bottom right, rgb(30,100,65), rgb(35,110,72), rgb(25,85,55))",
+              }}
+            />
 
-          {/* Secondary overlay for depth and readability */}
-          <motion.div
-            className="absolute inset-0"
-            animate={{
-              background: isExpanded
-                ? "linear-gradient(to bottom right, rgba(20,70,48,0.65), rgba(25,90,58,0.6), rgba(18,55,40,0.7))"
-                : "linear-gradient(to bottom right, rgba(25,85,55,0.55), rgba(30,100,65,0.5), rgba(20,60,45,0.6))",
-            }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-          />
+            {/* Secondary overlay for depth */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to bottom right, rgba(20,70,48,0.65), rgba(25,90,58,0.6), rgba(18,55,40,0.7))",
+              }}
+            />
 
-          {/* Animated radial glow - expands and intensifies when open */}
-          <motion.div
-            className="absolute inset-0"
-            animate={{
-              background: isExpanded
-                ? "radial-gradient(ellipse 120% 80% at 50% 30%, rgba(120,200,150,0.15), transparent)"
-                : "radial-gradient(ellipse 80% 50% at 20% 40%, rgba(100,180,130,0.1), transparent)",
-            }}
-            transition={{ duration: 1, ease: "easeInOut" }}
-          />
+            {/* Radial glow */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(ellipse 120% 80% at 50% 30%, rgba(120,200,150,0.15), transparent)",
+              }}
+            />
 
-          {/* Light streak effect - shifts when expanded */}
-          <motion.div
-            className="absolute inset-0"
-            animate={{
-              background: isExpanded
-                ? "linear-gradient(145deg, transparent 35%, rgba(255,255,255,0.04) 42%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 58%, transparent 65%)"
-                : "linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.03) 45%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 55%, transparent 60%)",
-            }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          />
+            {/* Light streak effect */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(145deg, transparent 35%, rgba(255,255,255,0.04) 42%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 58%, transparent 65%)",
+              }}
+            />
 
-          {/* Subtle vignette that intensifies when expanded */}
-          <motion.div
-            className="absolute inset-0"
-            animate={{
-              background: isExpanded
-                ? "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.4) 100%)"
-                : "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.25) 100%)",
-            }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-          />
-        </div>
+            {/* Vignette */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.4) 100%)",
+              }}
+            />
+          </div>
 
-        {/* Content - fades in with ScrollReveal */}
-        <ScrollReveal
-          direction="down"
-          distance={45}
-          fade
-          fadeOutMode="only-up"
-          amount={0.1}
-          enterDuration={0.6}
-          exitDuration={0.6}
-          className="w-full"
-          onEnter={() => setActiveNav("usluge")}
-          onLeave={() => setActiveNav("home")}
-        >
-          <div className="flex flex-col gap-10 items-center justify-center">
-            {/* Title */}
-            <div className="flex flex-col items-center text-center gap-3">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-                Najčešće usluge
-              </h2>
+          {/* Feature Cards Section - always visible */}
+          <ScrollReveal
+            direction="down"
+            distance={45}
+            fade
+            fadeOutMode="only-up"
+            amount={0.1}
+            enterDuration={0.6}
+            exitDuration={0.6}
+            className="w-full"
+            onEnter={() => setActiveNav("usluge")}
+          >
+            <div className="flex flex-col gap-8 items-center justify-center">
+              {/* 6 Feature Cards - 3 columns (2 rows) */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-4xl w-full">
+                {Object.values(STRINGS.features).map((feature) => (
+                  <FeatureCard
+                    key={feature.title}
+                    title={feature.title}
+                    description={
+                      feature.title === STRINGS.features.individual.title ? (
+                        <>
+                          Usluge i <span className="text-black font-semibold">cijene</span> prilagođavamo vašoj djelatnosti i stvarnim potrebama poslovanja.
+                        </>
+                      ) : (
+                        feature.description
+                      )
+                    }
+                    icon={FEATURE_ICONS[feature.title]}
+                    variant="compact-green"
+                  />
+                ))}
+              </div>
             </div>
+          </ScrollReveal>
 
-            {/* Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 max-w-6xl">
-              {USLUGE.map((s) => (
-                <div
-                  key={s.title}
-                  className="rounded-2xl border border-white/20 bg-white/10 p-6 shadow-sm backdrop-blur hover:bg-white/15 hover:border-white/30 transition-all duration-200"
+          {/* Scroll indicator - bouncing chevron */}
+          <motion.div
+            style={{ opacity: indicatorOpacity }}
+            className="flex justify-center mt-6"
+          >
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              className="text-white/70"
+            >
+              <ChevronDown className="h-6 w-6" />
+            </motion.div>
+          </motion.div>
+
+          {/* Expandable content - height animates based on scroll */}
+          <motion.div
+            style={{
+              maxHeight: expandHeight,
+              opacity: expandOpacity,
+            }}
+            className="overflow-hidden"
+          >
+            {/* Title */}
+            <ScrollReveal
+              direction="none"
+              distance={0}
+              fade={false}
+              amount={0.5}
+            >
+              <div id="usluge-title" className="w-full mt-8 scroll-mt-24">
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center">
+                  Kompletna ponuda usluga
+                </h2>
+              </div>
+            </ScrollReveal>
+
+            {/* Divider */}
+            <div className="h-px w-full max-w-4xl mx-auto bg-white/20 my-8" />
+
+            {/* Services List - each item fades in individually */}
+            <div className="max-w-5xl mx-auto space-y-3">
+              {COMBINED_SERVICES.map((service, index) => (
+                <ScrollReveal
+                  key={index}
+                  direction="left"
+                  distance={20}
+                  fade
+                  fadeOutMode="only-up"
+                  amount={0.5}
+                  enterDuration={0.4}
+                  exitDuration={0.3}
                 >
-                  <div className="text-lg font-semibold text-white">
-                    {s.title}
+                  <div className="group rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur transition-all duration-300 hover:bg-white/15 hover:border-white/30 hover:scale-[1.02] origin-center">
+                    <div className="flex items-start gap-4">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-white/30 to-white/10 text-xs font-bold text-white shadow-sm ring-1 ring-white/20">
+                        {index + 1}
+                      </span>
+                      <div className="flex flex-col">
+                        {service.title && (
+                          <span className="font-semibold text-white">
+                            {service.title}
+                          </span>
+                        )}
+                        <p className="text-sm leading-relaxed text-white/90 md:text-base">
+                          {service.desc}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="mt-2 text-sm md:text-[15px] leading-relaxed text-white/80">
-                    {s.desc}
-                  </div>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
 
-            {/* Expand Button */}
-            <motion.button
-              onClick={isExpanded ? handleClose : handleExpand}
-              aria-expanded={isExpanded}
-              aria-controls="usluge-expanded-content"
-              className={[
-                "inline-flex items-center gap-2 justify-center rounded-full bg-brand-900/70",
-                "px-6 py-4 text-lg font-semibold text-white shadow-xl",
-                "hover:bg-black transition-colors",
-                btnHighlight,
-              ].join(" ")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
+            {/* CTA Button */}
+            <ScrollReveal
+              direction="up"
+              distance={20}
+              fade
+              fadeOutMode="only-up"
+              amount={0.5}
+              enterDuration={0.4}
+              exitDuration={0.3}
+              className="mt-8 flex justify-center"
             >
-              {isExpanded ? "Zatvori" : "Pogledajte sve usluge"}
-              <motion.span
-                aria-hidden="true"
-                animate={{ rotate: isExpanded ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={scrollToContact}
+                className="group/btn rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-900 shadow-lg transition-all hover:shadow-xl cursor-pointer flex items-center gap-2"
               >
-                <ChevronDown className="h-5 w-5" />
-              </motion.span>
-            </motion.button>
+                Kontaktirajte nas
+                <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+              </motion.button>
+            </ScrollReveal>
+          </motion.div>
+        </div>
+      </section>
+    </div>
+  );
+}
 
-            {/* Expanded Content */}
-            <AnimatePresence>
-              {isExpanded && (
-                <motion.div
-                  id="usluge-expanded-content"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{
-                    height: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
-                    opacity: { duration: 0.3 },
-                  }}
-                  className="w-full max-w-5xl overflow-hidden"
-                >
-                  <motion.div
-                    ref={expandedContentRef}
-                    initial={{ y: -20 }}
-                    animate={{ y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                    className="pt-4 scroll-mt-4"
-                  >
-                    {/* Section Title */}
-                    <h3
-                      id="kompletna"
-                      className="text-xl font-semibold text-white text-center mb-6"
-                    >
-                      Kompletna ponuda usluga
-                    </h3>
-
-                    {/* Services List */}
-                    <div className="space-y-3">
-                      {USLUGE_KOMPLETNO.map((usluga, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{
-                            delay: 0.15 + index * 0.05,
-                            duration: 0.3,
-                          }}
-                          className="group rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur transition-all duration-300 hover:bg-white/15 hover:border-white/30 hover:scale-x-[1.03] hover:rounded-none origin-center"
-                        >
-                          <div className="flex items-start gap-4">
-                            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-white/30 to-white/10 text-xs font-bold text-white shadow-sm ring-1 ring-white/20">
-                              {index + 1}
-                            </span>
-                            <p className="text-sm leading-relaxed text-white/90 md:text-base">
-                              {usluga}
-                            </p>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-
-                    {/* Bottom Actions */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6, duration: 0.4 }}
-                      className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4"
-                    >
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={scrollToContact}
-                        className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-900 shadow-lg transition-all hover:shadow-xl cursor-pointer"
-                      >
-                        Kontaktirajte nas
-                      </motion.button>
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={handleClose}
-                        className="rounded-full border-2 border-white/30 bg-transparent px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/10 cursor-pointer"
-                      >
-                        Zatvori
-                      </motion.button>
-                    </motion.div>
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </ScrollReveal>
-      </div>
-
-      <div className="h-px w-full bg-white/10" />
-    </section>
+// Spacer component with background between sections
+export function UslugeSpacer() {
+  return (
+    <div className="h-20 w-full relative">
+      <Image
+        src="/white_bg.jpg"
+        alt=""
+        aria-hidden="true"
+        fill
+        className="object-cover opacity-40"
+      />
+    </div>
   );
 }

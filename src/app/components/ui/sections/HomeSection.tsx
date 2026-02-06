@@ -1,4 +1,4 @@
-import UslugeSection from "./UslugeSection";
+import UslugeSection, { UslugeSpacer } from "./UslugeSection";
 import KontaktLokacijaSection from "./KontaktLokacijaSection";
 
 export default function HomeSection() {
@@ -7,6 +7,7 @@ export default function HomeSection() {
       <div id="usluge" className="scroll-mt-20">
         <UslugeSection />
       </div>
+      <UslugeSpacer />
       <div id="location" className="scroll-mt-20">
         <KontaktLokacijaSection />
       </div>

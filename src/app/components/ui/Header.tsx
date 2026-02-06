@@ -73,7 +73,9 @@ export default function Header() {
       return;
     }
 
-    const element = document.getElementById(id);
+    // For usluge, scroll to the title instead of the section top
+    const targetId = id === "usluge" ? "usluge-title" : id;
+    const element = document.getElementById(targetId);
     if (element) {
       if (lenis) {
         lenis.scrollTo(element, { duration: 1.2, offset: -headerOffset });

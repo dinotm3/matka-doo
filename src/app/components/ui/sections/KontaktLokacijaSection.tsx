@@ -1,14 +1,25 @@
 "use client";
 
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import ScrollReveal from "../../animations/ui/ScrollReveal";
 import ScrollTopBtn from "../../buttons/ScrollTopBtn";
 import { LOKACIJA, SITE_INFO, KONTAKT } from "../../../constants/constants";
 import InteractiveMap from "../../maps/InteractiveMap";
-import { MapPin, Clock, Mail, Phone } from "lucide-react";
+import { MapPin, Clock, Mail, Phone, Loader2 } from "lucide-react";
 import { btnHighlight } from "../../../constants/uiClasses";
 import { useNav } from "../../../context/NavContext";
 import Image from "next/image";
+import { isValidEmail, isValidPhone } from "../../../utils/validation";
+
+// Extend window for reCAPTCHA
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (callback: () => void) => void;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+    };
+  }
+}
 
 export default function KontaktLokacijaSection() {
   const { setActiveNav } = useNav();
@@ -18,19 +29,139 @@ export default function KontaktLokacijaSection() {
     telefon: "",
     poruka: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  // Load reCAPTCHA script
+  useEffect(() => {
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (!siteKey) return;
+
+    const script = document.createElement("script");
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
+    script.async = true;
+    document.head.appendChild(script);
+
+    return () => {
+      // Cleanup script on unmount
+      const existingScript = document.querySelector(
+        `script[src*="recaptcha"]`
+      );
+      if (existingScript) {
+        existingScript.remove();
+      }
+      // Also remove the reCAPTCHA badge if desired
+      const badge = document.querySelector(".grecaptcha-badge");
+      if (badge) {
+        badge.remove();
+      }
+    };
+  }, []);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFields((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFields((prev) => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+    setSubmitError("");
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const validateFields = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!fields.ime.trim()) {
+      newErrors.ime = "Ime je obavezno";
+    }
+
+    if (!fields.email.trim()) {
+      newErrors.email = "Email je obavezan";
+    } else if (!isValidEmail(fields.email)) {
+      newErrors.email = "Unesite ispravnu email adresu";
+    }
+
+    if (fields.telefon && !isValidPhone(fields.telefon)) {
+      newErrors.telefon = "Unesite ispravan broj telefona";
+    }
+
+    if (!fields.poruka.trim()) {
+      newErrors.poruka = "Poruka je obavezna";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const getRecaptchaToken = async (): Promise<string | null> => {
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (!siteKey || !window.grecaptcha) return null;
+
+    try {
+      return await new Promise((resolve) => {
+        window.grecaptcha.ready(async () => {
+          const token = await window.grecaptcha.execute(siteKey, {
+            action: "contact_form",
+          });
+          resolve(token);
+        });
+      });
+    } catch {
+      console.error("Failed to get reCAPTCHA token");
+      return null;
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setFields({ ime: "", email: "", telefon: "", poruka: "" });
-    setTimeout(() => setSubmitted(false), 6000);
+    setSubmitError("");
+    setErrors({});
+
+    if (!validateFields()) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Get reCAPTCHA token
+      const recaptchaToken = await getRecaptchaToken();
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...fields,
+          recaptchaToken,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // If server returns a specific field error, highlight that field
+        if (data.field) {
+          setErrors({ [data.field]: data.error });
+        } else {
+          setSubmitError(data.error || "Došlo je do greške");
+        }
+        return;
+      }
+
+      setSubmitted(true);
+      setFields({ ime: "", email: "", telefon: "", poruka: "" });
+      setTimeout(() => setSubmitted(false), 6000);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error ? error.message : "Došlo je do greške. Molimo pokušajte ponovno."
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -154,6 +285,8 @@ export default function KontaktLokacijaSection() {
                         value={fields.ime}
                         onChange={handleChange}
                         placeholder={KONTAKT.strings.placeholder_ime}
+                        error={errors.ime}
+                        disabled={isLoading}
                       />
                       <Field
                         label={KONTAKT.strings.field_email}
@@ -162,14 +295,19 @@ export default function KontaktLokacijaSection() {
                         value={fields.email}
                         onChange={handleChange}
                         placeholder={KONTAKT.strings.placeholder_email}
+                        error={errors.email}
+                        disabled={isLoading}
                       />
                       <Field
-                        label={KONTAKT.strings.field_telefon}
+                        label={`${KONTAKT.strings.field_telefon} (opcionalno)`}
                         name="telefon"
                         type="tel"
                         value={fields.telefon}
                         onChange={handleChange}
                         placeholder={KONTAKT.strings.placeholder_telefon}
+                        error={errors.telefon}
+                        disabled={isLoading}
+                        required={false}
                       />
                       <Field
                         label={KONTAKT.strings.field_poruka}
@@ -178,17 +316,61 @@ export default function KontaktLokacijaSection() {
                         value={fields.poruka}
                         onChange={handleChange}
                         placeholder={KONTAKT.strings.placeholder_poruka}
+                        error={errors.poruka}
+                        disabled={isLoading}
                       />
+
+                      {submitError && (
+                        <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-red-700 text-sm">
+                          {submitError}
+                        </div>
+                      )}
+
                       <button
                         type="submit"
+                        disabled={isLoading}
                         className={[
                           "w-full rounded-full bg-brand-900 cursor-pointer",
                           "px-6 py-4 text-lg font-semibold text-white shadow-xl",
+                          "disabled:opacity-70 disabled:cursor-not-allowed",
+                          "flex items-center justify-center gap-2",
                           btnHighlight,
                         ].join(" ")}
                       >
-                        {KONTAKT.strings.submit}
+                        {isLoading ? (
+                          <>
+                            <Loader2 className="h-5 w-5 animate-spin" />
+                            Šaljem...
+                          </>
+                        ) : (
+                          KONTAKT.strings.submit
+                        )}
                       </button>
+
+                      {/* reCAPTCHA notice */}
+                      {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY && (
+                        <p className="text-xs text-gray-500 text-center">
+                          Ovaj obrazac je zaštićen pomoću reCAPTCHA i primjenjuju se Google{" "}
+                          <a
+                            href="https://policies.google.com/privacy"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline hover:text-gray-700"
+                          >
+                            Pravila privatnosti
+                          </a>{" "}
+                          i{" "}
+                          <a
+                            href="https://policies.google.com/terms"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline hover:text-gray-700"
+                          >
+                            Uvjeti korištenja
+                          </a>
+                          .
+                        </p>
+                      )}
                     </form>
                   )}
                 </div>
@@ -233,7 +415,10 @@ const inputClass = [
   "focus:border-brand-900 focus:outline-none focus:ring-4 focus:ring-brand-900/10",
   "focus:shadow-lg focus:-translate-y-0.5",
   "transition-all duration-300",
+  "disabled:opacity-60 disabled:cursor-not-allowed",
 ].join(" ");
+
+const inputErrorClass = "border-red-400 focus:border-red-500 focus:ring-red-100";
 
 function Field({
   label,
@@ -242,6 +427,9 @@ function Field({
   value,
   onChange,
   placeholder,
+  error,
+  disabled,
+  required = true,
 }: {
   label: string;
   name: string;
@@ -249,6 +437,9 @@ function Field({
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   placeholder: string;
+  error?: string;
+  disabled?: boolean;
+  required?: boolean;
 }) {
   return (
     <div>
@@ -265,10 +456,12 @@ function Field({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          required
-          aria-required="true"
+          required={required}
+          aria-required={required}
+          aria-invalid={!!error}
+          disabled={disabled}
           rows={4}
-          className={`${inputClass} resize-none`}
+          className={`${inputClass} resize-none ${error ? inputErrorClass : ""}`}
         />
       ) : (
         <input
@@ -278,10 +471,15 @@ function Field({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          required
-          aria-required="true"
-          className={inputClass}
+          required={required}
+          aria-required={required}
+          aria-invalid={!!error}
+          disabled={disabled}
+          className={`${inputClass} ${error ? inputErrorClass : ""}`}
         />
+      )}
+      {error && (
+        <p className="mt-1 text-sm text-red-600">{error}</p>
       )}
     </div>
   );
