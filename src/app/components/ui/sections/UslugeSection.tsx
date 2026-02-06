@@ -140,18 +140,8 @@ export default function UslugeSection() {
             />
           </div>
 
-          {/* Feature Cards Section - always visible */}
-          <ScrollReveal
-            direction="down"
-            distance={45}
-            fade
-            fadeOutMode="only-up"
-            amount={0.1}
-            enterDuration={0.6}
-            exitDuration={0.6}
-            className="w-full"
-            onEnter={() => setActiveNav("usluge")}
-          >
+          {/* Feature Cards Section - no fade to prevent nav jump on load */}
+          <div className="w-full">
             <div className="flex flex-col gap-8 items-center justify-center">
               {/* 6 Feature Cards - 3 columns (2 rows) */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-4xl w-full">
@@ -174,7 +164,7 @@ export default function UslugeSection() {
                 ))}
               </div>
             </div>
-          </ScrollReveal>
+          </div>
 
           {/* Scroll indicator - bouncing chevron */}
           <motion.div

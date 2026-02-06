@@ -126,8 +126,12 @@ export default function Header() {
         <nav aria-label="Glavna navigacija" className="relative justify-self-center flex justify-center items-center gap-x-4 sm:gap-x-6 text-l pb-4 lg:pb-0">
           <span
             aria-hidden="true"
-            className={`absolute bottom-0 h-[2px] bg-brand-900 transition-all duration-slow ease-bounce ${indicator.ready ? 'opacity-100' : 'opacity-0'}`}
-            style={{ left: indicator.left, width: indicator.width }}
+            className={`absolute bottom-0 h-[2px] bg-brand-900 ${indicator.ready ? 'transition-all duration-slow ease-bounce' : ''}`}
+            style={{
+              left: indicator.left,
+              width: indicator.width,
+              visibility: indicator.ready ? 'visible' : 'hidden'
+            }}
           />
 
           {NAV_ITEMS.map((item) => (
