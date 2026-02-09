@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Lenis from "lenis";
 
 export default function SmoothScroll({
   children,
@@ -11,44 +10,66 @@ export default function SmoothScroll({
   const rafId = useRef<number | null>(null);
 
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.6,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-      touchMultiplier: 0.7,
-    });
+    // Skip smooth scroll on touch/mobile devices — native scroll is better
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) return;
 
-    (window as any).lenis = lenis;
+    // Defer Lenis initialization to avoid blocking main thread during load
+    const init = () => {
+      import("lenis").then(({ default: Lenis }) => {
+        const lenis = new Lenis({
+          duration: 1.6,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: "vertical",
+          gestureOrientation: "vertical",
+          smoothWheel: true,
+          touchMultiplier: 0.7,
+        });
 
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId.current = requestAnimationFrame(raf);
+        (window as any).lenis = lenis;
+
+        const raf = (time: number) => {
+          lenis.raf(time);
+          rafId.current = requestAnimationFrame(raf);
+        };
+        rafId.current = requestAnimationFrame(raf);
+
+        // Keep Lenis in sync with layout changes
+        const ro = new ResizeObserver(() => {
+          requestAnimationFrame(() => lenis.resize());
+        });
+        ro.observe(document.body);
+
+        const onResize = () => lenis.resize();
+        window.addEventListener("resize", onResize);
+
+        // Store cleanup for unmount
+        (window as any).__lenisCleanup = () => {
+          if (rafId.current) cancelAnimationFrame(rafId.current);
+          rafId.current = null;
+          window.removeEventListener("resize", onResize);
+          ro.disconnect();
+          lenis.destroy();
+          if ((window as any).lenis === lenis) {
+            (window as any).lenis = undefined;
+          }
+        };
+      });
     };
-    rafId.current = requestAnimationFrame(raf);
 
-    // Keep Lenis in sync with layout changes (expands, fonts, images, transitions)
-    const ro = new ResizeObserver(() => {
-      requestAnimationFrame(() => lenis.resize());
-    });
-    ro.observe(document.body);
-
-    const onResize = () => lenis.resize();
-    window.addEventListener("resize", onResize);
-    window.addEventListener("load", onResize);
+    // Use requestIdleCallback to defer initialization after critical rendering
+    if ("requestIdleCallback" in window) {
+      (window as any).__lenisIdleId = requestIdleCallback(init);
+    } else {
+      setTimeout(init, 100);
+    }
 
     return () => {
-      if (rafId.current) cancelAnimationFrame(rafId.current);
-      rafId.current = null;
-
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("load", onResize);
-
-      ro.disconnect();
-      lenis.destroy();
-
-      if ((window as any).lenis === lenis) (window as any).lenis = undefined;
+      if ((window as any).__lenisIdleId) {
+        cancelIdleCallback((window as any).__lenisIdleId);
+      }
+      (window as any).__lenisCleanup?.();
     };
   }, []);
 

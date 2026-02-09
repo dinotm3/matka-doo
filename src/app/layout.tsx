@@ -53,6 +53,19 @@ export default function RootLayout({
   return (
     <html lang="hr" className={font.variable}>
       <head>
+        {/* Preload LCP hero images for faster discovery */}
+        <link
+          rel="preload"
+          href="/calculator.webp"
+          as="image"
+          type="image/webp"
+        />
+        <link
+          rel="preload"
+          href="/registratori_side_image.webp"
+          as="image"
+          type="image/webp"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
