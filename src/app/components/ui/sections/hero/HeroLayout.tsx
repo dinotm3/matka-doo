@@ -7,13 +7,14 @@ export default function HeroLayout() {
       {/* Background images - left half */}
       <div className="absolute left-0 top-0 w-1/2 h-[280px] sm:h-[320px] lg:h-[420px] -z-10">
         <Image
-          src="/calculator.jpg"
+          src="/calculator.webp"
           alt=""
           aria-hidden="true"
           fill
           className="object-cover object-right"
           priority
-          quality={75}
+          sizes="50vw"
+          quality={65}
         />
         {/* Gradient fade towards center */}
         <div className="absolute inset-0 bg-gradient-to-l from-white via-white/60 to-transparent" />
@@ -22,13 +23,14 @@ export default function HeroLayout() {
       {/* Background images - right half */}
       <div className="absolute right-0 top-0 w-1/2 h-[280px] sm:h-[320px] lg:h-[420px] -z-10">
         <Image
-          src="/registratori_side_image.jpg"
+          src="/registratori_side_image.webp"
           alt=""
           aria-hidden="true"
           fill
           className="object-cover object-left"
           priority
-          quality={75}
+          sizes="50vw"
+          quality={65}
         />
         {/* Gradient fade towards center */}
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent" />

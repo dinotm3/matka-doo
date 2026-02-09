@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import React, { ChangeEvent, FormEvent, useState, useEffect, useRef, useCallback } from "react";
 import ScrollReveal from "../../animations/ui/ScrollReveal";
 import ScrollTopBtn from "../../buttons/ScrollTopBtn";
 import { LOKACIJA, SITE_INFO, KONTAKT } from "../../../constants/constants";
@@ -34,31 +34,47 @@ export default function KontaktLokacijaSection() {
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  // Load reCAPTCHA script
-  useEffect(() => {
+  // Lazy-load reCAPTCHA script only when contact section is near viewport
+  const sectionObserverRef = useRef<HTMLDivElement>(null);
+  const recaptchaLoaded = useRef(false);
+
+  const loadRecaptcha = useCallback(() => {
     const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
-    if (!siteKey) return;
+    if (!siteKey || recaptchaLoaded.current) return;
+    recaptchaLoaded.current = true;
 
     const script = document.createElement("script");
     script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`;
     script.async = true;
     document.head.appendChild(script);
+  }, []);
+
+  useEffect(() => {
+    const el = sectionObserverRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadRecaptcha();
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" } // Load slightly before visible
+    );
+    observer.observe(el);
 
     return () => {
+      observer.disconnect();
       // Cleanup script on unmount
       const existingScript = document.querySelector(
         `script[src*="recaptcha"]`
       );
-      if (existingScript) {
-        existingScript.remove();
-      }
-      // Also remove the reCAPTCHA badge if desired
+      if (existingScript) existingScript.remove();
       const badge = document.querySelector(".grecaptcha-badge");
-      if (badge) {
-        badge.remove();
-      }
+      if (badge) badge.remove();
     };
-  }, []);
+  }, [loadRecaptcha]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -165,7 +181,7 @@ export default function KontaktLokacijaSection() {
   };
 
   return (
-    <section className="relative w-full">
+    <section ref={sectionObserverRef} className="relative w-full">
       {/* Full Width Map */}
       <ScrollReveal
         direction="down"
@@ -195,10 +211,12 @@ export default function KontaktLokacijaSection() {
         {/* Subtle texture background */}
         <div className="absolute inset-0 -z-10">
           <Image
-            src="/white_bg.jpg"
+            src="/white_bg.webp"
             alt=""
             aria-hidden="true"
             fill
+            sizes="100vw"
+            quality={60}
             className="object-cover opacity-40"
           />
         </div>

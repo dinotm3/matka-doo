@@ -86,12 +86,13 @@ export default function UslugeSection() {
           <div className="absolute inset-0 -z-10 overflow-hidden">
             {/* Background image */}
             <Image
-              src="/ruler.jpg"
+              src="/ruler.webp"
               alt=""
               aria-hidden="true"
               fill
               className="object-cover object-[center_30%]"
-              priority
+              sizes="100vw"
+              quality={60}
             />
 
             {/* Color overlay */}
@@ -266,10 +267,12 @@ export function UslugeSpacer() {
   return (
     <div className="h-20 w-full relative">
       <Image
-        src="/white_bg.jpg"
+        src="/white_bg.webp"
         alt=""
         aria-hidden="true"
         fill
+        sizes="100vw"
+        quality={60}
         className="object-cover opacity-40"
       />
     </div>

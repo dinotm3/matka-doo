@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { useMapInteractionLock } from "../../hooks/useMapInteractionLock";
 
 type MapSize = "sm" | "md" | "lg" | "fill";
@@ -33,6 +33,26 @@ export default function InteractiveMap({
   const { wrapRef, mapActive, setMapActive, setIsOverMap } =
     useMapInteractionLock<HTMLDivElement>();
 
+  // Defer iframe loading until visible
+  const [isVisible, setIsVisible] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   const heightClass = useMemo(() => {
     if (minHeight != null) return "";
 
@@ -59,7 +79,11 @@ export default function InteractiveMap({
 
   return (
     <div
-      ref={wrapRef}
+      ref={(el) => {
+        // Merge refs: wrapRef for interaction lock, sentinelRef for lazy loading
+        (wrapRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+        (sentinelRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+      }}
       onMouseEnter={() => {
         setIsOverMap(true);
         setMapActive(true);
@@ -71,15 +95,17 @@ export default function InteractiveMap({
       className={`relative ${heightClass} ${className}`}
       style={style}
     >
-      <iframe
-        src={src}
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        className={[
-          "absolute inset-0 h-full w-full transition-transform duration-300",
-          mapActive ? "pointer-events-auto" : "pointer-events-none",
-        ].join(" ")}
-      />
+      {isVisible && (
+        <iframe
+          src={src}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className={[
+            "absolute inset-0 h-full w-full transition-transform duration-300",
+            mapActive ? "pointer-events-auto" : "pointer-events-none",
+          ].join(" ")}
+        />
+      )}
 
       {fadeEdge && (
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-l from-white/0 to-white/10" />
