@@ -19,7 +19,9 @@ export default function Home() {
           fill
           className="object-cover opacity-40"
           sizes="100vw"
-          quality={60}
+          quality={50}
+          priority
+          fetchPriority="high"
         />
       </div>
 

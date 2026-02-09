@@ -91,8 +91,8 @@ export default function UslugeSection() {
               aria-hidden="true"
               fill
               className="object-cover object-[center_30%]"
-              sizes="100vw"
-              quality={60}
+              sizes="(max-width: 768px) 100vw, 100vw"
+              quality={40}
             />
 
             {/* Color overlay */}
