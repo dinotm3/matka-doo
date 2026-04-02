@@ -1,11 +1,14 @@
 "use client";
 
-import { JSX, useEffect, useRef } from "react";
+import { JSX, useEffect, useLayoutEffect, useRef, useState } from "react";
+
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 import { motion, useScroll, useTransform } from "framer-motion";
 import { STRINGS, SERVICES_LIST } from "@/app/constants/constants";
 import ScrollReveal from "../../animations/ui/ScrollReveal";
 import { useNav } from "@/app/context/NavContext";
-import Lenis from "lenis";
+import type Lenis from "lenis";
 import Image from "next/image";
 import FeatureCard from "../FeatureCard";
 import {
@@ -25,32 +28,43 @@ export default function UslugeSection() {
   const { setActiveNav, forceExpanded } = useNav();
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Scroll progress for expanding effect - starts as soon as section enters viewport
-  // To adjust speed: change the second offset value. More negative = slower expansion
-  // Examples: "start -1" (slower), "start -2" (even slower), "start -3" (very slow)
+  // On larger viewports, start with a few service rows already visible
+  const [initialHeight, setInitialHeight] = useState("0px");
+  const [initialOpacity, setInitialOpacity] = useState(0);
+
+  // Runs before paint to prevent the map's ScrollReveal from firing
+  // onEnter during the brief 0px state
+  useIsomorphicLayoutEffect(() => {
+    if (window.innerHeight > 1100) {
+      setInitialHeight("700px");
+      setInitialOpacity(1);
+    }
+  }, []);
+
+  // Scroll progress for expanding effect
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "start -1.5"],
+    offset: ["start center", "start -1.5"],
   });
 
-  // Expandable content max-height: 0 -> full over longer scroll distance for smoothness
+  // Expandable content max-height: initialHeight -> full over scroll distance
   const expandHeight = useTransform(
     scrollYProgress,
-    [0.1, 0.9],
-    ["0px", "3000px"],
+    [0.05, 0.85],
+    [initialHeight, "3000px"],
   );
-  const expandOpacity = useTransform(scrollYProgress, [0.25, 0.35], [0, 1]);
+  const expandOpacity = useTransform(scrollYProgress, [0.15, 0.3], [initialOpacity, 1]);
 
-  // Scroll indicator: inverse of title - visible when title hidden, fades out as title fades in
-  const indicatorOpacity = useTransform(scrollYProgress, [0.25, 0.35], [1, 0]);
+  // Chevron visible until content is nearly fully expanded
+  const [showChevron, setShowChevron] = useState(true);
 
-  // Set nav to "usluge" when scrolling through section (based on scroll progress)
+  // Set nav to "usluge" when scrolling through section + control chevron visibility
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (latest) => {
-      // When content is expanding/visible (scroll progress between 0.25 and 0.95)
-      if (latest > 0.25 && latest < 0.95) {
+      if (latest > 0.15 && latest < 0.6) {
         setActiveNav("usluge");
       }
+      setShowChevron(latest < 0.8);
     });
     return unsubscribe;
   }, [scrollYProgress, setActiveNav]);
@@ -167,20 +181,6 @@ export default function UslugeSection() {
             </div>
           </div>
 
-          {/* Scroll indicator - bouncing chevron */}
-          <motion.div
-            style={{ opacity: indicatorOpacity }}
-            className="flex justify-center mt-6"
-          >
-            <motion.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              className="text-white/70"
-            >
-              <ChevronDown className="h-6 w-6" />
-            </motion.div>
-          </motion.div>
-
           {/* Expandable content - height animates based on scroll */}
           <motion.div
             id="usluge-expandable"
@@ -188,7 +188,7 @@ export default function UslugeSection() {
               maxHeight: forceExpanded ? "none" : expandHeight,
               opacity: forceExpanded ? 1 : expandOpacity,
             }}
-            className="overflow-hidden"
+            className="overflow-hidden relative"
           >
             {/* Title */}
             <ScrollReveal
@@ -255,6 +255,20 @@ export default function UslugeSection() {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
               </motion.button>
             </ScrollReveal>
+
+            {/* Scroll indicator - pinned to bottom of visible area */}
+            <div
+              className="absolute bottom-0 left-0 right-0 flex justify-center pb-3 pt-10 bg-gradient-to-t from-[rgb(25,85,55)] via-[rgba(25,85,55,0.8)] to-transparent pointer-events-none transition-opacity duration-500"
+              style={{ opacity: showChevron ? 1 : 0 }}
+            >
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                className="text-white/70"
+              >
+                <ChevronDown className="h-6 w-6" />
+              </motion.div>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -265,7 +279,7 @@ export default function UslugeSection() {
 // Spacer component with background between sections
 export function UslugeSpacer() {
   return (
-    <div className="h-20 w-full relative">
+    <div className="h-8 w-full relative">
       <Image
         src="/white_bg.webp"
         alt=""

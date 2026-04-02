@@ -16,19 +16,6 @@ export default function Header() {
     ready: false,
   });
 
-  // Premium header state: apply glass styling whenever NOT at the top anymore
-  useEffect(() => {
-    const THRESHOLD = 12;
-
-    const onScroll = () => {
-      setScrolled(window.scrollY > THRESHOLD);
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   // Sync active tab from URL hash on initial load
   useEffect(() => {
     const hash = window.location.hash.replace("#", "");
@@ -37,15 +24,30 @@ export default function Header() {
     }
   }, [setActive]);
 
-  // Ensure home is active when at top of page
+  // Combined scroll handler: header glass effect + home active detection
   useEffect(() => {
-    const handleTopCheck = () => {
-      if (window.scrollY < 100) {
+    const THRESHOLD = 12;
+    let homeThreshold = window.innerHeight * 0.15;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > THRESHOLD);
+      if (y < homeThreshold) {
         setActive("home");
       }
     };
-    window.addEventListener("scroll", handleTopCheck, { passive: true });
-    return () => window.removeEventListener("scroll", handleTopCheck);
+
+    const onResize = () => {
+      homeThreshold = window.innerHeight * 0.15;
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
   }, [setActive]);
 
   // Animate the indicator bar to follow the active link
