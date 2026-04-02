@@ -64,7 +64,7 @@ export default function UslugeSection() {
       if (latest > 0.15 && latest < 0.6) {
         setActiveNav("usluge");
       }
-      setShowChevron(latest < 0.8);
+      setShowChevron(latest < 0.4);
     });
     return unsubscribe;
   }, [scrollYProgress, setActiveNav]);
