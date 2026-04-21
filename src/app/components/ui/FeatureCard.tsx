@@ -17,7 +17,7 @@ export default function FeatureCard({
     <article
       className={
         isCompact
-          ? "rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur hover:bg-white/15 hover:border-white/30 hover:scale-[1.02] transition-all duration-300 group text-center"
+          ? "rounded-xl border border-white/20 bg-white/15 p-4 hover:bg-white/20 hover:border-white/30 hover:scale-[1.02] transition-[background-color,border-color,transform] duration-300 group text-center"
           : "rounded-2xl p-8 text-center bg-white border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 min-h-[220px] group"
       }
     >

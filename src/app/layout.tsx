@@ -39,9 +39,13 @@ const jsonLd = {
     opens: "08:00",
     closes: "16:00",
   },
+  areaServed: [
+    { "@type": "City", name: "Zagreb" },
+    { "@type": "Country", name: "Hrvatska" },
+  ],
   priceRange: "$$",
   image: `${BASE_URL}/opengraph-image`,
-  sameAs: [],
+  sameAs: [SITE_INFO.gbp_url].filter(Boolean),
 };
 
 export default function RootLayout({
@@ -53,13 +57,7 @@ export default function RootLayout({
   return (
     <html lang="hr" className={font.variable}>
       <head>
-        {/* Preload LCP image for faster discovery */}
-        <link
-          rel="preload"
-          href="/white_bg.webp"
-          as="image"
-          type="image/webp"
-        />
+        {/* Next/Image with priority already preloads white_bg.webp — no manual preload needed */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

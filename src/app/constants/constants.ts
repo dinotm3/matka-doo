@@ -10,6 +10,8 @@ type SiteInfo = Readonly<{
   country: string;
   email: string;
   phone: string;
+  phoneDisplay: string;
+  gbp_url: string;
   pages: {
     home: string;
     services: string;
@@ -21,13 +23,15 @@ type SiteInfo = Readonly<{
 export const SITE_INFO: SiteInfo = {
   name: "Matka d.o.o.",
   title: "Matka d.o.o. – Knjigovodstvene Usluge Zagreb",
-  description: "Pouzdane knjigovodstvene usluge za poduzeća svih veličina.",
+  description: "Pouzdane knjigovodstvene usluge u Zagrebu za poduzeća svih veličina.",
   address: "Ksaverska cesta 47",
   zip_code: "10000",
   city: "Zagreb",
   country: "Hrvatska",
   email: "matka@knjigovodstvo-matka.hr",
   phone: "+38514673751",
+  phoneDisplay: "+385 1 467 3751",
+  gbp_url: "",
   pages: {
     home: "O nama",
     services: "Usluge",
@@ -139,7 +143,7 @@ export const LOKACIJA = {
 };
 
 export const HERO = {
-  title: "Knjigovodstvene usluge - osnovani 1994. godine",
+  title: "Knjigovodstvene usluge u Zagrebu – osnovani 1994. godine",
   bannerFirstRowText: "Vi vodite posao",
   bannerSecondRowText: "Mi pazimo na brojk",
 };

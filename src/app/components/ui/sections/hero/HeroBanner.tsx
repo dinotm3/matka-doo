@@ -40,14 +40,14 @@ export default function HeroBanner() {
   const euroIndex = text.lastIndexOf("€");
   return (
     <div className="text-center">
-      {/* Brand badge */}
-      <span className="inline-block text-sm font-semibold text-brand-900 bg-brand-900/10 px-4 py-1.5 rounded-full">
-        {HERO.title}
-      </span>
+      <h1 className="leading-tight">
+        {/* Local-keyword eyebrow (part of H1 for SEO) */}
+        <span className="inline-block text-sm font-semibold text-brand-900 bg-brand-900/10 px-4 py-1.5 rounded-full">
+          {HERO.title}
+        </span>
 
-      {/* Headline */}
-      <h1 className="mt-3 text-5xl md:text-7xl font-bold tracking-tight text-black leading-tight">
-        <span className="text-black md:whitespace-nowrap">
+        {/* Headline */}
+        <span className="block mt-3 text-5xl md:text-7xl font-bold tracking-tight text-black md:whitespace-nowrap">
           <span className="text-brand-900">
             {" "}
             {HERO.bannerFirstRowText.split(" ")[0]}

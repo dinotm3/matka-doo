@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
   // Generate ETags for caching
   generateEtags: true,
 
+  // Next 16 requires every <Image quality={…}> value to be allowlisted
+  images: {
+    qualities: [40, 50, 60, 65, 75],
+  },
+
   // Security & Best Practices headers
   async headers() {
     return [

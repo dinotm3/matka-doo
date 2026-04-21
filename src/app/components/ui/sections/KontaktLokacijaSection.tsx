@@ -8,7 +8,6 @@ import InteractiveMap from "../../maps/InteractiveMap";
 import { MapPin, Clock, Mail, Phone, Loader2 } from "lucide-react";
 import { btnHighlight } from "../../../constants/uiClasses";
 import { useNav } from "../../../context/NavContext";
-import Image from "next/image";
 import { isValidEmail, isValidPhone } from "../../../utils/validation";
 
 // Extend window for reCAPTCHA
@@ -208,18 +207,13 @@ export default function KontaktLokacijaSection() {
 
       {/* Content Section */}
       <div className="relative overflow-x-clip">
-        {/* Subtle texture background */}
-        <div className="absolute inset-0 -z-10">
-          <Image
-            src="/white_bg.webp"
-            alt=""
-            aria-hidden="true"
-            fill
-            sizes="100vw"
-            quality={60}
-            className="object-cover opacity-40"
-          />
-        </div>
+        {/* Grayish-white with subtle brand-green tint */}
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
+            background: "linear-gradient(to bottom, #f1f3f1, #e6ede8)",
+          }}
+        />
 
         <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">

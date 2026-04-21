@@ -92,11 +92,15 @@ export default function ScrollReveal({
   );
   const viewport = useMemo(() => ({ amount, margin }), [amount, margin]);
 
-  // Track scroll direction
+  // Track scroll direction — only needed when fadeOutMode depends on it
   const lastYRef = useRef(0);
   const scrollDirRef = useRef<"up" | "down">("down");
+  const needsScrollDir =
+    fadeOutMode === "only-up" || fadeOutMode === "only-down";
 
   useEffect(() => {
+    if (!needsScrollDir) return;
+
     lastYRef.current = window.scrollY;
 
     const onScroll = () => {
@@ -107,7 +111,7 @@ export default function ScrollReveal({
 
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [needsScrollDir]);
 
   const shouldFadeOut = () => {
     if (fadeOutMode === "never") return false;
