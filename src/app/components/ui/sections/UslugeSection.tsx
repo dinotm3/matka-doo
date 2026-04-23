@@ -5,7 +5,6 @@ import { motion, useScroll } from "framer-motion";
 import { STRINGS, SERVICES_LIST } from "@/app/constants/constants";
 import ScrollReveal from "../../animations/ui/ScrollReveal";
 import { useNav } from "@/app/context/NavContext";
-import type Lenis from "lenis";
 import Image from "next/image";
 import FeatureCard from "../FeatureCard";
 import {
@@ -52,16 +51,11 @@ export default function UslugeSection() {
     [STRINGS.features.support.title]: <Headphones className={iconProps} />,
   };
 
-  const getLenis = () => (window as unknown as { lenis?: Lenis }).lenis;
-
   const scrollToContact = () => {
-    const lenis = getLenis();
     const contactEl = document.getElementById("contact");
-    if (lenis && contactEl) {
-      lenis.scrollTo(contactEl, { duration: 1.2, offset: -80 });
-    } else {
-      contactEl?.scrollIntoView({ behavior: "smooth" });
-    }
+    if (!contactEl) return;
+    const top = contactEl.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top, behavior: "smooth" });
   };
 
   return (
@@ -185,7 +179,7 @@ export default function UslugeSection() {
                 enterDuration={0.4}
                 exitDuration={0.3}
               >
-                <div className="group rounded-xl border border-white/20 bg-white/15 px-6 py-5 md:px-8 md:py-6 transition-[background-color,border-color,transform] duration-300 hover:bg-white/20 hover:border-white/30 hover:scale-[1.02] origin-center min-h-[100px] md:min-h-[110px] flex items-center">
+                <div className="group rounded-xl border border-white/20 bg-white/15 px-6 py-5 md:px-8 md:py-6 transition-all duration-300 hover:bg-white/20 hover:border-white/30 hover:scale-[1.02] origin-center min-h-[100px] md:min-h-[110px] flex items-center">
                   <div className="flex items-center gap-4">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/20 ring-1 ring-white/30">
                       <Check className="h-5 w-5 text-white stroke-[2.5]" />

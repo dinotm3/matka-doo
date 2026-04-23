@@ -1,10 +1,39 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 
 export type RevealDirection = "left" | "right" | "up" | "down" | "none";
 export type FadeOutMode = "always" | "never" | "only-up" | "only-down";
+
+// Shared scroll-direction tracker — one window listener for all ScrollReveal
+// instances that need it, instead of N listeners.
+let sharedScrollDir: "up" | "down" = "down";
+let sharedLastY = 0;
+let sharedSubscribers = 0;
+let sharedHandler: (() => void) | null = null;
+
+function subscribeScrollDir(): () => void {
+  sharedSubscribers++;
+  if (sharedSubscribers === 1 && typeof window !== "undefined") {
+    sharedLastY = window.scrollY;
+    sharedHandler = () => {
+      const y = window.scrollY;
+      if (y !== sharedLastY) {
+        sharedScrollDir = y < sharedLastY ? "up" : "down";
+        sharedLastY = y;
+      }
+    };
+    window.addEventListener("scroll", sharedHandler, { passive: true });
+  }
+  return () => {
+    sharedSubscribers--;
+    if (sharedSubscribers === 0 && sharedHandler) {
+      window.removeEventListener("scroll", sharedHandler);
+      sharedHandler = null;
+    }
+  };
+}
 
 type Props = {
   children: React.ReactNode;
@@ -92,32 +121,20 @@ export default function ScrollReveal({
   );
   const viewport = useMemo(() => ({ amount, margin }), [amount, margin]);
 
-  // Track scroll direction — only needed when fadeOutMode depends on it
-  const lastYRef = useRef(0);
-  const scrollDirRef = useRef<"up" | "down">("down");
+  // Subscribe to the shared scroll-direction tracker only when needed
   const needsScrollDir =
     fadeOutMode === "only-up" || fadeOutMode === "only-down";
 
   useEffect(() => {
     if (!needsScrollDir) return;
-
-    lastYRef.current = window.scrollY;
-
-    const onScroll = () => {
-      const y = window.scrollY;
-      scrollDirRef.current = y < lastYRef.current ? "up" : "down";
-      lastYRef.current = y;
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return subscribeScrollDir();
   }, [needsScrollDir]);
 
   const shouldFadeOut = () => {
     if (fadeOutMode === "never") return false;
     if (fadeOutMode === "always") return true;
-    if (fadeOutMode === "only-up") return scrollDirRef.current === "up";
-    if (fadeOutMode === "only-down") return scrollDirRef.current === "down";
+    if (fadeOutMode === "only-up") return sharedScrollDir === "up";
+    if (fadeOutMode === "only-down") return sharedScrollDir === "down";
     return true;
   };
 

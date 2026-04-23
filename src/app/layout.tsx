@@ -5,7 +5,6 @@ import Footer from "./components/ui/Footer";
 import Header from "./components/ui/Header";
 import PageTransition from "./components/transitions/PageTransition";
 import { NavProvider } from "./context/NavContext";
-import SmoothScroll from "./components/scroll/SmoothScroll";
 import { metadata as siteMetadata, viewport as siteViewport } from "./constants/metadata";
 import { BASE_URL, SITE_INFO } from "./constants/constants";
 
@@ -64,15 +63,13 @@ export default function RootLayout({
         />
       </head>
       <body className={`${font.variable} antialiased`}>
-        <SmoothScroll>
-          <NavProvider>
-            <div className="flex min-h-dvh flex-col">
-              <Header />
-              <PageTransition>{children}</PageTransition>
-              <Footer />
-            </div>
-          </NavProvider>
-        </SmoothScroll>
+        <NavProvider>
+          <div className="flex min-h-dvh flex-col">
+            <Header />
+            <PageTransition>{children}</PageTransition>
+            <Footer />
+          </div>
+        </NavProvider>
       </body>
     </html>
   );

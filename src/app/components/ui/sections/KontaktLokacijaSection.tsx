@@ -181,10 +181,11 @@ export default function KontaktLokacijaSection() {
 
   return (
     <section ref={sectionObserverRef} className="relative w-full">
-      {/* Full Width Map */}
+      {/* Full Width Map — opacity-only fade, no translate (a 50–60vh iframe
+          is too expensive to paint-animate with a transform). */}
       <ScrollReveal
-        direction="down"
-        distance={45}
+        direction="none"
+        distance={0}
         fade
         fadeOutMode="only-up"
         amount={0.1}

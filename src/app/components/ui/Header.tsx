@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { NAV_ITEMS } from "../../constants/navigation";
 import { useNav } from "../../context/NavContext";
 import Image from "next/image";
-import type Lenis from "lenis";
 
 export default function Header() {
   const { activeNav: active, setActiveNav: setActive, navigateTo, setForceExpanded } = useNav();
@@ -64,15 +63,10 @@ export default function Header() {
   }, [active]);
 
   const scrollTo = (id: string) => {
-    const lenis = (window as unknown as { lenis?: Lenis }).lenis;
     const headerOffset = 80; // Account for sticky header
 
     if (id === "home") {
-      if (lenis) {
-        lenis.scrollTo(0, { duration: 1.2 });
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
@@ -82,8 +76,7 @@ export default function Header() {
     if (!element) return;
 
     // Force-expand the usluge expandable content via React state so that
-    // Framer Motion stops controlling maxHeight/opacity and Lenis can
-    // calculate the correct target position for sections below it.
+    // layout is correct before computing the scroll target.
     const needsExpand = id === "location" || id === "contact" || id === "usluge";
     if (needsExpand) {
       setForceExpanded(true);
@@ -92,20 +85,10 @@ export default function Header() {
     // Wait two frames for React to re-render and browser to reflow
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        if (lenis) {
-          lenis.resize(); // recalculate after layout change
-          lenis.scrollTo(element, {
-            duration: 1.2,
-            offset: -headerOffset,
-            onComplete: () => {
-              // Remove override — by now scroll progress will keep it expanded
-              if (needsExpand) setForceExpanded(false);
-            },
-          });
-        } else {
-          element.scrollIntoView({ behavior: "smooth" });
-          if (needsExpand) setForceExpanded(false);
-        }
+        const top =
+          element.getBoundingClientRect().top + window.scrollY - headerOffset;
+        window.scrollTo({ top, behavior: "smooth" });
+        if (needsExpand) setForceExpanded(false);
       });
     });
   };
