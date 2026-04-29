@@ -73,7 +73,6 @@ export default function InteractiveMap({
     >
       <iframe
         src={src}
-        loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
         className={[
           "absolute inset-0 h-full w-full",

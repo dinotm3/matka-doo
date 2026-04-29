@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { isValidEmail, isValidPhone } from "@/app/utils/validation";
+import { isValidEmail, isValidPhone, escapeHtml } from "@/app/utils/validation";
 
 // Verify reCAPTCHA token
 async function verifyRecaptcha(token: string): Promise<{ success: boolean; score?: number; error?: string }> {
@@ -105,7 +105,13 @@ export async function POST(request: NextRequest) {
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    // Send email
+    // Escape user input before HTML interpolation to prevent injection
+    // when the email is rendered in the recipient's mail client.
+    const safeIme = escapeHtml(ime);
+    const safeEmail = escapeHtml(email);
+    const safeTelefon = telefon ? escapeHtml(telefon) : "";
+    const safePoruka = escapeHtml(poruka).replace(/\n/g, "<br/>");
+
     const { error: sendError } = await resend.emails.send({
       from: process.env.EMAIL_FROM || "matka@knjigovodstvo-matka.hr",
       to: process.env.EMAIL_TO || "dtretinjakmesaric@gmail.com",
@@ -120,23 +126,23 @@ export async function POST(request: NextRequest) {
           <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p style="margin: 0 0 10px 0;">
               <strong>Ime i prezime:</strong><br/>
-              ${ime}
+              ${safeIme}
             </p>
             <p style="margin: 0 0 10px 0;">
               <strong>Email:</strong><br/>
-              <a href="mailto:${email}">${email}</a>
+              <a href="mailto:${safeEmail}">${safeEmail}</a>
             </p>
             ${
-              telefon
+              safeTelefon
                 ? `<p style="margin: 0 0 10px 0;">
                 <strong>Telefon:</strong><br/>
-                <a href="tel:${telefon}">${telefon}</a>
+                <a href="tel:${safeTelefon}">${safeTelefon}</a>
               </p>`
                 : ""
             }
             <p style="margin: 0;">
               <strong>Poruka:</strong><br/>
-              ${poruka.replace(/\n/g, "<br/>")}
+              ${safePoruka}
             </p>
           </div>
 

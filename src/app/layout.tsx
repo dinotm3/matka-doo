@@ -56,6 +56,12 @@ export default function RootLayout({
   return (
     <html lang="hr" className={font.variable}>
       <head>
+        {/* Speed up the Google Maps embed iframe — DNS + TLS handshake start
+            during initial page render so the iframe boot is faster on first
+            scroll-down. */}
+        <link rel="preconnect" href="https://www.google.com" />
+        <link rel="dns-prefetch" href="https://maps.gstatic.com" />
+        <link rel="dns-prefetch" href="https://maps.googleapis.com" />
         {/* Next/Image with priority already preloads white_bg.webp — no manual preload needed */}
         <script
           type="application/ld+json"

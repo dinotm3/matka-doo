@@ -176,7 +176,7 @@ export default function UslugeSection() {
                 fade
                 fadeOutMode="only-up"
                 amount={0.5}
-                enterDuration={0.4}
+                enterDuration={0.6}
                 exitDuration={0.3}
               >
                 <div className="group rounded-xl border border-white/20 bg-white/15 px-6 py-5 md:px-8 md:py-6 transition-all duration-300 hover:bg-white/20 hover:border-white/30 hover:scale-[1.02] origin-center min-h-[100px] md:min-h-[110px] flex items-center">
@@ -200,7 +200,7 @@ export default function UslugeSection() {
             fade
             fadeOutMode="only-up"
             amount={0.5}
-            enterDuration={0.4}
+            enterDuration={0.6}
             exitDuration={0.3}
             className="mt-8 flex justify-center"
           >

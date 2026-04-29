@@ -182,7 +182,11 @@ export default function KontaktLokacijaSection() {
   return (
     <section ref={sectionObserverRef} className="relative w-full">
       {/* Full Width Map — opacity-only fade, no translate (a 50–60vh iframe
-          is too expensive to paint-animate with a transform). */}
+          is too expensive to paint-animate with a transform).
+          No onLeave: scrolling back up into Usluge is handled by that
+          section's own useScroll hook, which re-activates "usluge" based
+          on scroll progress. Firing setActiveNav("usluge") on every leave
+          caused the nav to skip "location" when scrolling down fast. */}
       <ScrollReveal
         direction="none"
         distance={0}
@@ -193,7 +197,6 @@ export default function KontaktLokacijaSection() {
         exitDuration={0.6}
         className="w-full"
         onEnter={() => setActiveNav("location")}
-        onLeave={() => setActiveNav("usluge")}
       >
         <div className="w-full h-[50vh] md:h-[60vh]">
           <InteractiveMap
