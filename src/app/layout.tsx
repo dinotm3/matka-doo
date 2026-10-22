@@ -6,7 +6,7 @@ import Header from "./components/ui/Header";
 import PageTransition from "./components/transitions/PageTransition";
 import { NavProvider } from "./context/NavContext";
 import { metadata as siteMetadata, viewport as siteViewport } from "./constants/metadata";
-import { BASE_URL, SITE_INFO } from "./constants/constants";
+import { BASE_URL, SITE_INFO, POVJERENJE } from "./constants/constants";
 
 export const metadata = siteMetadata;
 export const viewport = siteViewport;
@@ -44,7 +44,9 @@ const jsonLd = {
   ],
   priceRange: "$$",
   image: `${BASE_URL}/opengraph-image`,
-  sameAs: [SITE_INFO.gbp_url].filter(Boolean),
+  // Public profiles for the same business: Google Business Profile and the
+  // trebam.hr listing. Helps Google tie the site to the map listing.
+  sameAs: [SITE_INFO.gbp_url, POVJERENJE.profileUrl].filter(Boolean),
 };
 
 export default function RootLayout({
