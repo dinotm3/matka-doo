@@ -1,5 +1,6 @@
 import UslugeSection, { UslugeSpacer } from "./UslugeSection";
 import KontaktLokacijaSection from "./KontaktLokacijaSection";
+import PovjerenjeSection from "./PovjerenjeSection";
 
 export default function HomeSection() {
   return (
@@ -8,6 +9,7 @@ export default function HomeSection() {
         <UslugeSection />
       </div>
       <UslugeSpacer />
+      <PovjerenjeSection />
       <div id="location" className="scroll-mt-20">
         <KontaktLokacijaSection />
       </div>

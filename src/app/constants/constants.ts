@@ -31,7 +31,7 @@ export const SITE_INFO: SiteInfo = {
   email: "matka@knjigovodstvo-matka.hr",
   phone: "+38514673751",
   phoneDisplay: "+385 1 467 3751",
-  gbp_url: "",
+  gbp_url: "https://maps.google.com/?cid=14784960254750728008",
   pages: {
     home: "O nama",
     services: "Usluge",
@@ -171,4 +171,31 @@ export const KONTAKT = {
     success_title: "Poruka primljena!",
     success_body: "Mi ćemo vas kontaktirati u najkraćem vremenu.",
   },
+} as const;
+
+// Independent ratings shown in the trust section near the bottom of the page.
+// Figures and quotes come from the public trebam.hr profile; keep them in sync
+// with that page when they change.
+export const POVJERENJE = {
+  title: "Što kažu naši klijenti",
+  rating: "4,9",
+  ratingMax: 5,
+  award: "Odabir klijenata 2020",
+  awardSource: "trebam.hr",
+  profileUrl: "https://www.trebam.hr/providers/matka-doo-zagreb",
+  profileCta: "Sve ocjene na trebam.hr",
+  quotes: [
+    {
+      text: "Obavili smo prijenos vrlo brzo. Brz i profesionalan pristup. Zadovoljan sam s uslugom i cijenom.",
+      author: "Hpd B.",
+    },
+    {
+      text: "Uslužni, komunikativni i za preporuku. Ako se mene pita, ocjena 10 za knjigovodstvo MATKA d.o.o.",
+      author: "Izdvojeni P.",
+    },
+    {
+      text: "Uslužni, efikasni, stručni.",
+      author: "Đurđica M.",
+    },
+  ],
 } as const;
