@@ -2,99 +2,173 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { isValidEmail, isValidPhone, escapeHtml } from "@/app/utils/validation";
 
-// Verify reCAPTCHA token
-async function verifyRecaptcha(token: string): Promise<{ success: boolean; score?: number; error?: string }> {
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-  if (!secretKey) {
-    console.warn("RECAPTCHA_SECRET_KEY not set, skipping verification");
-    return { success: true };
+// ---------------------------------------------------------------------------
+// Rate limiting
+//
+// In-memory sliding window per client IP. On Vercel every serverless instance
+// keeps its own map, so this caps bursts per instance rather than globally.
+// That is enough to stop a script hammering the form without adding a KV
+// store for a site that gets a handful of enquiries a week.
+// ---------------------------------------------------------------------------
+const RATE_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+const RATE_MAX_PER_WINDOW = 5;
+const rateHits = new Map<string, number[]>();
+
+function clientIp(request: NextRequest): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) return forwarded.split(",")[0].trim();
+  return request.headers.get("x-real-ip") ?? "unknown";
+}
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (rateHits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+
+  if (recent.length >= RATE_MAX_PER_WINDOW) {
+    rateHits.set(ip, recent);
+    return true;
   }
 
+  recent.push(now);
+  rateHits.set(ip, recent);
+
+  // Keep the map from growing without bound on a long-lived instance.
+  if (rateHits.size > 5000) {
+    for (const [key, times] of rateHits) {
+      if (times.every((t) => now - t >= RATE_WINDOW_MS)) rateHits.delete(key);
+    }
+  }
+  return false;
+}
+
+// ---------------------------------------------------------------------------
+// reCAPTCHA v3
+// ---------------------------------------------------------------------------
+const RECAPTCHA_MIN_SCORE = 0.3;
+
+type RecaptchaResult =
+  | { ok: true; score?: number }
+  | { ok: false; reason: string; retryable?: boolean };
+
+async function verifyRecaptcha(token: string, secretKey: string): Promise<RecaptchaResult> {
   try {
-    const response = await fetch(
-      "https://www.google.com/recaptcha/api/siteverify",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `secret=${secretKey}&response=${token}`,
-      }
-    );
+    const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ secret: secretKey, response: token }),
+    });
+
+    if (!response.ok) {
+      return { ok: false, reason: `siteverify HTTP ${response.status}`, retryable: true };
+    }
+
     const data = await response.json();
 
-    console.log("reCAPTCHA response:", JSON.stringify(data));
-
     if (!data.success) {
-      return { success: false, error: `reCAPTCHA failed: ${data["error-codes"]?.join(", ") || "unknown"}` };
+      const codes = Array.isArray(data["error-codes"]) ? data["error-codes"].join(", ") : "unknown";
+      return { ok: false, reason: `reCAPTCHA failed: ${codes}` };
     }
 
-    // reCAPTCHA v3 returns a score from 0.0 to 1.0
-    // 0.3 is a lenient threshold (lower = more permissive)
-    if (data.score < 0.3) {
-      return { success: false, score: data.score, error: `Score too low: ${data.score}` };
+    if (typeof data.score === "number" && data.score < RECAPTCHA_MIN_SCORE) {
+      return { ok: false, reason: `score too low: ${data.score}` };
     }
 
-    return { success: true, score: data.score };
+    return { ok: true, score: data.score };
   } catch (error) {
     console.error("reCAPTCHA verification error:", error);
-    // On error, allow the submission but log it
-    return { success: true, error: "Verification skipped due to error" };
+    return { ok: false, reason: "verification request failed", retryable: true };
   }
+}
+
+// ---------------------------------------------------------------------------
+// Input handling
+// ---------------------------------------------------------------------------
+const MAX_LENGTH = { ime: 100, email: 254, telefon: 30, poruka: 5000 } as const;
+
+function stringField(body: Record<string, unknown>, key: string): string {
+  const value = body[key];
+  return typeof value === "string" ? value.trim() : "";
+}
+
+function badRequest(error: string, field?: string) {
+  return NextResponse.json(field ? { error, field } : { error }, { status: 400 });
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { ime, email, telefon, poruka, recaptchaToken } = body;
-
-    // Validate required fields with specific errors
-    if (!ime?.trim()) {
+    if (isRateLimited(clientIp(request))) {
       return NextResponse.json(
-        { error: "Ime i prezime je obavezno.", field: "ime" },
-        { status: 400 }
+        { error: "Previše pokušaja. Pokušajte ponovno za nekoliko minuta." },
+        { status: 429 }
       );
     }
 
-    if (!email?.trim()) {
-      return NextResponse.json(
-        { error: "Email adresa je obavezna.", field: "email" },
-        { status: 400 }
-      );
+    let body: Record<string, unknown>;
+    try {
+      body = await request.json();
+    } catch {
+      return badRequest("Neispravan zahtjev.");
+    }
+    if (!body || typeof body !== "object") {
+      return badRequest("Neispravan zahtjev.");
     }
 
+    const ime = stringField(body, "ime");
+    const email = stringField(body, "email");
+    const telefon = stringField(body, "telefon");
+    const poruka = stringField(body, "poruka");
+    const recaptchaToken = stringField(body, "recaptchaToken");
+
+    // Required fields with specific errors
+    if (!ime) return badRequest("Ime i prezime je obavezno.", "ime");
+    if (!email) return badRequest("Email adresa je obavezna.", "email");
     if (!isValidEmail(email)) {
-      return NextResponse.json(
-        { error: "Email adresa nije ispravna. Provjerite format (npr. ime@email.com).", field: "email" },
-        { status: 400 }
+      return badRequest(
+        "Email adresa nije ispravna. Provjerite format (npr. ime@email.com).",
+        "email"
       );
     }
-
     if (telefon && !isValidPhone(telefon)) {
-      return NextResponse.json(
-        { error: "Broj telefona nije ispravan. Koristite format: +385 1 234 5678 ili 01-234-5678.", field: "telefon" },
-        { status: 400 }
+      return badRequest(
+        "Broj telefona nije ispravan. Koristite format: +385 1 234 5678 ili 01-234-5678.",
+        "telefon"
       );
     }
+    if (!poruka) return badRequest("Poruka je obavezna.", "poruka");
 
-    if (!poruka?.trim()) {
-      return NextResponse.json(
-        { error: "Poruka je obavezna.", field: "poruka" },
-        { status: 400 }
-      );
+    // Length caps keep the email readable and block oversized payloads
+    if (ime.length > MAX_LENGTH.ime) return badRequest("Ime i prezime je predugačko.", "ime");
+    if (email.length > MAX_LENGTH.email) return badRequest("Email adresa je predugačka.", "email");
+    if (telefon.length > MAX_LENGTH.telefon) return badRequest("Broj telefona je predugačak.", "telefon");
+    if (poruka.length > MAX_LENGTH.poruka) {
+      return badRequest(`Poruka je predugačka (najviše ${MAX_LENGTH.poruka} znakova).`, "poruka");
     }
 
-    // Verify reCAPTCHA (if token provided)
-    if (recaptchaToken) {
-      const recaptchaResult = await verifyRecaptcha(recaptchaToken);
-      if (!recaptchaResult.success) {
-        console.warn("reCAPTCHA failed:", recaptchaResult.error);
-        return NextResponse.json(
-          { error: "Sigurnosna provjera nije uspjela. Osvježite stranicu i pokušajte ponovno." },
-          { status: 400 }
-        );
+    // reCAPTCHA: required whenever the server is configured for it.
+    // Without a secret key (local dev) the check is skipped with a warning.
+    const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY;
+    if (recaptchaSecret) {
+      if (!recaptchaToken) {
+        console.warn("Contact form: request without reCAPTCHA token rejected");
+        return badRequest("Sigurnosna provjera nije uspjela. Osvježite stranicu i pokušajte ponovno.");
       }
+
+      const result = await verifyRecaptcha(recaptchaToken, recaptchaSecret);
+      if (!result.ok) {
+        console.warn("Contact form: reCAPTCHA rejected:", result.reason);
+        if (result.retryable) {
+          return NextResponse.json(
+            { error: "Sigurnosna provjera trenutno nije dostupna. Pokušajte ponovno za minutu." },
+            { status: 503 }
+          );
+        }
+        return badRequest("Sigurnosna provjera nije uspjela. Osvježite stranicu i pokušajte ponovno.");
+      }
+    } else {
+      console.warn("RECAPTCHA_SECRET_KEY not set, skipping verification");
     }
 
-    // Check email configuration
+    // Email configuration
     if (!process.env.RESEND_API_KEY) {
       console.error("Email configuration missing: RESEND_API_KEY not set");
       return NextResponse.json(
@@ -158,16 +232,9 @@ export async function POST(request: NextRequest) {
       throw new Error(sendError.message);
     }
 
-    return NextResponse.json(
-      { message: "Poruka je uspješno poslana!" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Poruka je uspješno poslana!" }, { status: 200 });
   } catch (error) {
     console.error("Contact form error:", error);
-
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    console.error("Send error details:", errorMessage);
-
     return NextResponse.json(
       { error: "Došlo je do greške pri slanju. Molimo pokušajte ponovno ili nas kontaktirajte direktno." },
       { status: 500 }
