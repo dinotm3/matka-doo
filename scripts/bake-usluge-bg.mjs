@@ -7,8 +7,14 @@
 // Baking those two colour layers here means the browser paints one opaque
 // image and nothing has to blend at runtime.
 //
-// Usage:  node scripts/bake-usluge-bg.mjs
+// Usage:  node scripts/bake-usluge-bg.mjs [path/to/ruler.jpg]
 // Output: public/usluge-bg.webp
+//
+// Source: the original 3727x5590 ruler.jpg is NOT in the working tree (it is
+// 1.7 MB). It lives in git history at commit ab212d7 as public/ruler.jpg:
+//   git show ab212d7:public/ruler.jpg > /some/dir/ruler.jpg
+// and is passed as the first argument. Without an argument the script falls
+// back to public/ruler.webp (1200 px), which looks soft on large screens.
 
 import sharp from "sharp";
 import { resolve, dirname } from "path";
@@ -18,12 +24,15 @@ import { existsSync, statSync } from "fs";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const publicDir = resolve(__dirname, "..", "public");
 
-const source = ["ruler.jpg", "ruler.webp"]
-  .map((f) => resolve(publicDir, f))
+const source = [process.argv[2], resolve(publicDir, "ruler.jpg"), resolve(publicDir, "ruler.webp")]
+  .filter(Boolean)
   .find((p) => existsSync(p));
-if (!source) throw new Error("public/ruler.jpg or ruler.webp not found");
+if (!source) throw new Error("no source image found (pass ruler.jpg as the first argument)");
+console.log(`source: ${source}`);
 
-const WIDTH = 1600; // enough for 1x desktop; next/image downsizes for phones
+// 2000 px covers a 1x 2560-wide screen without visible upscaling once the
+// section is cropped to its aspect; next/image downsizes for phones.
+const WIDTH = 2000;
 const base = sharp(source).resize(WIDTH, null, { withoutEnlargement: true });
 const { width, height } = await base.clone().toBuffer({ resolveWithObject: true }).then((r) => r.info);
 
@@ -58,7 +67,9 @@ await base
     { input: multiplyLayer, blend: "multiply" },
     { input: depthLayer, blend: "over" },
   ])
-  .webp({ quality: 55 })
+  // Dark, low-contrast images smear badly at low WebP quality, and next/image
+  // re-encodes once more on the way out, so keep this one fairly high.
+  .webp({ quality: 80 })
   .toFile(out);
 
 console.log(`usluge-bg.webp: ${width}x${height}, ${(statSync(out).size / 1024).toFixed(0)} KB`);
