@@ -1,13 +1,13 @@
 import { Star, Trophy, ArrowUpRight, Quote } from "lucide-react";
 import { POVJERENJE } from "@/app/constants/constants";
+import { softGreenBackground } from "@/app/constants/uiClasses";
 import Reveal from "../../animations/ui/Reveal";
 
 /**
  * Trust section: independent rating, award badge and a few short quotes,
  * all attributed and linked to the public trebam.hr profile.
  *
- * Sits between the services section and the map, continuing the light
- * spacer colour so there is no visible seam.
+ * Sits directly under the dark green services section and above the map.
  */
 export default function PovjerenjeSection() {
   const stars = Array.from({ length: POVJERENJE.ratingMax });
@@ -17,10 +17,8 @@ export default function PovjerenjeSection() {
       aria-labelledby="povjerenje-title"
       className="relative overflow-x-clip"
     >
-      <div
-        className="absolute inset-0 -z-10"
-        style={{ background: "linear-gradient(to bottom, #f1f3f1, #e6ede8)" }}
-      />
+      {/* Same soft green background as the contact section (uiClasses.ts) */}
+      <div className="absolute inset-0 -z-10" style={softGreenBackground} />
 
       <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
         <Reveal direction="up" distance={24} amount={0.2}>
@@ -76,7 +74,7 @@ export default function PovjerenjeSection() {
               >
                 <figure className="h-full rounded-2xl bg-white border border-gray-100 shadow-sm p-6 flex flex-col">
                   <Quote
-                    className="h-6 w-6 text-brand-900/30"
+                    className="h-6 w-6 fill-brand-900 text-brand-900"
                     aria-hidden="true"
                   />
                   <blockquote className="mt-3 text-gray-700 leading-relaxed flex-1">

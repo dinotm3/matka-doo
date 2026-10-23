@@ -69,6 +69,9 @@ export default function UslugeSection() {
               /usluge-bg.webp (scripts/bake-usluge-bg.mjs); the three remaining
               light effects are plain gradients on ONE element, no blending. */}
           <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+            {/* unoptimized: the baked WebP is already 2000 px / ~50 KB. Letting
+                next/image re-encode it squeezed 1920x2880 px into ~60 KB and
+                smeared the ruler detail on large screens. */}
             <Image
               src="/usluge-bg.webp"
               alt=""
@@ -76,7 +79,7 @@ export default function UslugeSection() {
               fill
               className="object-cover object-[center_30%]"
               sizes="100vw"
-              quality={60}
+              unoptimized
             />
             <div
               className="absolute inset-0"
@@ -171,10 +174,4 @@ export default function UslugeSection() {
       </section>
     </div>
   );
-}
-
-// Spacer component between Usluge (dark green) and Kontakt/Lokacija sections.
-// Matches the top of the KontaktLokacijaSection gradient so there's no visible seam.
-export function UslugeSpacer() {
-  return <div className="h-8 w-full" style={{ background: "#f1f3f1" }} />;
 }

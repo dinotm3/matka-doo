@@ -2,6 +2,7 @@
 
 import React, { ChangeEvent, FormEvent, useState, useEffect, useRef, useCallback } from "react";
 import ScrollReveal from "../../animations/ui/ScrollReveal";
+import { softGreenBackground } from "@/app/constants/uiClasses";
 import ScrollTopBtn from "../../buttons/ScrollTopBtn";
 import { LOKACIJA, SITE_INFO, KONTAKT } from "../../../constants/constants";
 import InteractiveMap from "../../maps/InteractiveMap";
@@ -211,13 +212,8 @@ export default function KontaktLokacijaSection() {
 
       {/* Content Section */}
       <div className="relative overflow-x-clip">
-        {/* Grayish-white with subtle brand-green tint */}
-        <div
-          className="absolute inset-0 -z-10"
-          style={{
-            background: "linear-gradient(to bottom, #f1f3f1, #e6ede8)",
-          }}
-        />
+        {/* Same soft green background as the ratings section (uiClasses.ts) */}
+        <div className="absolute inset-0 -z-10" style={softGreenBackground} />
 
         <div className="mx-auto max-w-6xl px-6 py-20 md:py-24">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
